@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
@@ -21,11 +19,10 @@ class CustomerController extends Controller
     }
 #--------------------------- Insert/Edit Customer ------------------------------#   
     public function store(Request $request) {
-       //print_r($request->all());
-       //die();
+
         $ValidationRules = $request->validate([
-            'cust_name' => 'required|unique:customers,cust_name',
-            'cust_email' => 'required|email|unique:customers,cust_email',
+            'customer_name' => 'required|unique:customers,customer_name',
+            'customer_email' => 'required|email|unique:customers,customer_email',
             'image' => 'required|image|mimes:jpg,svg|max:2048',
             'zip' => 'required|numeric|size:11',
         ]);
@@ -41,8 +38,8 @@ class CustomerController extends Controller
         $street = $request->streetlists;
         $house_no = $request->house_no_list;
 
-        $cust_password = $request->cust_password;
-        $hashedPassword = Hash::make($cust_password);
+        $customer_password = $request->customer_password;
+        $hashedPassword = Hash::make($customer_password);
 
         $customer_logo_name = $request->cust_logo;  // get old image name
         $image = $request->file('cust_logo');  // get new image name
@@ -54,15 +51,15 @@ class CustomerController extends Controller
         }
         $customer= Customer::updateOrCreate(
             ['id' => $request->id],
-            ['cust_name' => $request->cust_name,
-                'cust_email' =>$request->cust_email,
-                'cust_type' =>$request->cust_type,
-                'cust_password' => $hashedPassword,
+            ['customer_name' => $request->customer_name,
+                'customer_email' =>$request->customer_email,
+                'customer_type' =>$request->customer_type,
+                'customer_password' => $hashedPassword,
                 'customer_logo' =>$customer_logo_name,
                 'primary_color' =>$request->primary_color,
                 'cust_industry_id' =>$request->cust_industry,
-                'cust_country' => $country_code,
-                'cust_state' => $states,
+                'country' => $country_code,
+                'state' => $states,
                 'zip' => $zip,
                 'city' => $city,
                 'street' => $street,

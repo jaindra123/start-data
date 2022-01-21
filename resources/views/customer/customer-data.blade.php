@@ -28,7 +28,7 @@ fieldset {
         </div>
 
         <span class="text-danger">
-          <strong id="cust_name_error"></strong>
+          <strong id="customer_name_error"></strong>
         </span>
 
         <!-- <div id="success_msg" style="display: none;" class="alert alert-success" role="alert">
@@ -41,11 +41,14 @@ fieldset {
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Customer Name</th>
-                  <th scope="col">Customer Email</th>
-                  <th scope="col">Customer type</th>
-                  <!-- <th scope="col">Customer Pass</th> -->
-                  <th scope="col">Customer Logo</th>
+                  <th scope="col"> Name</th>
+                  <th scope="col"> Email</th>
+                  <th scope="col"> Customer type</th>
+                  <th scope="col">Industry</th>
+                  <th scope="col"> Logo</th>
+                  <th scope="col"> Country</th>
+                  <th scope="col"> State</th>
+                  <th scope="col">Zip</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -53,14 +56,17 @@ fieldset {
                 @foreach ($customers as $customer)
                 <tr>
                     <td>{{ $customer->id }}</td>
-                    <td>{{ $customer->cust_name }}</td>
-                    <td>{{ $customer->cust_email }}</td>
-                    <td>{{ $customer->cust_type }}</td>
-                   <!--  <td>{{ $customer->cust_password }}</td> -->
-
-                    <td style="width: 20%;"> <img src="{{url('/public/customer_logo',$customer->customer_logo)}}" style="width: 20%;"></td>
+                    <td>{{ $customer->customer_name }}</td>
+                    <td>{{ $customer->customer_email }}</td>
+                    <td>{{ $customer->customer_type }}</td>
+                    <td>{{ $customer->cust_industry_id }}</td>
+                    <td style="width: 10%;"> <img src="{{url('/public/customer_logo',$customer->customer_logo)}}" style="width: 20%;"></td>
+                    <td>{{ $customer->country }}</td>
+                    <td>{{ $customer->state }}</td>
+                    <td>{{ $customer->zip }}</td>
                     <td>
-                       <a href="javascript:void(0)" class="btn btn-primary edit" data-id="{{ $customer->id }}">Edit</a>
+                      <a href="javascript:void(0)" class="btn btn-primary edit" data-id="{{ $customer->id }}">Edit</a>
+                    </br>
                       <a href="javascript:void(0)" class="btn btn-primary delete" data-id="{{ $customer->id }}">Delete</a>
                     </td>
                 </tr>
@@ -84,23 +90,23 @@ fieldset {
               <input type="hidden" name="id" id="id">
               <div class="form-group">
                 <div class="col-sm-12">
-                  <input type="text" class="form-control" id="cust_name" name="cust_name" placeholder="Enter Customer Name" value="" maxlength="50"  autocomplete="off">
+                  <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter Customer Name" value="" maxlength="50"  autocomplete="off">
                 </div>
                 
               </div>  
               <div class="form-group">
                 <div class="col-sm-12">
-                  <input type="email" class="form-control" id="cust_email" name="cust_email" placeholder="Enter Customer Email" value="" maxlength="50"  autocomplete="off">
+                  <input type="email" class="form-control" id="customer_email" name="customer_email" placeholder="Enter Customer Email" value="" maxlength="50"  autocomplete="off">
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-sm-12">
-                  <input type="text" class="form-control" id="cust_type" name="cust_type" placeholder="Enter Customer Type" value=""  autocomplete="off">
+                  <input type="text" class="form-control" id="customer_type" name="customer_type" placeholder="Enter Customer Type" value=""  autocomplete="off">
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-sm-12">
-                  <input type="text" class="form-control" id="cust_password" name="cust_password" placeholder="Enter Customer Password" value="" autocomplete="off">
+                  <input type="text" class="form-control" id="customer_password" name="customer_password" placeholder="Enter Customer Password" value="" autocomplete="off">
                 </div>
               </div>
 
@@ -109,7 +115,7 @@ fieldset {
                   <select class="form-select" id="cust_industry" name="cust_industry" aria-label="">
                     @if(isset($industries) && $industries != null)
                       @foreach ($industries as $industrie)
-                         <option value="{{ $industrie->id }}" {{$customer->id  == $industrie->id  ? 'selected' : '' }}>  {{ $industrie->industry}}  </option>
+                        <option value="{{ $industrie->id }}" {{$customer->id  == $industrie->id  ? 'selected' : '' }}>  {{ $industrie->industry}}  </option>
                       @endforeach
                     @endif
                   </select>
@@ -132,10 +138,10 @@ fieldset {
                 <fieldset>
                   <div class="form-group">
                     <div class="col-sm-12">
-                      <select class="form-select cust-country" id="cust_country" name="cust_country[]" >
+                      <select class="form-select cust-country" id="country" name="country[]" >
                         @if(isset($countries) && $countries != null)
                           @foreach($countries as $countrie) 
-                            <option value="{{ $countrie->country_code }}" {{$customer->cust_country  == $countrie->id  ? 'selected' : '' }}>  {{ $countrie->country}}  </option>
+                            <option value="{{ $countrie->country_code }}" {{$customer->country  == $countrie->id  ? 'selected' : '' }}>  {{ $countrie->country}}  </option>
                          @endforeach
                         @endif
                       </select>
@@ -143,7 +149,7 @@ fieldset {
                   </div>
                   <div class="form-group">
                     <div class="col-sm-12">
-                      <input type="text" class="form-control cust-state" id="cust_state" name="cust_state[]" placeholder="Enter State Name" value=""  autocomplete="off">
+                      <input type="text" class="form-control cust-state" id="state" name="state[]" placeholder="Enter State Name" value=""  autocomplete="off">
                     </div>
                   </div> 
                 
@@ -171,7 +177,7 @@ fieldset {
 
                 <div class="" style="margin: 0 0 0 16px;">
                     <div class="form-group change">
-                        <a class="btn btn-success add-more">+ Add More</a>
+                      <a class="btn btn-success add-more">+ Add More</a>
                     </div>
                 </div>
 
@@ -183,13 +189,11 @@ fieldset {
               </div>
             </form>
           </div>
-          <div class="modal-footer">
-            
-          </div>
+          <div class="modal-footer"> </div>
         </div>
       </div>
     </div>
-//<!--------------------------- Add More Script ------------------------------>
+<!--------------------------- Add More Script ------------------------------>
     <script type="text/javascript">
       $(document).ready(function() {
         $("body").on("click",".add-more",function(){ 
@@ -228,15 +232,15 @@ fieldset {
             $('#ajaxCustomerModel').html("Edit Customer");
             $('#ajax-customer-model').modal('show');
             $('#id').val(res.id);
-            $('#cust_name').val(res.cust_name);
-            $('#cust_email').val(res.cust_email);
-            $('#cust_type').val(res.cust_type);
-            $('#cust_password').val(res.cust_password);
+            $('#customer_name').val(res.customer_name);
+            $('#customer_email').val(res.customer_email);
+            $('#customer_type').val(res.customer_type);
+            $('#customer_password').val(res.customer_password);
             $('#cust_logo').val(res.cust_logo); 
             $('#primary_color').val(res.primary_color);  
             $('#cust_industry').val(res.cust_industry_id); 
-            $('.cust-country').val(res.cust_country); 
-            $('.cust-state').val(res.cust_state); 
+            $('.cust-country').val(res.country); 
+            $('.cust-state').val(res.state); 
             $('.cust-zip').val(res.zip); 
             $('.cust-city').val(res.city); 
             $('.cust-street').val(res.street); 
@@ -272,10 +276,10 @@ fieldset {
       var street = [];
       var house_no = [];
       var id = $("#id").val();
-      var cust_name = $("#cust_name").val();
-      var cust_email = $("#cust_email").val();
-      var cust_type = $("#cust_type").val();
-      var cust_password = $("#cust_password").val();
+      var customer_name = $("#customer_name").val();
+      var customer_email = $("#customer_email").val();
+      var customer_type = $("#customer_type").val();
+      var customer_password = $("#customer_password").val();
       var cust_logo = $("#cust_logo").val();
       var primary_color = $("#primary_color").val();
 
@@ -328,7 +332,7 @@ fieldset {
             errorHtml += '<li>'+errors[key][0]+'</li>';
           }
           errorHtml += '</ul>';
-          $('#cust_name_error').html(errorHtml);
+          $('#customer_name_error').html(errorHtml);
         }
       });
 
