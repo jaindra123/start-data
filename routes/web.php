@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,8 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('access-list', [AuthController::class, 'accessList']);
 Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegistration'])->name('edit.registration');//edit question
 
-// Route::get('/send-email', [MailController::class, 'sendEmail']);
+//Sending Email
+Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('email.send');
 
 
 

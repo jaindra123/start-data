@@ -28,7 +28,7 @@
                                         <th>Role</th>
                                         <th>Language</th>
                                         <th>Customer</th>
-                                        <th>Edit</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -43,7 +43,9 @@
                                             <td>{{$value->language[0]['language']}}</td>
                                             <td>{{$value->customer[0]['customer_name']}}</td>
                                             <td>
-                                                <a href="{{route('edit.registration',['id'=>$value->id])}}"><button class="btn btn-primary">Edit</button></a>
+                                                <a href="{{route('edit.registration',['id'=>$value->id])}}"><button class="btn btn-primary">Edit</button></a> | 
+                                                <a href="#"><button class="btn btn-primary">Delete</button></a> |
+                                                <a href="{{route('email.send',['id'=>$value->id])}}"><button class="btn btn-primary">Send Mail</button></a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -54,7 +56,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                            {{$values->links()}}
+                            <span>{{$values->links()}}</span>
                         </div>
                     </div>
                 </div>
@@ -62,3 +64,9 @@
         </div>
     </div>
 </main>
+
+<style>
+    .w-5{
+        display:none;
+    }
+</style>

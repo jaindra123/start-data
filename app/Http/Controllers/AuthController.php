@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
+// use App\Mail\LoginAccess;
 
 
 class AuthController extends Controller
@@ -88,15 +89,6 @@ class AuthController extends Controller
                 'password_confirm.same' => 'Password and Confirm Password should be same',
             ]
         );
-
-        // Mail::send('email', [   'Username' => $request->username,
-        //                         'Password' => $request->password
-        //                     ],
-        //                     function ($message) {   $message->from('sanjay.chaudhary@techinventive.com');
-        //                                             $message->to('sanjay.chaudhary@techinventive.com')
-        //                                                     ->subject('Login Access');
-        //                                         }
-        //             );
 
         //Form store
         $data = User::create([
@@ -223,5 +215,20 @@ class AuthController extends Controller
             }
         }
         return view('accessManagement/registration', $data);
+    }
+
+    //Send Mail
+    public function sendEmail(Request $request, $id){
+        $user = User::where(['id'=>$id])->first();
+        // Mail::send('email', [   'Username' => $user->username,
+        //                         'Password' => $user->password
+        //                     ],
+        //                     function ($message) {   $message->from('sanjay.chaudhary@techinventive.com');
+        //                                             $message->to($user->email)
+        //                                                     ->subject('Login Access');
+        //                                         }
+        //             );// send but variable not working in this method.
+        $request->session()->flash('message','Mail Send Successfully');
+        return redirect('access-list');
     }
 }
