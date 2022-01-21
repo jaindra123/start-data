@@ -2,8 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
+<<<<<<< HEAD
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MailController;
+=======
+use App\Http\Controllers\IndustryController;
+>>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
 
 /*
 |--------------------------------------------------------------------------
@@ -20,11 +24,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+#---------------------------  ------------------------------#   
 Route::get('customer-list', [CustomerController::class, 'index']);
 Route::post('add-update-customer', [CustomerController::class, 'store']);
 Route::post('edit-customer', [CustomerController::class, 'edit']);
 Route::post('delete-customer', [CustomerController::class, 'destroy']);
+#---------------------------  ------------------------------#   
+
+Route::get('industry-list', [IndustryController::class, 'index']);
+Route::post('add-update-industry', [IndustryController::class, 'store']);
+Route::post('edit-industry', [IndustryController::class, 'edit']);
+Route::post('delete-industry', [IndustryController::class, 'destroy']);
 
 //Access Management
 Route::get('registration', [AuthController::class, 'registration']);//->name('register-user')
