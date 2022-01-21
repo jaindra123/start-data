@@ -42,10 +42,12 @@ Route::get('dashboard', [AuthController::class, 'dashboard']);
 Route::get('user-profile', [AuthController::class, 'userProfile']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('access-list', [AuthController::class, 'accessList']);
+Route::get('delete-customer/{id}', [AuthController::class, 'delecteCustomer'])->name('delete.cutomer');
 Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegistration'])->name('edit.registration');//edit question
 
 //Sending Email
 Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('email.send');
+Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.forget');
 
 
 

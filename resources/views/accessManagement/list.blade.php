@@ -44,7 +44,7 @@
                                             <td>{{$value->customer[0]['customer_name']}}</td>
                                             <td>
                                                 <a href="{{route('edit.registration',['id'=>$value->id])}}"><button class="btn btn-primary">Edit</button></a> | 
-                                                <a href="#"><button class="btn btn-primary">Delete</button></a> |
+                                                <a data-toggle="modal" id="smallButton" data-target="#smallModal" href="{{route('delete.cutomer',['id'=>$value->id])}}"><button class="btn btn-primary">Delete</button></a> |
                                                 <a href="{{route('email.send',['id'=>$value->id])}}"><button class="btn btn-primary">Send Mail</button></a>
                                             </td>
                                         </tr>
