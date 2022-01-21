@@ -14,22 +14,31 @@ class CustomerController extends Controller
     {
         $industries = DB::table('industries')->get(); 
         $countries = DB::table('countries')->get(); 
-        $customers = Customer::orderBy('id','ASC')->paginate(5);
+
+        //$customers = Customer::orderBy('id','ASC')->paginate(5);
+
+        $customers = Customer::join('industries', 'industries.id', '=', 'customers.cust_industry_id')
+                   // ->join('countries', 'countries.country_code', '=', 'customers.country')
+                    ->get(['customers.*', 'industries.industry',]);
+
+        //print_r($customers );
+        //die();
+
         return view('customer/customer-data', compact('customers','countries','industries'));
     }
 #--------------------------- Insert/Edit Customer ------------------------------#   
     public function store(Request $request) {
 
-        $ValidationRules = $request->validate([
+        /*$ValidationRules = $request->validate([
             'customer_name' => 'required|unique:customers,customer_name',
             'customer_email' => 'required|email|unique:customers,customer_email',
-            'image' => 'required|image|mimes:jpg,svg|max:2048',
-            'zip' => 'required|numeric|size:11',
+            'customer_logo' => 'required|image|mimes:jpg,svg',
+            //'customer_zip' => 'required',
         ]);
         $validator = Validator::make(Input::all(), $ValidationRules);
         if ($validator->fails()) {
             return Response::json(array('success' => false,'errors' => $validator->getMessageBag()->toArray() ), 400); 
-        }
+        }*/
 
         $country_code = $request->countrylist;
         $states = $request->stateslist;
@@ -41,8 +50,8 @@ class CustomerController extends Controller
         $customer_password = $request->customer_password;
         $hashedPassword = Hash::make($customer_password);
 
-        $customer_logo_name = $request->cust_logo;  // get old image name
-        $image = $request->file('cust_logo');  // get new image name
+        $customer_logo_name = $request->customer_logo;  // get old image name
+        $image = $request->file('customer_logo');  // get new image name
         if($image!=""){
            $customer_logo_name = rand().'.'. $image->getClientOriginalExtension();
             $image->move(public_path('customer_logo'),$customer_logo_name);
@@ -57,7 +66,7 @@ class CustomerController extends Controller
                 'customer_password' => $hashedPassword,
                 'customer_logo' =>$customer_logo_name,
                 'primary_color' =>$request->primary_color,
-                'cust_industry_id' =>$request->cust_industry,
+                'cust_industry_id' =>$request->customer_industry,
                 'country' => $country_code,
                 'state' => $states,
                 'zip' => $zip,

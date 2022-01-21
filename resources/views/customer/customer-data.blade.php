@@ -59,7 +59,7 @@ fieldset {
                     <td>{{ $customer->customer_name }}</td>
                     <td>{{ $customer->customer_email }}</td>
                     <td>{{ $customer->customer_type }}</td>
-                    <td>{{ $customer->cust_industry_id }}</td>
+                    <td>{{ $customer->industry }}</td>
                     <td style="width: 10%;"> <img src="{{url('/public/customer_logo',$customer->customer_logo)}}" style="width: 20%;"></td>
                     <td>{{ $customer->country }}</td>
                     <td>{{ $customer->state }}</td>
@@ -73,7 +73,7 @@ fieldset {
                 @endforeach
               </tbody>
             </table>
-             {!! $customers->links() !!}
+             { $customers->links() }
         </div>
     </div>        
 </div>
@@ -112,7 +112,7 @@ fieldset {
 
               <div class="form-group">
                 <div class="col-sm-12">
-                  <select class="form-select" id="cust_industry" name="cust_industry" aria-label="">
+                  <select class="form-select" id="customer_industry" name="customer_industry" aria-label="">
                     @if(isset($industries) && $industries != null)
                       @foreach ($industries as $industrie)
                         <option value="{{ $industrie->id }}" {{$customer->id  == $industrie->id  ? 'selected' : '' }}>  {{ $industrie->industry}}  </option>
@@ -124,7 +124,7 @@ fieldset {
               
               <div class="form-group">
                 <div class="col-sm-12">
-                  <input type="file" class="form-control" id="cust_logo" name="cust_logo" placeholder="Enter Customer Logo" value=""  autocomplete="off">
+                  <input type="file" class="form-control" id="customer_logo" name="customer_logo" placeholder="Enter Customer Logo" value=""  autocomplete="off">
                 </div>
               </div>
               <div class="form-group">
@@ -155,17 +155,17 @@ fieldset {
                 
                  <div class="form-group">
                   <div class="col-sm-12">
-                    <input type="text" class="form-control cust-zip" id="cust_zip" name="cust_zip[]" placeholder="enter zip" value=""  autocomplete="off">
+                    <input type="text" class="form-control cust-zip" id="customer_zip" name="customer_zip[]" placeholder="enter zip" value=""  autocomplete="off">
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <input type="text" class="form-control cust-city" id="cust_city" name="cust_city[]" placeholder="enter city" value=""  autocomplete="off">
+                    <input type="text" class="form-control cust-city" id="customer_city" name="customer_city[]" placeholder="enter city" value=""  autocomplete="off">
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <input type="text" class="form-control cust-street" id="cust_street" name="cust_street[]" placeholder="enter street" value=""  autocomplete="off">
+                    <input type="text" class="form-control cust-street" id="customer_street" name="customer_street[]" placeholder="enter street" value=""  autocomplete="off">
                   </div>
                 </div>
                 <div class="form-group">
@@ -236,9 +236,9 @@ fieldset {
             $('#customer_email').val(res.customer_email);
             $('#customer_type').val(res.customer_type);
             $('#customer_password').val(res.customer_password);
-            $('#cust_logo').val(res.cust_logo); 
+            $('#customer_logo').val(res.customer_logo); 
             $('#primary_color').val(res.primary_color);  
-            $('#cust_industry').val(res.cust_industry_id); 
+            $('#customer_industry').val(res.cust_industry_id); 
             $('.cust-country').val(res.country); 
             $('.cust-state').val(res.state); 
             $('.cust-zip').val(res.zip); 
@@ -280,7 +280,7 @@ fieldset {
       var customer_email = $("#customer_email").val();
       var customer_type = $("#customer_type").val();
       var customer_password = $("#customer_password").val();
-      var cust_logo = $("#cust_logo").val();
+      var customer_logo = $("#customer_logo").val();
       var primary_color = $("#primary_color").val();
 
       $.each ($(".cust-country option:selected"), function(){              
