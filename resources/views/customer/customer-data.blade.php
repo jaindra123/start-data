@@ -123,67 +123,13 @@ fieldset {
               </div>
               <div class="form-group">
                 <div class="col-sm-12">
-<<<<<<< HEAD
-                  <input type="text" class="form-control" id="cust_password" name="cust_password" placeholder="Enter Customer Password" value="" required="" autocomplete="off">
-                </div>
-              </div>
-
-              <!-- <div class="form-group">
-                <div class="col-sm-12">
-                  <select class="form-select" id="industry" name="industry" aria-label="Default select example">
-                    <option selected>Select Industry</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-              </div> -->
-              
-              <div class="form-group">
-                <div class="col-sm-12">
-                  <input type="file" class="form-control" id="cust_logo" name="cust_logo" placeholder="Enter Customer Logo" value="" required="" autocomplete="off">
-                </div>
-              </div>
-              <!-- <div class="form-group">
-                <div class="col-sm-12">
-                  <select class="form-select" id="primary_color" name="primary_color" aria-label="">
-                    <option selected>Select Colour</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                  </select>
-                </div>
-              </div> -->
-=======
                   <input type="text" class="form-control" id="primary_color" name="primary_color" placeholder="Enter Colour code" value=""  autocomplete="off">
                 </div>
               </div> 
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
               </div>
 
                <div class="after-add-more">
                 <fieldset>
-<<<<<<< HEAD
-                <div class="form-group">
-                  <div class="col-sm-12">
-                    <select class="form-select" id="cust_country" name="cust_country[0][country]" >
-                      <option selected>Select Country</option>
-                      <option value="in">India</option>
-                      <option value="two">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- <div class="form-group">
-                  <div class="col-sm-12">
-                    <input type="text" class="form-control" id="cust_state" name="cust_state[]" placeholder="enter state" value="" required="" autocomplete="off">
-                  </div>
-                </div> -->
-                 </fieldset>
-                <!-- <div class="form-group">
-                  <div class="col-sm-12">
-                    <input type="text" class="form-control" id="cust_zip" name="cust_zip" placeholder="enter zip" value="" required="" autocomplete="off">
-=======
                   <div class="form-group">
                     <div class="col-sm-12">
                       <select class="form-select cust-country" id="cust_country" name="cust_country[]" >
@@ -204,38 +150,20 @@ fieldset {
                  <div class="form-group">
                   <div class="col-sm-12">
                     <input type="text" class="form-control cust-zip" id="cust_zip" name="cust_zip[]" placeholder="enter zip" value=""  autocomplete="off">
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-12">
-<<<<<<< HEAD
-                    <input type="text" class="form-control" id="cust_city" name="cust_city" placeholder="enter city" value="" required="" autocomplete="off">
-=======
                     <input type="text" class="form-control cust-city" id="cust_city" name="cust_city[]" placeholder="enter city" value=""  autocomplete="off">
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-12">
-<<<<<<< HEAD
-                    <input type="text" class="form-control" id="cust_street" name="cust_street" placeholder="enter street" value="" required="" autocomplete="off">
-=======
                     <input type="text" class="form-control cust-street" id="cust_street" name="cust_street[]" placeholder="enter street" value=""  autocomplete="off">
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-12">
-<<<<<<< HEAD
-                    <input type="text" class="form-control" id="cust_house_no" name="cust_house_no" placeholder="House No." value="" required="" autocomplete="off">
-                  </div>
-                </div> -->
-
-                <div class="col-md-2">
-                    <div class="form-group change">
-                        <label for="">&nbsp;</label><br/>
-=======
                     <input type="text" class="form-control cust-house-no" id="cust_house_no" name="cust_house_no[]" placeholder="House No." value="" autocomplete="off">
                   </div>
                 </div>
@@ -243,7 +171,6 @@ fieldset {
 
                 <div class="" style="margin: 0 0 0 16px;">
                     <div class="form-group change">
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
                         <a class="btn btn-success add-more">+ Add More</a>
                     </div>
                 </div>
@@ -267,10 +194,7 @@ fieldset {
       $(document).ready(function() {
         $("body").on("click",".add-more",function(){ 
           var html = $(".after-add-more").first().clone();
-<<<<<<< HEAD
-=======
          // alert(html);
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
           $(html).find(".change").html("<label for=''>&nbsp;</label><br/><a class='btn btn-danger remove'>- Remove</a>");
           $(".after-add-more").last().after(html);
         });
@@ -308,12 +232,6 @@ fieldset {
             $('#cust_email').val(res.cust_email);
             $('#cust_type').val(res.cust_type);
             $('#cust_password').val(res.cust_password);
-<<<<<<< HEAD
-            $('#cust_logo').val(res.cust_logo);
-            $('#cust_country').val(res.cust_country);
-            
-         }
-=======
             $('#cust_logo').val(res.cust_logo); 
             $('#primary_color').val(res.primary_color);  
             $('#cust_industry').val(res.cust_industry_id); 
@@ -324,7 +242,6 @@ fieldset {
             $('.cust-street').val(res.street); 
             $('.cust-house-no').val(res.house_number); 
           }
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
       });
     });
 //<!--------------------------- Delete ----------------------------------------------------------->
@@ -346,9 +263,6 @@ fieldset {
 //<!--------------------------- Insert/Edit ----------------------------------------------------->
 
     $('body').on('click', '#btn-save', function (event) {
-<<<<<<< HEAD
-      var formData = new FormData($('#addEditCustomerForm')[0]);
-=======
       
       var formData = new FormData($('#addEditCustomerForm')[0]);
       var countries = [];
@@ -357,17 +271,12 @@ fieldset {
       var city = [];
       var street = [];
       var house_no = [];
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
       var id = $("#id").val();
       var cust_name = $("#cust_name").val();
       var cust_email = $("#cust_email").val();
       var cust_type = $("#cust_type").val();
       var cust_password = $("#cust_password").val();
       var cust_logo = $("#cust_logo").val();
-<<<<<<< HEAD
-      var cust_country = $("#cust_country").val();
-      alert(cust_country);
-=======
       var primary_color = $("#primary_color").val();
 
       $.each ($(".cust-country option:selected"), function(){              
@@ -396,16 +305,10 @@ fieldset {
       formData.append('streetlists', street);
       formData.append('house_no_list', house_no);
 
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
       $('#ajax-customer-model').modal('hide');
       $.ajax({
         type:"POST",
         url: "{{ url('add-update-customer') }}",
-<<<<<<< HEAD
-        data: {id:id, cust_name:cust_name, cust_email:cust_email, cust_type:cust_type, cust_password:cust_password,
-        cust_logo:cust_logo, cust_country:cust_country},
-=======
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
         dataType: 'json',
         data: formData,
         processData: false,

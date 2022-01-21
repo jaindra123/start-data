@@ -2,12 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
-<<<<<<< HEAD
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MailController;
-=======
 use App\Http\Controllers\IndustryController;
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
 
 /*
 |--------------------------------------------------------------------------

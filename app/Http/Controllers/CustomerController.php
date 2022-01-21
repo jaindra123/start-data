@@ -5,12 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
-<<<<<<< HEAD
-=======
 use Illuminate\Support\Facades\DB;
 use App\Models\Industry;
 use Illuminate\Support\Facades\Validator;
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
 
 class CustomerController extends Controller
 {
@@ -24,26 +21,6 @@ class CustomerController extends Controller
     }
 #--------------------------- Insert/Edit Customer ------------------------------#   
     public function store(Request $request) {
-<<<<<<< HEAD
-        $cust_country = $request->cust_country;
-
-        //$cust_country = $_POST['cust_country'];
-        $rules = [];
-        foreach($request->input('cust_country') as $key => $value) {
-            $rules = $value;
-        }
-
-        print_r($cust_country);
-        die();
-        $cust_password = $request->cust_password;
-        $hashedPassword = Hash::make($cust_password);
-        $customer_logo_name = $request->cust_logo;  // get old image name
-        $image = $request->file('cust_logo');  // get new image name
-        if($image!=""){
-            $customer_logo_name = rand().'.'. $image->getClientOriginalExtension();
-            $image->move(public_path('customer_logo'),$customer_logo_name);
-        } else{
-=======
        //print_r($request->all());
        //die();
         $ValidationRules = $request->validate([
@@ -73,7 +50,6 @@ class CustomerController extends Controller
            $customer_logo_name = rand().'.'. $image->getClientOriginalExtension();
             $image->move(public_path('customer_logo'),$customer_logo_name);
         } else {
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
            // echo "No Image Found";
         }
         $customer= Customer::updateOrCreate(
@@ -83,13 +59,6 @@ class CustomerController extends Controller
                 'cust_type' =>$request->cust_type,
                 'cust_password' => $hashedPassword,
                 'customer_logo' =>$customer_logo_name,
-<<<<<<< HEAD
-                'cust_country' => 'india',
-                
-            ]
-        );
-        return response()->json(['success' => true,'message'=>'customer Created successfully']);
-=======
                 'primary_color' =>$request->primary_color,
                 'cust_industry_id' =>$request->cust_industry,
                 'cust_country' => $country_code,
@@ -101,7 +70,6 @@ class CustomerController extends Controller
             ]
         );
         return response()->json(['success' => true,'message'=>'Customer Created successfully']);          
->>>>>>> 9f26ec6d1dc0ee55bbc726d337b7538f09fedfb2
     }
 #--------------------------- Single Customer Show --------------------------#
     public function edit(Request $request)
