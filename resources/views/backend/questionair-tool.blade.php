@@ -95,8 +95,7 @@
                                                 <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
                                                 <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
                                             </td>
-                                            <td class="text-center"> <i class="fa fa-trash"
-                                                    aria-hidden="true"></i></td>
+                                            <td class="text-center"> <i class="fa fa-trash" aria-hidden="true"></i></td>
                                         </tr>
                                         <tr>
                                             <td>23</td>
@@ -106,8 +105,7 @@
                                                 <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
                                                 <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
                                             </td>
-                                            <td class="text-center"> <i class="fa fa-trash"
-                                                    aria-hidden="true"></i></td>
+                                            <td class="text-center"> <i class="fa fa-trash" aria-hidden="true"></i></td>
                                         </tr>
                                         <tr>
                                             <td>24</td>
@@ -116,8 +114,7 @@
                                             <td class="text-center">
                                                 <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
                                                 <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td>
-                                            <td class="text-center"> <i class="fa fa-trash"
-                                                    aria-hidden="true"></i></td>
+                                            <td class="text-center"> <i class="fa fa-trash" aria-hidden="true"></i></td>
                                         </tr>
                                         <tr>
                                             <td>25</td>
@@ -127,8 +124,7 @@
                                                 <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
                                                 <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
                                             </td>
-                                            <td class="text-center"> <i class="fa fa-trash"
-                                                    aria-hidden="true"></i></td>
+                                            <td class="text-center"> <i class="fa fa-trash" aria-hidden="true"></i></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -243,8 +239,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Multiple Choice Question</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -307,8 +303,8 @@
 
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Question Name</label>
-                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder=""
-                        id="email"> <i class="fa fa-star color-dd" aria-hidden="true"></i>
+                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder="" id="email">
+                    <i class="fa fa-star color-dd" aria-hidden="true"></i>
                 </div>
                 <div class="w-100 mb-4">
                     <label for="email" class=""> Display Text</label>
@@ -363,8 +359,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Single Choice Question</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -423,8 +419,8 @@
 
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Question Name</label>
-                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder=""
-                        id="email"> <i class="fa fa-star color-dd" aria-hidden="true"></i>
+                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder="" id="email">
+                    <i class="fa fa-star color-dd" aria-hidden="true"></i>
                 </div>
                 <div class="w-100 mb-4">
                     <label for="email" class=""> Display Text</label>
@@ -479,8 +475,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Matrix Question</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -543,8 +539,8 @@
 
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Question Name</label>
-                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder=""
-                        id="email"> <i class="fa fa-star color-dd" aria-hidden="true"></i>
+                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder="" id="email">
+                    <i class="fa fa-star color-dd" aria-hidden="true"></i>
                 </div>
                 <div class="w-100 mb-4">
                     <label for="email" class=""> Display Text</label>
@@ -699,8 +695,8 @@
 
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Question Name</label>
-                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder=""
-                        id="email"> <i class="fa fa-star color-dd" aria-hidden="true"></i>
+                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder="" id="email">
+                    <i class="fa fa-star color-dd" aria-hidden="true"></i>
                 </div>
                 <div class="w-100 mb-4">
                     <label for="email" class=""> Display Text</label>
@@ -714,8 +710,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Picture Question</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -828,8 +824,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Scale Question</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -892,8 +888,8 @@
 
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Question Name</label>
-                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder=""
-                        id="email"> <i class="fa fa-star color-dd" aria-hidden="true"></i>
+                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder="" id="email">
+                    <i class="fa fa-star color-dd" aria-hidden="true"></i>
                 </div>
                 <div class="w-100 mb-4">
                     <label for="email" class=""> Display Text</label>
@@ -952,8 +948,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Number Question</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -1012,8 +1008,8 @@
 
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Question Name</label>
-                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder=""
-                        id="email"> <i class="fa fa-star color-dd" aria-hidden="true"></i>
+                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder="" id="email">
+                    <i class="fa fa-star color-dd" aria-hidden="true"></i>
                 </div>
                 <div class="w-100 mb-4">
                     <label for="email" class=""> Display Text</label>
@@ -1028,8 +1024,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Country Question</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -1138,8 +1134,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Ranking Question</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -1196,8 +1192,8 @@
 
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Question Name</label>
-                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder=""
-                        id="email"> <i class="fa fa-star color-dd" aria-hidden="true"></i>
+                    <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder="" id="email">
+                    <i class="fa fa-star color-dd" aria-hidden="true"></i>
                 </div>
                 <div class="w-100 mb-4">
                     <label for="email" class=""> Display Text</label>
@@ -1252,8 +1248,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Headline 1</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -1278,8 +1274,7 @@
             <div class="col-md-9 mt-3 pt-1">
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Text</label>
-                    <input type="email" class="form-control mb-2 d-inline-block" placeholder="HEADLINE TEXT"
-                        id="email">
+                    <input type="email" class="form-control mb-2 d-inline-block" placeholder="HEADLINE TEXT" id="email">
                 </div>
             </div>
         </div>
@@ -1290,8 +1285,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Headline 1</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -1316,8 +1311,7 @@
             <div class="col-md-9 mt-3 pt-1">
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Text</label>
-                    <input type="email" class="form-control mb-2 d-inline-block" placeholder="HEADLINE TEXT"
-                        id="email">
+                    <input type="email" class="form-control mb-2 d-inline-block" placeholder="HEADLINE TEXT" id="email">
                 </div>
             </div>
         </div>
@@ -1328,8 +1322,8 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Headline 1</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -1354,8 +1348,7 @@
             <div class="col-md-9 mt-3 pt-1">
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Text</label>
-                    <input type="email" class="form-control mb-2 d-inline-block" placeholder="HEADLINE TEXT"
-                        id="email">
+                    <input type="email" class="form-control mb-2 d-inline-block" placeholder="HEADLINE TEXT" id="email">
                 </div>
             </div>
         </div>
@@ -1366,8 +1359,7 @@
             <div class="col-md-9">
                 <h4 class="hedngead">Headline 1</h3>
             </div>
-            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o"
-                        aria-hidden="true"></i> Save Question</button></div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Question</button></div>
             <div class="col-md-3">
                 <div class="w-100 mb-2">
                     <label for="email" class=""> Add Language</label>
@@ -1392,8 +1384,7 @@
             <div class="col-md-9 mt-3 pt-1">
                 <div class="w-100 mb-4">
                     <label for="email" class="w-100"> Text</label>
-                    <input type="email" class="form-control mb-2 d-inline-block" placeholder="HEADLINE TEXT"
-                        id="email">
+                    <input type="email" class="form-control mb-2 d-inline-block" placeholder="HEADLINE TEXT" id="email">
                 </div>
             </div>
         </div>
