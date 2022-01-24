@@ -64,13 +64,18 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
     ],
 
+    /*'customer' => [
+        'redirectTo' => 'customer.home',
+        'driver' => 'session',
+        'provider' => 'customer',
+    ],
+*/
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords
