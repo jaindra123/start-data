@@ -18,7 +18,7 @@ class IndustryController extends Controller
     public function store(Request $request) {
         $industry= Industry::updateOrCreate(
             ['id' => $request->id],
-            ['industry' => $request->industry_name,]
+            ['indury' => $request->industry_name,]
         );
        return response()->json(['success' => true,'message'=>'Industry Created successfully']);
     }

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\LoginAccess;
+use App\Mail\ForgetAccess;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 
 class MailController extends Controller
 {
@@ -18,7 +20,7 @@ class MailController extends Controller
         // $password = Hash::needsRehash($user->password);
         $mailData = [
             'username' => $user->username,
-            'password' => $user->password
+            'password' => $user->pass
         ];
   
         Mail::to($email)->send(new LoginAccess($mailData));
@@ -30,6 +32,20 @@ class MailController extends Controller
         }else{
             $request->session()->flash('message','Mail Send Successfully');
             return redirect('access-list');
+        }
+    }
+
+    public function forgetEmail(Request $request){
+        $mailData = [
+            'username' => $request->username
+        ];
+        $to = 'sanjay.chaudhary@techinventive.com';
+        Mail::to($to)->send(new ForgetAccess($mailData));
+
+        if (Mail::failures()) {
+            return ['msg'=>'error'];
+        }else{
+            return ['msg'=>'sent'];
         }
     }
 }
