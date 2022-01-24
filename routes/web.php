@@ -5,8 +5,10 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\IndustryController;
+
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionTypeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +22,7 @@ use App\Http\Controllers\QuestionTypeController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+     return view('welcome');
 });
 
 //Customer 
@@ -62,10 +64,19 @@ Route::get('dashboard', [AuthController::class, 'dashboard']);
 Route::get('user-profile', [AuthController::class, 'userProfile']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('access-list', [AuthController::class, 'accessList']);
-Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegistration'])->name('edit.registration');//edit question
+Route::get('delete-customer/{id}', [AuthController::class, 'delecteCustomer'])->name('delete.cutomer');
+Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegistration'])->name('edit.registration');//edit registration
 
 //Sending Email
 Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('email.send');
+Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.forget');
+
+Route::view('questionair','backend.questionair-tool');
+Route::view('admin-dashboard','backend.admin-dashboard');
+Route::view('dashbord','backend.dashbord');
+Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
 
 
-
+//Questionairs 
+Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
+Route::post('store-questionairs',[QuestionairController::class,'store_questionairs'])->name('store-questionairs');

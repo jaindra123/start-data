@@ -19,7 +19,7 @@ class CustomerController extends Controller
         $customers = Customer::join('industries', 'industries.id', '=', 'customers.cust_industry_id')
                     ->join('countries', 'countries.country_code', '=', 'customers.country')
                     ->orderBy('customers.id','ASC')
-                    ->get(['customers.*', 'industries.industry', 'countries.country']);
+                    ->get(['customers.*', 'industries.indury', 'countries.country']);
 
         return view('customer/customer-data', compact('customers','countries','industries'));
     }
