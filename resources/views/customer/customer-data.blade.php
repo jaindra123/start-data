@@ -106,7 +106,13 @@ fieldset {
               </div>
               <div class="form-group">
                 <div class="col-sm-12">
-                  <input type="text" class="form-control" id="customer_password" name="customer_password" placeholder="Enter Customer Password" value="" autocomplete="off">
+                  <input type="password" class="form-control" id="customer_password" name="customer_password" placeholder="Enter Customer Password" value="" autocomplete="off">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Enter Confirm Password" value="" autocomplete="off">
                 </div>
               </div>
 
@@ -236,6 +242,7 @@ fieldset {
             $('#customer_email').val(res.customer_email);
             $('#customer_type').val(res.customer_type);
             $('#customer_password').val(res.customer_password);
+            $('#password_confirm').val(res.password_confirm);
             $('#customer_logo').val(res.customer_logo); 
             $('#primary_color').val(res.primary_color);  
             $('#customer_industry').val(res.cust_industry_id); 
@@ -280,6 +287,9 @@ fieldset {
       var customer_email = $("#customer_email").val();
       var customer_type = $("#customer_type").val();
       var customer_password = $("#customer_password").val();
+      var password_confirm = $("#password_confirm").val();
+
+      
       var customer_logo = $("#customer_logo").val();
       var primary_color = $("#primary_color").val();
 

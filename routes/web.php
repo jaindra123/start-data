@@ -5,7 +5,10 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\IndustryController;
-use App\Http\Controllers\QuestionairController;
+
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\QuestionTypeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,17 +25,35 @@ Route::get('/', function () {
      return view('welcome');
 });
 
-#---------------------------  ------------------------------#   
+//Customer 
 Route::get('customer-list', [CustomerController::class, 'index']);
 Route::post('add-update-customer', [CustomerController::class, 'store']);
 Route::post('edit-customer', [CustomerController::class, 'edit']);
 Route::post('delete-customer', [CustomerController::class, 'destroy']);
-#---------------------------  ------------------------------#   
+Route::get('customer/login', [CustomerController::class, 'CustomerLoginForm']);
+Route::post('customer-login', [CustomerController::class, 'CustomerLogin'])->name('login.customer');
+Route::get('customer-logout', [CustomerController::class, 'customer-logout'])->name('customer-logout');
 
+//Industry 
 Route::get('industry-list', [IndustryController::class, 'index']);
 Route::post('add-update-industry', [IndustryController::class, 'store']);
 Route::post('edit-industry', [IndustryController::class, 'edit']);
 Route::post('delete-industry', [IndustryController::class, 'destroy']);
+ 
+//Question-Type 
+Route::get('question-type-list', [QuestionTypeController::class, 'index']);
+Route::post('add-update-question-type', [QuestionTypeController::class, 'store']);
+Route::post('edit-question-type', [QuestionTypeController::class, 'edit']);
+Route::post('delete-question-type', [QuestionTypeController::class, 'destroy']);
+
+//Multiple-Choice Question
+Route::get('question-type', [QuestionController::class, 'index']);
+Route::get('single-choice-question', [QuestionController::class, 'create']);
+Route::get('all-questions', [QuestionController::class, 'AllQuestionList']);
+Route::post('save-question',[QuestionController::class,'store'])->name('question.save');
+Route::get('survey/{id}', [QuestionController::class, 'survey']);
+Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');;
+
 
 //Access Management
 Route::get('registration', [AuthController::class, 'registration']);//->name('register-user')
