@@ -59,7 +59,7 @@ fieldset {
                     <td>{{ $customer->customer_name }}</td>
                     <td>{{ $customer->customer_email }}</td>
                     <td>{{ $customer->customer_type }}</td>
-                    <td>{{ $customer->industry }}</td>
+                    <td>{{ $customer->indury }}</td>
                     <td style="width: 10%;"> <img src="{{url('/public/customer_logo',$customer->customer_logo)}}" style="width: 20%;"></td>
                     <td>{{ $customer->country }}</td>
                     <td>{{ $customer->state }}</td>
@@ -115,7 +115,7 @@ fieldset {
                   <select class="form-select" id="customer_industry" name="customer_industry" aria-label="">
                     @if(isset($industries) && $industries != null)
                       @foreach ($industries as $industrie)
-                        <option value="{{ $industrie->id }}" {{$customer->id  == $industrie->id  ? 'selected' : '' }}>  {{ $industrie->industry}}  </option>
+                        <option value="{{ $industrie->id }}" {{$customer->id  == $industrie->id  ? 'selected' : '' }}>  {{ $industrie->indury}}  </option>
                       @endforeach
                     @endif
                   </select>

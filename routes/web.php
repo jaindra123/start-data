@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\IndustryController;
+use App\Http\Controllers\QuestionairController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,7 @@ use App\Http\Controllers\IndustryController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+     return view('welcome');
 });
 
 #---------------------------  ------------------------------#   
@@ -55,3 +56,6 @@ Route::view('dashbord','backend.dashbord');
 Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
 
 
+//Questionairs 
+Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
+Route::post('store-questionairs',[QuestionairController::class,'store_questionairs'])->name('store-questionairs');
