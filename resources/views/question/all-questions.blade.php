@@ -22,7 +22,7 @@
             @foreach($questions as $key=>$ques)
               <h5> {{$key+1}}. {{$ques->question}}</h5>
               <ol class="ul-list"  style="list-style-type: lower-alpha;" >
-                @foreach($ques->optionsdata as $opt)
+                @foreach($ques->option as $opt)
                 <li><input type="radio" name="ans{{$key+1}}" value="{{$opt->option}}" /> {{$opt->option}}   </li>
                 @endforeach
               </ol>
