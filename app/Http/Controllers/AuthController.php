@@ -99,17 +99,8 @@ class AuthController extends Controller
             'pass'          => $request->password,
             'language_id'   => $request->language,
             'customer_id'   => $request->customer,
-            'role'          => 'user'//customer
+            'role'          => 'customer'
         ]);
-
-        // Mail::send('email', [   'Username' => $request->username,
-        //                         'Password' => $request->password
-        //                     ],
-        //                     function ($message) {   $message->from('sanjay.chaudhary@techinventive.com');
-        //                                             $message->to('sanjay.chaudhary@techinventive.com')
-        //                                                     ->subject('Login Access');
-        //                                         }
-        //             );
 
         $request->session()->flash('user', 'user created sucessfully');
         return redirect('registration');
@@ -128,6 +119,7 @@ class AuthController extends Controller
                 return view('user/userProfile');
             }
         }
+        return redirect('login');
     }
 
     //User Profile
@@ -138,6 +130,7 @@ class AuthController extends Controller
             $user = User::where(['id'=>$id])->first();
             return view('user/userProfile');
         }
+        return redirect('login');
     }
 
     //Logout
@@ -153,10 +146,7 @@ class AuthController extends Controller
 
     //Listing
     public function accessList(){
-        $values = User::with('language')->with('customer')->paginate(10);
-        // echo '<pre>';
-        // print_r($values);
-        // die;
+        $values = User::with('language')->with('customer')->where('role','!=','admin')->paginate(10);
         return view('accessManagement/list', ['values' => $values]);
     }
 
