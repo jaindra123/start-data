@@ -20,6 +20,7 @@
         {{csrf_field()}}
         <div class="col-md-12">
             @foreach($questions as $key=>$ques)
+              <h6>Question Type : {{$ques->questiontype->title}}</h6>
               <h5> {{$key+1}}. {{$ques->question}}</h5>
               <ol class="ul-list"  style="list-style-type: lower-alpha;" >
                 @foreach($ques->option as $opt)
