@@ -3,8 +3,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\QuestionType;
-use App\Models\Questions;
-use App\Models\Options;
+use App\Models\Question;
+use App\Models\Option;
 use App\Models\Results;
 use App\Models\Survey;
 
@@ -33,14 +33,7 @@ class QuestionController extends Controller
 #----------------------------All Questions -----------------------------#  
     public function AllQuestionList()
     {
-
-        $questions = Questions::join('question_types', 'question_types.id', '=', 'questions.question_type_id')
-                    ->get(['questions.*', 'question_types.*']);
-
-       /* echo "<pre>";
-        dd($questions);
-        die();*/
-
+        $questions = Question::with('option')->get();
         return view('question.all-questions',compact('questions'));
     }
 #--------------------------- Insert Question ------------------------------#   
