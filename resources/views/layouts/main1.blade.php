@@ -72,6 +72,7 @@ Coded by www.creative-tim.com
         </div>
         @yield('content')
     </div>
+    @include('backend.model')
     <!--   Core JS Files   -->
     <script src="{{asset('assets/js/core/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/core/popper.min.js')}}"></script>
@@ -87,7 +88,6 @@ Coded by www.creative-tim.com
     <script src="{{asset('assets/js/paper-dashboard.min.js?v=2.0.1')}}" type="text/javascript"></script>
     <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
     <script src="{{asset('assets/demo/demo.js')}}"></script>
-    <script type="text/javascript"></script>
     <script>
         $(document).ready(function () {
             // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
