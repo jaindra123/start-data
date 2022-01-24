@@ -33,7 +33,10 @@ class QuestionController extends Controller
 #----------------------------All Questions -----------------------------#  
     public function AllQuestionList()
     {
-        $questions = Question::with('option')->get();
+        $questions = Question::with('option')->with('questiontype')->get();
+        // echo '<pre>';
+        // print_r($questions);
+        // die;
         return view('question.all-questions',compact('questions'));
     }
 #--------------------------- Insert Question ------------------------------#   
