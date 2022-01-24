@@ -49,5 +49,9 @@ Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegis
 Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('email.send');
 Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.forget');
 
+Route::view('questionair','backend.questionair-tool');
+Route::view('admin-dashboard','backend.admin-dashboard');
+Route::view('dashbord','backend.dashbord');
+Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
 
 
