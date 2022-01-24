@@ -44,7 +44,7 @@
                   @foreach ($industries as $industrie)
                   <tr>
                     <td>{{ $industrie->id }}</td>
-                    <td>{{ $industrie->industry }}</td>
+                    <td>{{ $industrie->indury }}</td>
                     <td>
                     <a href="javascript:void(0)" class="btn btn-primary edit" data-id="{{ $industrie->id }}">Edit</a>
                     <a href="javascript:void(0)" class="btn btn-primary delete" data-id="{{ $industrie->id }}">Delete</a>
