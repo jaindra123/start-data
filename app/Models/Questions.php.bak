@@ -12,3 +12,6 @@ class Questions extends Model {
     	return $this->belongsTo(QuestionType::class);         //One To Many (Inverse) / Belongs To
     }
 }
+
+
+

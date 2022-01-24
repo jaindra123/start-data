@@ -33,12 +33,12 @@ class QuestionController extends Controller
 #----------------------------All Questions -----------------------------#  
     public function AllQuestionList()
     {
-		//$questiontypes = QuestionType::all();		  
+		$questiontypes = QuestionType::all();		  
 		$questions = Questions::all();
        // echo "<pre>";
        // print_r($questions);
 		//die();
-        return view('question.all-questions',compact('questions'));
+        return view('question.all-questions',compact('questions','questiontypes'));
     }
 #--------------------------- Insert Question ------------------------------#   
     public function store(Request $request) {

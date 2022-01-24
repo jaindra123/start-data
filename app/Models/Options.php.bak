@@ -6,6 +6,6 @@ class Options extends Model{
 	protected $fillable=['questions_id','option','status'];
 
 	public function questions(){
-		return $this->belongsTo(Questions::class);
+		return $this->belongsTo(Questions::class,'id');
 	}
 }
