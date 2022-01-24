@@ -20,26 +20,15 @@
         {{csrf_field()}}
         <div class="col-md-12">
             @foreach($questions as $key=>$ques)
-			<hr>
-				
-				@if ($ques->question_type_id == 2)
-					<h5> {{$key+1}}. {{$ques->question}}</h5>
-					<ol class="ul-list"  style="list-style-type: lower-alpha;" >
-						@foreach($ques->optionsdata as $opt)
-							<li><input type="radio" name="ans{{$key+1}}" value="{{$opt->option}}" /> {{$opt->option}}   </li>
-						@endforeach
-					</ol>
-				@endif
-				
-				@if ($ques->question_type_id == 1)
-					<h5> {{$key+1}}. {{$ques->question}}</h5>
-					<ol class="ul-list"  style="list-style-type: lower-alpha;" >
-						@foreach($ques->optionsdata as $opt)
-						<!--<li><input type="checkbox" name="ans{{$key+1}}" value="{{$opt->option}}" onclick='chkmultichoice(0)'/> {{$opt->option}} </li> -->
-							<li><input type="checkbox" name="ans" value="{{$opt->option}}" onclick='chkmultichoice(0)'/> {{$opt->option}} </li>
-						@endforeach
-					 </ol>
-				@endif
+
+              <h6>Question Type : {{$ques->questiontype->title}}</h6>
+              <h5> {{$key+1}}. {{$ques->question}}</h5>
+              <ol class="ul-list"  style="list-style-type: lower-alpha;" >
+                @foreach($ques->option as $opt)
+                <li><input type="radio" name="ans{{$key+1}}" value="{{$opt->option}}" /> {{$opt->option}}   </li>
+                @endforeach
+              </ol>
+
             @endforeach
         </div>
       </form>

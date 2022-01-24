@@ -20,9 +20,10 @@
         {{csrf_field()}}
         <div class="col-md-12">
             @foreach($questions as $key=>$ques)
+<<<<<<< HEAD
 			<hr>
 				
-				@if ($ques->id == 2)
+				@if ($ques->question_type_id == 2)
 					<h5> {{$key+1}}. {{$ques->question}}</h5>
 					<ol class="ul-list"  style="list-style-type: lower-alpha;" >
 						@foreach($ques->optionsdata as $opt)
@@ -31,7 +32,7 @@
 					</ol>
 				@endif
 				
-				@if ($ques->id == 1)
+				@if ($ques->question_type_id == 1)
 					<h5> {{$key+1}}. {{$ques->question}}</h5>
 					<ol class="ul-list"  style="list-style-type: lower-alpha;" >
 						@foreach($ques->optionsdata as $opt)
@@ -40,6 +41,15 @@
 						@endforeach
 					 </ol>
 				@endif
+=======
+              <h6>Question Type : {{$ques->questiontype->title}}</h6>
+              <h5> {{$key+1}}. {{$ques->question}}</h5>
+              <ol class="ul-list"  style="list-style-type: lower-alpha;" >
+                @foreach($ques->option as $opt)
+                <li><input type="radio" name="ans{{$key+1}}" value="{{$opt->option}}" /> {{$opt->option}}   </li>
+                @endforeach
+              </ol>
+>>>>>>> f46b327dcf53f19cc09958ddc330e81f8777f58d
             @endforeach
         </div>
       </form>

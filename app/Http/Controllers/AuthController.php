@@ -96,19 +96,11 @@ class AuthController extends Controller
             'email'         => $request->email,
             'username'      => $request->username,
             'password'      => Hash::make($request->password),
+            'pass'          => $request->password,
             'language_id'   => $request->language,
             'customer_id'   => $request->customer,
-            'role'          => 'user'//customer
+            'role'          => 'customer'
         ]);
-
-        // Mail::send('email', [   'Username' => $request->username,
-        //                         'Password' => $request->password
-        //                     ],
-        //                     function ($message) {   $message->from('sanjay.chaudhary@techinventive.com');
-        //                                             $message->to('sanjay.chaudhary@techinventive.com')
-        //                                                     ->subject('Login Access');
-        //                                         }
-        //             );
 
         $request->session()->flash('user', 'user created sucessfully');
         return redirect('registration');
@@ -127,6 +119,7 @@ class AuthController extends Controller
                 return view('user/userProfile');
             }
         }
+        return redirect('login');
     }
 
     //User Profile
@@ -137,6 +130,7 @@ class AuthController extends Controller
             $user = User::where(['id'=>$id])->first();
             return view('user/userProfile');
         }
+        return redirect('login');
     }
 
     //Logout
@@ -152,10 +146,7 @@ class AuthController extends Controller
 
     //Listing
     public function accessList(){
-        $values = User::with('language')->with('customer')->paginate(10);
-        // echo '<pre>';
-        // print_r($values);
-        // die;
+        $values = User::with('language')->with('customer')->where('role','!=','admin')->paginate(10);
         return view('accessManagement/list', ['values' => $values]);
     }
 
@@ -204,6 +195,7 @@ class AuthController extends Controller
                 'email'         => $request->email,
                 'username'      => $request->username,
                 'password'      => Hash::make($request->password),
+                'pass'          => $request->password,
                 'language_id'   => $request->language,
                 'customer_id'   => $request->customer,
             ];
@@ -215,6 +207,12 @@ class AuthController extends Controller
             }
         }
         return view('accessManagement/registration', $data);
+    }
+
+    public function delecteCustomer(Request $request, $id){
+        User::where('id',$id)->delete();
+        $request->session()->flash('msg','Customer access credentials deleted Successfully');
+        return redirect('access-list');
     }
 
     //Send Mail
