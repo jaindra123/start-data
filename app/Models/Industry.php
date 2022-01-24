@@ -9,6 +9,6 @@ class Industry extends Authenticatable
 {
     use HasFactory;
     protected $table = "industries";      
-    protected $fillable = ['industry'];
+    protected $fillable = ['indury'];
     //public $timestamps = false;
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\IndustryController;
+use App\Http\Controllers\QuestionairController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,7 @@ use App\Http\Controllers\IndustryController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+     return view('welcome');
 });
 
 #---------------------------  ------------------------------#   
@@ -47,5 +48,6 @@ Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegis
 //Sending Email
 Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('email.send');
 
-
-
+//Questionairs 
+Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
+Route::post('store-questionairs',[QuestionairController::class,'store_questionairs'])->name('store-questionairs');
