@@ -14,4 +14,9 @@ class Language extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+    public function getAllRecord(){
+        return Language::where('deleted_at',NULL)->orderBy('created_at','DESC')->get();
+    }
 }

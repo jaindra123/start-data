@@ -14,4 +14,8 @@ class Customer extends Authenticatable
     'cust_industry_id','customer_password', 'country','state', 'zip', 'city', 'street', 'house_number'];
     //public $timestamps = false;
 
+
+    public function getAllCustomer(){
+        return Customer::all();
+    }
 }
