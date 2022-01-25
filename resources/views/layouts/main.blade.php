@@ -67,6 +67,7 @@ Coded by www.creative-tim.com
                             <p>CREATE NEW QUESTIONAIRE</p>
                         </a>
                     </li>
+                    
                     <li class=" {{ request()->is('access-list') || request()->is('registration') || request()->is('access/edit/*') ? 'active' : ''  }} ">
                         <a href="{{route('accesslist')}}">
                             <p>ACCESS MANAGEMENT </p>
