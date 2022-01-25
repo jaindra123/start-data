@@ -173,8 +173,20 @@ class AuthController extends Controller
 
     //Listing
     public function accessList(){
-        $values = User::with('language')->with('customer')->where('role','!=','admin')->paginate(10);
-        return view('accessManagement/list', ['values' => $values]);
+        if(Auth::check()){
+            $id = Auth::user()->id;
+            $user = User::where(['id'=>$id])->first();
+            if($user->role == 'admin'){
+                $values = User::with('language')->with('customer')->where('role','!=','admin')->paginate(10);
+                return view('accessManagement/list', ['values' => $values]);
+            }
+            else{
+                return redirect('user-profile');
+            }
+        }
+        else{
+            return redirect('login');
+        }
     }
 
     //Edit Registration

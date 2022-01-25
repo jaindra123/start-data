@@ -64,7 +64,9 @@ class QuestionController extends Controller
     	$add_more_ans->questions_id = $request->question_type_id;
     	$add_more_ans->option = $request->add_more_ans;
     	$add_more_ans->save();
-		//print_r($add_more_ans);
+		//echo "<pre>";
+		print_r($add_more_ans);
+		//die();
        return response()->json(['success' => true,'message'=>'Add More Ans successfully']);
 	}
 
