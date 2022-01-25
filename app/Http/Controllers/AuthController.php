@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\LoginAccess;
 // use App\Mail\LoginAccess;
 
 
@@ -38,13 +39,13 @@ class AuthController extends Controller
     public function userLogin(Request $request)
     {
         $request->validate([
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
-        $user = User::where(['username'=>$request->username])->first();
+        $user = User::where(['email'=>$request->email])->first();
 
-        $credentials = $request->only('username', 'password');
+        $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)) {
             $request->session()->put('user',$user);
             if($user->role == 'admin'){
@@ -55,7 +56,7 @@ class AuthController extends Controller
             }
         }
         else{
-            $request->session()->flash('message', ['auth' => 'Authentication Failed!!!!', 'un' => 'Username & Password not matched']);
+            $request->session()->flash('message', ['auth' => 'Authentication Failed!!!!', 'un' => 'Email & Password not matched']);
             return redirect('login');
         }
     }
@@ -89,12 +90,10 @@ class AuthController extends Controller
     //access management creation
     public function userRegistration(Request $request)
     {
-        // Form validation
         $request->validate(
             [
                 'name'              => 'required|string',
                 'email'             => 'required|email|unique:access_managements,email,',
-                'username'          => 'required|unique:access_managements,username',
                 'password'          => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
                 'password_confirm'  => 'required|same:password',
                 'language'          => 'required',
@@ -110,7 +109,6 @@ class AuthController extends Controller
         $data = User::create([
             'name'          => $request->name,
             'email'         => $request->email,
-            'username'      => $request->username,
             'password'      => Hash::make($request->password),
             'pass'          => $request->password,
             'language_id'   => $request->language,
@@ -118,8 +116,20 @@ class AuthController extends Controller
             'role'          => 'customer'
         ]);
 
-        $request->session()->flash('message', 'Registration sucessfully');
-        return redirect('access-list');
+        $mailData = [
+            'email'     => $request->email,
+            'password'  => $request->password
+        ];
+
+        Mail::to($request->email)->send(new LoginAccess($mailData));
+
+        if (Mail::failures()) {
+            $request->session()->flash('message','Register sucessfully Mail Sending Failed');
+            return redirect('access-list');
+        }else{
+            $request->session()->flash('message','Register sucessfully Mail Send Successfully');
+            return redirect('access-list');
+        }
     }
 
     //Dashboard
@@ -191,10 +201,6 @@ class AuthController extends Controller
                             'required',
                             'email',
                             Rule::unique('access_managements')->ignore($value),
-                        ],
-                        'username' => [
-                            'required',
-                            Rule::unique('access_managements')->ignore($value),
                         ]
                     ]);
 
@@ -215,7 +221,6 @@ class AuthController extends Controller
                     $response = [
                         'name'          => $request->name,
                         'email'         => $request->email,
-                        'username'      => $request->username,
                         'password'      => Hash::make($request->password),
                         'pass'          => $request->password,
                         'language_id'   => $request->language,

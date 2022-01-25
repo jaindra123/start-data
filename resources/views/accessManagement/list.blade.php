@@ -36,7 +36,6 @@
                                 <tr>
                                     <th>S.NO</th>
                                     <th>Name</th>
-                                    <th>UserName</th>
                                     <th>Email</th>
                                     <th>Role</th>
                                     <th>Language</th>
@@ -50,7 +49,6 @@
                                         <tr>
                                             <td>{{$values->firstItem() + $key}}</td>
                                             <td>{{$value->name}}</td>
-                                            <td>{{$value->username}}</td>
                                             <td>{{$value->email}}</td>
                                             <td>{{$value->role}}</td>
                                             <td>{{$value->language[0]['language']}}</td>
