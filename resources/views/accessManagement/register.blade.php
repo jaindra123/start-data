@@ -31,14 +31,6 @@
                         </div>
 
                         <div class="input-container">
-                            <i class="fa fa-user icon"></i>
-                            <input type="text" value="@if(isset($user)){{old('username',$user->username)}}@else{{old('username')}}@endif" placeholder="UserName" id="username" class="input-field hrftyu" name="username" required autofocus>
-                            @if ($errors->has('username'))
-                                <span class="text-danger">{{ $errors->first('username') }}</span>
-                            @endif
-                        </div>
-
-                        <div class="input-container">
                             <i class="fa fa-envelope-o icon" aria-hidden="true"></i>
                             <input type="text" value="@if(isset($user)){{old('email',$user->email)}}@else{{old('email')}}@endif" placeholder="Email" id="email_address" class="input-field hrftyu" name="email" required autofocus>
                             @if ($errors->has('email'))
