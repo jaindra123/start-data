@@ -26,18 +26,18 @@ class CustomerController extends Controller
 #--------------------------- Insert/Edit Customer ------------------------------#   
     public function store(Request $request) {
 
-		$request->validate ([
-			'customer_name' => 'required',
-			'customer_email' => 'required',
-			'customer_password' =>'required|min:5',
-			'password_confirm'  => 'required|same:customer_password',
-			'customer_logo' => 'required|image|mimes:jpg,svg',
-		], 
-		[
-			'customer_password.regex'  => 'Password must contain at least 1 UpperCase letter, 1 lowercase letter, 1 number, 1 Special Character.',
-			'password_confirm.same' => 'Password and Confirm Password should be same',
-			'customer_logo.required' => 'Customer logo must be a file of type : JPG & svg',
-		]);
+			$request->validate ([
+                'customer_name' => 'required',
+                'customer_email' => 'required',
+                'customer_password' =>'required|min:5',
+                'password_confirm'  => 'required|same:customer_password',
+                'customer_logo' => 'required|image|mimes:jpg,svg',
+            ], 
+            [
+                'customer_password.regex'  => 'Password must contain at least 1 UpperCase letter, 1 lowercase letter, 1 number, 1 Special Character.',
+                'password_confirm.same' => 'Password and Confirm Password should be same',
+                'customer_logo.required' => 'Customer logo must be a file of type : JPG & svg',
+            ]);
 		/*
         $validator = Validator::make(Input::all(), $ValidationRules);
         if ($validator->fails()) {

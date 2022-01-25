@@ -51,10 +51,8 @@ Route::get('single-choice-question', [QuestionController::class, 'create']);
 Route::get('all-questions', [QuestionController::class, 'AllQuestionList']);
 Route::post('save-question',[QuestionController::class,'store'])->name('question.save');
 Route::get('survey/{id}', [QuestionController::class, 'survey']);
-Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');;
-
-
-
+Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');
+Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
 
 //Access Management
 Route::get('registration', [AuthController::class, 'registration']);//->name('register-user')
