@@ -57,17 +57,17 @@ Coded by www.creative-tim.com
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li class="active ">
-                        <a href="{{url('add-questionairs')}}">
+                    <li class="{{ request()->is('dashboard') ? 'active' : '' }} ">
+                        <a href="{{url('dashboard')}}">
                             <p>DASHBOARD</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="{{ request()->is('add-questionairs') ? 'active' : '' }}">
                         <a href="{{url('add-questionairs')}}">
                             <p>CREATE NEW QUESTIONAIRE</p>
                         </a>
                     </li>
-                    <li>
+                    <li class=" {{ request()->is('access-list') || request()->is('registration') || request()->is('access/edit/*') ? 'active' : ''  }} ">
                         <a href="{{route('accesslist')}}">
                             <p>ACCESS MANAGEMENT </p>
                         </a>
