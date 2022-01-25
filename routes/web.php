@@ -55,14 +55,14 @@ Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('s
 Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
 
 //Access Management
-Route::get('registration', [AuthController::class, 'registration']);//->name('register-user')
+Route::get('registration', [AuthController::class, 'registration'])->name('register-user');
 Route::post('user-registration', [AuthController::class, 'userRegistration'])->name('register.user'); 
-Route::get('login', [AuthController::class, 'login']); //->name('login');
+Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('user-login', [AuthController::class, 'userLogin'])->name('login.user');
-Route::get('dashboard', [AuthController::class, 'dashboard']); 
+Route::get('dashboard', [AuthController::class, 'dashboard'])->name('dashboard'); 
 Route::get('user-profile', [AuthController::class, 'userProfile']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('access-list', [AuthController::class, 'accessList']);
+Route::get('access-list', [AuthController::class, 'accessList'])->name('accesslist');
 Route::get('delete-customer/{id}', [AuthController::class, 'delecteCustomer'])->name('delete.cutomer');
 Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegistration'])->name('edit.registration');//edit registration
 
@@ -71,11 +71,13 @@ Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('emai
 
 Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.forget');
 
+//Pages
 Route::view('questionair','backend.questionair-tool');
 Route::view('admin-dashboard','backend.admin-dashboard');
 Route::view('dashbord','backend.dashbord');
 Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
-
+Route::view('question','frontend.web');
+Route::view('dataset','backend.dataset');
 
 //Questionairs 
 Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
