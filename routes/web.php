@@ -4,7 +4,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\IndustryController;
-
+use App\Http\Controllers\QuestionairController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionTypeController;
 

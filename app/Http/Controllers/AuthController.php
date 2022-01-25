@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\LoginAccess;
+use App\Models\Customer;
+use App\Models\Language;
+
 // use App\Mail\LoginAccess;
 
 
@@ -140,7 +143,12 @@ class AuthController extends Controller
             $user = User::where(['id'=>$id])->first();
             if($user->role == 'admin'){
                 // return view('dashboard');
-                return view('backend/dashbord');
+                $languageModel = new Language();
+                $cutomerModel = new Customer();
+                $data['language'] = $languageModel->getAllRecord();
+                $data['customer'] = $cutomerModel->getAllCustomer();
+                return view('questionairs.add', compact('data'));
+                // return view('backend/dashbord');
             }
             else{
                 return view('user/userProfile');

@@ -20,6 +20,7 @@ Coded by www.creative-tim.com
     <link rel="apple-touch-icon" sizes="76x76" href="{{asset('assets/img/apple-icon.png')}}">
     <link rel="icon" type="image/png" href="{{asset('assets/img/favicon.png')}}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>
         @yield("title")
     </title>
@@ -36,6 +37,7 @@ Coded by www.creative-tim.com
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{asset('assets/demo/demo.css')}}" rel="stylesheet" />
+    @stack('css-script')
     <style>
     .w-5{
         display:none;
@@ -55,24 +57,24 @@ Coded by www.creative-tim.com
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li class="active ">
-                        <a href="{{route('dashboard')}}">
-                            <p>Dashboard</p>
+                    <li class="{{ request()->is('dashboard') ? 'active' : '' }} ">
+                        <a href="{{url('dashboard')}}">
+                            <p>DASHBOARD</p>
                         </a>
                     </li>
-                    <li>
-                        <a href="./icons.html">
-                            <p>Create New Questionnaire</p>
+                    <li class="{{ request()->is('add-questionairs') ? 'active' : '' }}">
+                        <a href="{{url('add-questionairs')}}">
+                            <p>CREATE NEW QUESTIONAIRE</p>
                         </a>
                     </li>
-                    <li class="">
+                    <li class=" {{ request()->is('access-list') || request()->is('registration') || request()->is('access/edit/*') ? 'active' : ''  }} ">
                         <a href="{{route('accesslist')}}">
-                            <p>Access Management</p>
+                            <p>ACCESS MANAGEMENT </p>
                         </a>
                     </li>
                     <li>
-                        <a href="./map.html">
-                            <p>Add New User</p>
+                        <a href="#">
+                            <p>ADD NEW USER</p>
                         </a>
                     </li>
                 </ul>
@@ -285,10 +287,10 @@ Coded by www.creative-tim.com
                 });
             });
 
-        </script>
-        <script>
-            var input = document.getElementById('file-upload');
-            var infoArea = document.getElementById('file-upload-filename');
+    </script>
+    <script>
+        var input = document.getElementById('file-uploads');
+        var infoArea = document.getElementById('file-uploads-filename');
 
             input.addEventListener('change', showFileName);
 
@@ -304,7 +306,26 @@ Coded by www.creative-tim.com
                 infoArea.textContent = 'File name: ' + fileName;
             }
 
-        </script>
+
+        var input1 = document.getElementById('file-uploads1');
+        var infoArea1 = document.getElementById('file-uploads-filename1');
+
+        input1.addEventListener('change', showFileName1);
+
+        function showFileName1(event) {
+
+            // the change event gives us the input it occurred in 
+            var input1 = event.srcElement;
+
+            // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+            var fileName1 = input1.files[0].name;
+
+            // use fileName however fits your app best, i.e. add it into a div
+            infoArea1.textContent = 'File name: ' + fileName1;
+        }
+
+    </script>
+    @stack('js-script')
 </body>
 
 </html>
