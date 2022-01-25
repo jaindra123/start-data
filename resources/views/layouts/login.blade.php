@@ -39,7 +39,13 @@ Coded by www.creative-tim.com
 </head>
 
 <body class="">
-    @yield('content')
+    @if(View::hasSection('front'))
+        @yield('front')
+    @elseif(View::hasSection('register'))
+        @yield('register')
+    @else
+        @yield('content')
+    @endif
     <!--   Core JS Files   -->
     <script src="{{asset('assets/js/core/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/core/popper.min.js')}}"></script>
