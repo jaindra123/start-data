@@ -20,6 +20,7 @@ Coded by www.creative-tim.com
     <link rel="apple-touch-icon" sizes="76x76" href="{{asset('assets/img/apple-icon.png')}}">
     <link rel="icon" type="image/png" href="{{asset('assets/img/favicon.png')}}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>
         @yield("title")
     </title>
@@ -33,6 +34,7 @@ Coded by www.creative-tim.com
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{asset('assets/demo/demo.css')}}" rel="stylesheet" />
+    @stack('css-script')
 </head>
 
 <body class="">
@@ -48,28 +50,75 @@ Coded by www.creative-tim.com
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="active ">
-                        <a href="./dashboard.html">
+                        <a href="{{url('add-questionairs')}}">
                             <p>DASHBOARD</p>
                         </a>
                     </li>
                     <li>
-                        <a href="./icons.html">
-                            <p>ANALYSIS AND REPORTS</p>
+                        <a href="{{url('add-questionairs')}}">
+                            <p>CREATE NEW QUESTIONAIRE</p>
                         </a>
                     </li>
                     <li>
-                        <a href="./map.html">
-                            <p>NEWSLETTER LIST</p>
+                        <a href="#">
+                            <p>ACCESS MANAGEMENT </p>
                         </a>
                     </li>
                     <li>
-                        <a href="./map.html">
+                        <a href="#">
                             <p>ADD NEW USER</p>
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
+           <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <div class="navbar-toggle">
+                        <button type="button" class="navbar-toggler">
+                        <span class="navbar-toggler-bar bar1"></span>
+                        <span class="navbar-toggler-bar bar2"></span>
+                        <span class="navbar-toggler-bar bar3"></span>
+                        </button>
+                    </div>
+                </div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                    <span class="navbar-toggler-bar navbar-kebab"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                        <a class="nav-link btn-magnify" href="javascript:;">
+                            <p class=" d-md-block">Leonid Monastyrski</p>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link btn-magnify" href="javascript:;">
+                            <i class="nc-icon nc-globe"></i>
+                            <p>
+                            <span class="d-lg-none d-md-block">Stats</span>
+                            </p>
+                        </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                        <a class="nav-link btn-rotate" href="javascript:;">
+                            <i class="nc-icon nc-settings-gear-65"></i>
+                            <p>
+                            <span class="d-lg-none d-md-block">Account</span>
+                            </p>
+                        </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- End Navbar -->
         @yield('content')
     </div>
     <!--   Core JS Files   -->
@@ -111,8 +160,8 @@ Coded by www.creative-tim.com
 
     </script>
     <script>
-        var input = document.getElementById('file-upload');
-        var infoArea = document.getElementById('file-upload-filename');
+        var input = document.getElementById('file-uploads');
+        var infoArea = document.getElementById('file-uploads-filename');
 
         input.addEventListener('change', showFileName);
 
@@ -128,7 +177,26 @@ Coded by www.creative-tim.com
             infoArea.textContent = 'File name: ' + fileName;
         }
 
+
+        var input1 = document.getElementById('file-uploads1');
+        var infoArea1 = document.getElementById('file-uploads-filename1');
+
+        input1.addEventListener('change', showFileName1);
+
+        function showFileName1(event) {
+
+            // the change event gives us the input it occurred in 
+            var input1 = event.srcElement;
+
+            // the input has an array of files in the `files` property, each one has a name that you can use. We're just using the name here.
+            var fileName1 = input1.files[0].name;
+
+            // use fileName however fits your app best, i.e. add it into a div
+            infoArea1.textContent = 'File name: ' + fileName1;
+        }
+
     </script>
+    @stack('js-script')
 </body>
 
 </html>

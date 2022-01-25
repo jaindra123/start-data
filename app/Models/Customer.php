@@ -11,4 +11,9 @@ class Customer extends Authenticatable
     protected $fillable = ['customer_name','customer_email','customer_type','customer_logo','primary_color',
     'cust_industry_id','customer_password', 'country','state', 'zip', 'city', 'street', 'house_number'];
     //public $timestamps = false;
+
+
+    public function getAllCustomer(){
+        return Customer::all();
+    }
 }
