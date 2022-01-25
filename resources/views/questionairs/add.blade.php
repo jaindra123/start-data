@@ -12,7 +12,7 @@
     
 </style>
 @endpush('css-script')
-<div class="main-panel">
+
     
     <div class="content quereszz">
         <div class="alert alert-success alert-dismissible alert-block message_show"  style="display: none;">
