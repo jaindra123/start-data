@@ -65,7 +65,7 @@ Coded by www.creative-tim.com
                             <p>Create New Questionnaire</p>
                         </a>
                     </li>
-                    <li class="">
+                    <li>
                         <a href="{{route('accesslist')}}">
                             <p>Access Management</p>
                         </a>
