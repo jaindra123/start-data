@@ -213,7 +213,7 @@ outline: 0px solid;
   .bg-colgum{
       position: absolute;
       top: 0;
-      height: 100vh;
+      height: 120%;
       width: 100%;
       object-fit: cover;
       object-position: bottom;
@@ -591,9 +591,10 @@ outline: 0px solid;
   } 
   .input-container {
     display: -ms-flexbox; /* IE10 */
-    display: flex;
+    display: inline-block;
     width: 100%;
     margin-bottom: 15px;
+    position: relative;
   }
   
   .icon {
@@ -602,10 +603,18 @@ outline: 0px solid;
     color: #ccc;
     min-width: 50px;
     text-align: center;
+    display: inline;
   }
-  
+  .hrftyu{
+    margin-left: -3px;
+    padding: 11px !important;
+  }
+  .input-container .text-danger{
+      font-weight: bold !important;
+      margin-top: 10px;
+     }
   .input-field {
-    width: 100%;
+    width: 91%;
     padding: 10px;
     outline: none;
     border: none;
@@ -613,6 +622,7 @@ outline: 0px solid;
     font: normal normal bold 16px/18px Arial;
     letter-spacing: 0px;
     color: #323759;
+    display: inline;
   }
   .checkboxes-and-radios {
     margin: 0;
