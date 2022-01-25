@@ -124,10 +124,10 @@ class AuthController extends Controller
         Mail::to($request->email)->send(new LoginAccess($mailData));
 
         if (Mail::failures()) {
-            $request->session()->flash('message','Register sucessfully Mail Sending Failed');
+            $request->session()->flash('message','Register sucessfully and Mail Sending Failed');
             return redirect('access-list');
         }else{
-            $request->session()->flash('message','Register sucessfully Mail Send Successfully');
+            $request->session()->flash('message','Register and Mail Send Successfully');
             return redirect('access-list');
         }
     }
@@ -229,8 +229,21 @@ class AuthController extends Controller
 
                     if($value != ''){
                         User::where('id',$value)->update($response);
-                        $request->session()->flash('message','Updated Successfully');
-                        return redirect('access-list');
+
+                        $mailData = [
+                            'email'     => $request->email,
+                            'password'  => $request->password
+                        ];
+                
+                        Mail::to($request->email)->send(new LoginAccess($mailData));
+                
+                        if (Mail::failures()) {
+                            $request->session()->flash('message','Updated and Mail Sending Failed');
+                            return redirect('access-list');
+                        }else{
+                            $request->session()->flash('message','Updated and Mail Send Successfully');
+                            return redirect('access-list');
+                        }
                     }
                 }
                 return view('accessManagement/register', $data);
