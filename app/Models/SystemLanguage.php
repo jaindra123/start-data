@@ -10,5 +10,5 @@ class SystemLanguage extends Model
     use HasFactory;
 
     protected $table = "system_languages";
-    protected $fillable = ['language','customer_id'];
+    protected $fillable = ['language','customer_id']; 
 }
