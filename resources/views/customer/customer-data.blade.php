@@ -34,7 +34,9 @@ fieldset {
         <!-- <div id="success_msg" style="display: none;" class="alert alert-success" role="alert">
           Successfully Updated
         </div> -->
-        <div class="col-md-12 mt-1 mb-2"><button type="button" id="addNewCustomer" class="btn btn-success">Add</button></div>
+        <div class="col-md-12 mt-1 mb-2">
+          <button type="button" id="addNewCustomer" class="btn btn-success">Add</button>
+        </div>
          <span id="res_message"></span>
         <div class="col-md-12">
             <table class="table">
