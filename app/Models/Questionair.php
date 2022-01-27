@@ -21,8 +21,7 @@ class Questionair extends Model
         'language_id', 
         'start_img',
         'last_img', 
-        'is_publish',
-        'password_for_protected_link', 
+        'is_publish', 
         'headline',
         'start_text',
         'last_text',
@@ -33,15 +32,4 @@ class Questionair extends Model
         'select_customer',
         'status',
     ];
-
-    public function insertRecord($data)  {
-        return Questionair::create($data);
-    }
-
-    public function getSingleRecord($condition){
-        $query = Questionair::where($condition)->first();
-        if($query){
-            return $query;
-        }return false;
-    }
 }

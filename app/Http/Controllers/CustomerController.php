@@ -19,31 +19,32 @@ class CustomerController extends Controller
         $customers = Customer::join('industries', 'industries.id', '=', 'customers.cust_industry_id')
                     ->join('countries', 'countries.country_code', '=', 'customers.country')
                     ->orderBy('customers.id','ASC')
-                    ->get(['customers.*', 'industries.industry', 'countries.country']);
+                    ->get(['customers.*', 'industries.indury', 'countries.country']);
 
         return view('customer/customer-data', compact('customers','countries','industries'));
     }
 #--------------------------- Insert/Edit Customer ------------------------------#   
     public function store(Request $request) {
 
-		$request->validate ([
-			'customer_name' => 'required',
-			'customer_email' => 'required',
-			'customer_password' =>'required|min:5',
-			'password_confirm'  => 'required|same:customer_password',
-			'customer_logo' => 'required|image|mimes:jpg,svg',
-		], 
-		[
-			'customer_password.regex'  => 'Password must contain at least 1 UpperCase letter, 1 lowercase letter, 1 number, 1 Special Character.',
-			'password_confirm.same' => 'Password and Confirm Password should be same',
-			'customer_logo.required' => 'Customer logo must be a file of type : JPG & svg',
-		]);
-		/*
+        $ValidationRules = $request->validate ([
+                'customer_name' => 'required|unique:customers,customer_name',
+                'customer_email' => 'required|email|unique:customers,customer_email',
+                'customer_password' =>'required|min:10|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+
+                'password_confirm'  => 'required|same:customer_password',
+                'customer_logo' => 'required|image|mimes:jpg,svg',
+            ], 
+            [
+                'customer_password.regex'  => 'Password must contain at least 1 UpperCase letter, 1 lowercase letter, 1 number, 1 Special Character.',
+                'password_confirm.same' => 'Password and Confirm Password should be same',
+                'customer_logo.required' => 'Customer logo must be a file of type : JPG & svg',
+            ]);
+
         $validator = Validator::make(Input::all(), $ValidationRules);
         if ($validator->fails()) {
             return Response::json(array('success' => false,'errors' => $validator->getMessageBag()->toArray() ), 400); 
         }
-		*/
+
         $country_code = $request->countrylist;
         $states = $request->stateslist;
         $zip = $request->ziplist;

@@ -1,10 +1,9 @@
 @extends('layouts.main')
 
-@section('title','Dashboard')
+@section('title','Create New Questionair')
 
 @section('content')
 
-{{--
 <div class="main-panel">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
@@ -29,11 +28,11 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link btn-magnify" href="javascript:;">
-                            <p class=" d-md-block">{{session('user')->name}}</p>
+                            <p class=" d-md-block">Leonid Monastyrski</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn-magnify" data-toggle="modal" data-target="#exampleModal2">
+                        <a class="nav-link btn-magnify" href="javascript:;">
                             <i class="nc-icon nc-globe"></i>
                             <p>
                                 <span class="d-lg-none d-md-block">Stats</span>
@@ -42,7 +41,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link btn-rotate" data-toggle="modal" data-target="#exampleModal">
+                        <a class="nav-link btn-rotate" href="javascript:;">
                             <i class="nc-icon nc-settings-gear-65"></i>
                             <p>
                                 <span class="d-lg-none d-md-block">Account</span>
@@ -52,8 +51,8 @@
                 </ul>
             </div>
         </div>
-    </nav> --}}
-      <!-- End Navbar -->
+    </nav>
+    <!-- End Navbar -->
     <div class="content quereszz">
         <div class="row">
             <div class="col-md-9">

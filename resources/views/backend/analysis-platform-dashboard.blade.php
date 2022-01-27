@@ -1,10 +1,9 @@
-@extends('layouts.main')
+@extends('layouts.main1')
 
 @section('title','Analysis Platform - Dashboard')
 
 @section('content')
 
-{{--
 <div class="main-panel">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
@@ -52,7 +51,7 @@
                 </ul>
             </div>
         </div>
-    </nav> --}}
+    </nav>
     <!-- End Navbar -->
     <div class="content quereszzz">
         <div class="row mb-5">
