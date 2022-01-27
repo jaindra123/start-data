@@ -19,8 +19,8 @@ class MailController extends Controller
         $email = $user->email;
         // $password = Hash::needsRehash($user->password);
         $mailData = [
-            'username' => $user->username,
-            'password' => $user->pass
+            'email'     => $email,
+            'password'  => $user->pass
         ];
   
         Mail::to($email)->send(new LoginAccess($mailData));
@@ -37,7 +37,7 @@ class MailController extends Controller
 
     public function forgetEmail(Request $request){
         $mailData = [
-            'username' => $request->username
+            'email' => $request->email
         ];
         $to = 'sanjay.chaudhary@techinventive.com';
         Mail::to($to)->send(new ForgetAccess($mailData));

@@ -39,7 +39,13 @@ Coded by www.creative-tim.com
 </head>
 
 <body class="">
-    @yield('content')
+    @if(View::hasSection('front'))
+        @yield('front')
+    @elseif(View::hasSection('register'))
+        @yield('register')
+    @else
+        @yield('content')
+    @endif
     <!--   Core JS Files   -->
     <script src="{{asset('assets/js/core/jquery.min.js')}}"></script>
     <script src="{{asset('assets/js/core/popper.min.js')}}"></script>
@@ -59,17 +65,21 @@ Coded by www.creative-tim.com
     <script type="text/javascript">
         $(document).ready(function () {
             $("#forget").on("click", function () {
-                var username = $("#username").val();
-                if (username == '') {
-                    $("#mailSent").html('<h6>Please enter your username.</h6>');
+                var email = $("#email_address").val();
+                if (email == '') 
+                {
+                    $("#mailSent").html('<h6>Please enter your email.</h6>');
                     $("#mailSent").addClass('alert-danger');
-                } else {
+                    exit();
+                } 
+                else 
+                {
                     var url = "{{route('mail.forget')}}";
                     $.ajax({
                         type: "get",
                         url: url,
                         data: {
-                            username: username
+                            email: email
                         },
                         dataType: 'json',
                         success: function (res) {
