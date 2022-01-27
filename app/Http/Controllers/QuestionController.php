@@ -33,7 +33,9 @@ class QuestionController extends Controller
 #----------------------------All Questions -----------------------------#  
     public function AllQuestionList()
     {
-        $questions = Question::with('option')->get();
+        $questions = Question::with('option')->with('questiontype')->get();
+		//echo "<pre>";
+		//print_r($questions);
         return view('question.all-questions',compact('questions'));
     }
 #--------------------------- Insert Question ------------------------------#   
@@ -56,6 +58,15 @@ class QuestionController extends Controller
         }
        return redirect()->back()->with('success','Data add successfully');           
     }
+#--------------------------- Add More Answer ------------------------------#   
+    public function AddMoreAns(Request $request) {
+		$add_more_ans = new Option();
+    	$add_more_ans->questions_id = $request->question_type_id;
+    	$add_more_ans->option = $request->add_more_ans;
+    	$add_more_ans->save();
+		//print_r($add_more_ans);
+       return response()->json(['success' => true,'message'=>'Add More Ans successfully']);
+	}
 
 #--------------------------- Delete --------------------------------------#
     public function destroy(Request $request)

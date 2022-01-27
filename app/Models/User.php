@@ -14,7 +14,7 @@ class User extends Authenticatable
     use SoftDeletes;
 
     protected $table = "access_managements";
-    protected $fillable = ['username','password','email','name','language_id','customer_id','role'];
+    protected $fillable = ['password','pass','email','name','language_id','customer_id','role'];
 
     public function language()
     {

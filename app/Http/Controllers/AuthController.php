@@ -11,8 +11,14 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
-// use App\Mail\LoginAccess;
+use App\Mail\LoginAccess;
+use App\Models\Customer;
+use App\Models\Language;
+use App\Models\Color;
 
+// use App\Mail\LoginAccess;
+// admin@gmail.com
+// Admin@12345
 
 class AuthController extends Controller
 {
@@ -26,7 +32,7 @@ class AuthController extends Controller
                 return redirect('dashboard');
             }
             else{
-                return redirect('user-profile');
+                return redirect('customer-dashboard');
             }
         }
         else{
@@ -38,13 +44,13 @@ class AuthController extends Controller
     public function userLogin(Request $request)
     {
         $request->validate([
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
-        $user = User::where(['username'=>$request->username])->first();
+        $user = User::where(['email'=>$request->email])->first();
 
-        $credentials = $request->only('username', 'password');
+        $credentials = $request->only('email', 'password');
         if(Auth::attempt($credentials)) {
             $request->session()->put('user',$user);
             if($user->role == 'admin'){
@@ -55,7 +61,7 @@ class AuthController extends Controller
             }
         }
         else{
-            $request->session()->flash('message', ['auth' => 'Authentication Failed!!!!', 'un' => 'Username & Password not matched']);
+            $request->session()->flash('message', ['auth' => 'Authentication Failed!!!!', 'un' => 'Email & Password not matched']);
             return redirect('login');
         }
     }
@@ -63,22 +69,39 @@ class AuthController extends Controller
     //register access management
     public function registration()
     {
-        $data['type'] = 'Register Access User';
-        $data['button'] = 'Sign up';
-        $data['languages'] = DB::table('languages')->get();
-        $data['customers'] = DB::table('customers')->get();
-        return view('accessManagement/registration', $data);
+        if(Auth::check()){
+            $id = Auth::user()->id;
+            $user = User::where(['id'=>$id])->first();
+            if($user->role == 'admin'){
+                $data['type'] = 'Access Management';
+                $data['button'] = 'Register';
+                $data['languages'] = DB::table('languages')->get();
+                $data['customers'] = DB::table('customers')->get();
+                // return redirect('dashboard');
+                return view('accessManagement/register', $data);
+            }
+            else{
+                return redirect('user-profile');
+            }
+        }else{
+            return redirect('login');
+        }
+        /*else{
+            $data['type'] = 'Register Access User';
+            $data['button'] = 'Sign up';
+            $data['languages'] = DB::table('languages')->get();
+            $data['customers'] = DB::table('customers')->get();
+            return view('accessManagement/registration', $data);
+        }*/
     }
 
     //access management creation
     public function userRegistration(Request $request)
     {
-        // Form validation
         $request->validate(
             [
                 'name'              => 'required|string',
                 'email'             => 'required|email|unique:access_managements,email,',
-                'username'          => 'required|unique:access_managements,username',
                 'password'          => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
                 'password_confirm'  => 'required|same:password',
                 'language'          => 'required',
@@ -94,7 +117,6 @@ class AuthController extends Controller
         $data = User::create([
             'name'          => $request->name,
             'email'         => $request->email,
-            'username'      => $request->username,
             'password'      => Hash::make($request->password),
             'pass'          => $request->password,
             'language_id'   => $request->language,
@@ -102,8 +124,20 @@ class AuthController extends Controller
             'role'          => 'customer'
         ]);
 
-        $request->session()->flash('user', 'user created sucessfully');
-        return redirect('registration');
+        $mailData = [
+            'email'     => $request->email,
+            'password'  => $request->password
+        ];
+
+        Mail::to($request->email)->send(new LoginAccess($mailData));
+
+        if (Mail::failures()) {
+            $request->session()->flash('message','Register sucessfully and Mail Sending Failed');
+            return redirect('access-list');
+        }else{
+            $request->session()->flash('message','Register and Mail Send Successfully');
+            return redirect('access-list');
+        }
     }
 
     //Dashboard
@@ -113,10 +147,17 @@ class AuthController extends Controller
             $id = Auth::user()->id;
             $user = User::where(['id'=>$id])->first();
             if($user->role == 'admin'){
-                return view('dashboard');
+                // return view('dashboard');
+                $languageModel = new Language();
+                $cutomerModel = new Customer();
+                $data['language'] = $languageModel->getAllRecord();
+                $data['customer'] = $cutomerModel->getAllCustomer();
+                return view('backend.admin-dashboard', compact('data'));
+                // return view('questionairs.add', compact('data'));
+                // return view('backend/dashbord');
             }
             else{
-                return view('user/userProfile');
+                return view('user.dashboard');
             }
         }
         return redirect('login');
@@ -128,7 +169,7 @@ class AuthController extends Controller
         if(Auth::check()){
             $id = Auth::user()->id;
             $user = User::where(['id'=>$id])->first();
-            return view('user/userProfile');
+            return view('user.dashboard');
         }
         return redirect('login');
     }
@@ -146,73 +187,114 @@ class AuthController extends Controller
 
     //Listing
     public function accessList(){
-        $values = User::with('language')->with('customer')->where('role','!=','admin')->paginate(10);
-        return view('accessManagement/list', ['values' => $values]);
+        if(Auth::check()){
+            $id = Auth::user()->id;
+            $user = User::where(['id'=>$id])->first();
+            if($user->role == 'admin'){
+                $values = User::with('language')->with('customer')->where('role','!=','admin')->paginate(10);
+                return view('accessManagement/list', ['values' => $values]);
+            }
+            else{
+                return redirect('user-profile');
+            }
+        }
+        else{
+            return redirect('login');
+        }
     }
 
     //Edit Registration
-    public function editRegistration(Request $request, $id){
-        $data = [];
-        if($id != ''){
-            $data['id'] = $id;
-            $data['type'] = 'Edit Access User';
-            $data['button'] = 'Update';
-            $data['user'] = User::where(['id'=>$id])->first();
-            $data['languages'] = DB::table('languages')->get();
-            $data['customers'] = DB::table('customers')->get();
-        }
+    public function editRegistration(Request $request, $value){
 
-        if($request->method() == 'POST'){
-            
-            Validator::make($data, [
-                'email' => [
-                    'required',
-                    'email',
-                    Rule::unique('access_managements')->ignore($id),
-                ],
-                'username' => [
-                    'required',
-                    Rule::unique('access_managements')->ignore($id),
-                ]
-            ]);
+        if(Auth::check()){
+            $id = Auth::user()->id;
+            $user = User::where(['id'=>$id])->first();
+            if($user->role == 'admin'){
+                $data = [];
+                if($value != ''){
+                    $data['id'] = $value;
+                    $data['type'] = 'Edit Access User';
+                    $data['button'] = 'Update';
+                    $data['user'] = User::where(['id'=>$value])->first();
+                    $data['languages'] = DB::table('languages')->get();
+                    $data['customers'] = DB::table('customers')->get();
+                }
 
-            $request->validate(
-                [
-                    'name'              => 'required|string',
-                    'password'          => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
-                    'password_confirm'  => 'required|same:password',
-                    'language'          => 'required',
-                    'customer'          => 'required'
-                ],
-                [
-                    'password.regex'        => 'Password must contain at least 1 UpperCase letter, 1 lowercase letter, 1 number, 1 Special Character.',
-                    'password_confirm.same' => 'Password and Confirm Password should be same',
-                ]
-            );
+                if($request->method() == 'POST'){
+                    
+                    Validator::make($data, [
+                        'email' => [
+                            'required',
+                            'email',
+                            Rule::unique('access_managements')->ignore($value),
+                        ]
+                    ]);
 
-            $response = [
-                'name'          => $request->name,
-                'email'         => $request->email,
-                'username'      => $request->username,
-                'password'      => Hash::make($request->password),
-                'pass'          => $request->password,
-                'language_id'   => $request->language,
-                'customer_id'   => $request->customer,
-            ];
+                    $request->validate(
+                        [
+                            'name'              => 'required|string',
+                            'password'          => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+                            'password_confirm'  => 'required|same:password',
+                            'language'          => 'required',
+                            'customer'          => 'required'
+                        ],
+                        [
+                            'password.regex'        => 'Password must contain at least 1 UpperCase letter, 1 lowercase letter, 1 number, 1 Special Character.',
+                            'password_confirm.same' => 'Password and Confirm Password should be same',
+                        ]
+                    );
 
-            if($id != ''){
-                User::where('id',$id)->update($response);
-                $request->session()->flash('message','User Updated Successfully');
-                return redirect('access-list');
+                    $response = [
+                        'name'          => $request->name,
+                        'email'         => $request->email,
+                        'password'      => Hash::make($request->password),
+                        'pass'          => $request->password,
+                        'language_id'   => $request->language,
+                        'customer_id'   => $request->customer,
+                    ];
+
+                    if($value != ''){
+                        User::where('id',$value)->update($response);
+
+                        $mailData = [
+                            'email'     => $request->email,
+                            'password'  => $request->password
+                        ];
+                
+                        Mail::to($request->email)->send(new LoginAccess($mailData));
+                
+                        if (Mail::failures()) {
+                            $request->session()->flash('message','Updated and Mail Sending Failed');
+                            return redirect('access-list');
+                        }else{
+                            $request->session()->flash('message','Updated and Mail Send Successfully');
+                            return redirect('access-list');
+                        }
+                    }
+                }
+                return view('accessManagement/register', $data);
             }
         }
-        return view('accessManagement/registration', $data);
     }
 
-    public function delecteCustomer(Request $request, $id){
-        User::where('id',$id)->delete();
-        $request->session()->flash('msg','Customer access credentials deleted Successfully');
-        return redirect('access-list');
+    public function delecteCustomer($value){
+        if(Auth::check()){
+            $id = Auth::user()->id;
+            $user = User::where(['id'=>$id])->first();
+            if($user->role == 'admin'){
+                // return view('dashboard');
+                // echo $value;
+                // die;
+                $user = User::find($value);
+                return view('backend.delete', compact('user'));
+                // User::where('id',$value)->delete();
+                // $request->session()->flash('msg','Customer access credentials deleted Successfully');
+                // return redirect('access-list');
+            }
+            else{
+                return view('user.dashboard');
+            }
+        }
     }
 
     //Send Mail
