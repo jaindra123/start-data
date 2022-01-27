@@ -19,12 +19,13 @@ class CustomerController extends Controller
         $customers = Customer::join('industries', 'industries.id', '=', 'customers.cust_industry_id')
                     ->join('countries', 'countries.country_code', '=', 'customers.country')
                     ->orderBy('customers.id','ASC')
-                    ->get(['customers.*', 'industries.industry', 'countries.country']);
+                    ->get(['customers.*', 'industries.indury', 'countries.country']);
 
         return view('customer/list', compact('customers','countries','industries'));
     }
 #--------------------------- Insert/Edit Customer ------------------------------#   
     public function store(Request $request) {
+
 
 		$request->validate ([
 			'customer_name' => 'required',
@@ -38,12 +39,13 @@ class CustomerController extends Controller
 			'password_confirm.same' => 'Password and Confirm Password should be same',
 			'customer_logo.required' => 'Customer logo must be a file of type : JPG & svg',
 		]);
-		/*
-        $validator = Validator::make(Input::all(), $ValidationRules);  @Admin123
+		
+        $validator = Validator::make(Input::all(), $ValidationRules);  //@Admin123
+
         if ($validator->fails()) {
             return Response::json(array('success' => false,'errors' => $validator->getMessageBag()->toArray() ), 400); 
         }
-		*/
+
         $country_code = $request->countrylist;
         $states = $request->stateslist;
         $zip = $request->ziplist;
