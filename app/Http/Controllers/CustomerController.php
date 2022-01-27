@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\Industry;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+//use Illuminate\Support\Facades\Auth;
+//use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class CustomerController extends Controller
 {
@@ -21,7 +21,7 @@ class CustomerController extends Controller
                     ->orderBy('customers.id','ASC')
                     ->get(['customers.*', 'industries.industry', 'countries.country']);
 
-        return view('customer/customer-data', compact('customers','countries','industries'));
+        return view('customer/list', compact('customers','countries','industries'));
     }
 #--------------------------- Insert/Edit Customer ------------------------------#   
     public function store(Request $request) {
@@ -39,7 +39,7 @@ class CustomerController extends Controller
 			'customer_logo.required' => 'Customer logo must be a file of type : JPG & svg',
 		]);
 		/*
-        $validator = Validator::make(Input::all(), $ValidationRules);
+        $validator = Validator::make(Input::all(), $ValidationRules);  @Admin123
         if ($validator->fails()) {
             return Response::json(array('success' => false,'errors' => $validator->getMessageBag()->toArray() ), 400); 
         }
