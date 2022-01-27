@@ -74,7 +74,7 @@ Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.
 //Pages
 Route::view('questionair','backend.questionair-tool');
 Route::view('admin-dashboard','backend.admin-dashboard');
-Route::view('dashbord','backend.dashbord');
+// Route::view('dashbord','backend.dashbord');
 Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
 Route::view('question','frontend.web');
 Route::view('dataset','backend.dataset');
@@ -83,3 +83,10 @@ Route::view('dataset','backend.dataset');
 Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
 Route::post('store-questionairs',[QuestionairController::class,'store_questionairs'])->name('store-questionairs');
 
+Route::post('store-session-questionairs',[QuestionairController::class,'store_session_questionairs'])->name('store-session-questionairs');
+
+
+Route::post('remove-session-questionairs',[QuestionairController::class,'remove_session_questionairs'])->name('remove-session-questionairs');
+
+
+Route::get('dashboard',[QuestionairController::class, 'dashboard'])->name('dashboard');

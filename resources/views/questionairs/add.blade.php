@@ -12,8 +12,6 @@
     
 </style>
 @endpush('css-script')
-
-    
     <div class="content quereszz">
         <div class="alert alert-success alert-dismissible alert-block message_show"  style="display: none;">
             <button type="button" class="close" data-dismiss="alert">×</button>
@@ -94,16 +92,17 @@
                 <div class="col-md-3">
                     <div class="w-100 mb-2">
                         <label for="email" class=""> Add Language</label>
-                        <div class="add_field_set">
+                        <div class="add_field_set" >
                             @if($data['language'])
-                            <select class="form-control mb-3 laguage_data" name="language">
+                            <select class="form-control mb-3 laguage_data" name="language" data-index="1" id="s1">
+                                <option value="">Select</option>
                                 @foreach($data['language'] as $col)
-                                <option value="{{$col->id}}">{{$col->language}}</option>
+                                    <option value="{{$col->id}}" data-i="{{$col->language}}">{{$col->language}}</option>
                                 @endforeach
                             </select>
                             @endif
                             <div class="change_button">
-                                <a href="JavaScript:void(0)" class="adds mb-4" id="add_languages">+ Add</a>
+                                <a href="JavaScript:void(0)" class="adds mb-4" id="add_languages" data-section="1">+ Add</a>
                             </div>
                         </div>
                        
@@ -162,6 +161,7 @@
                             <label for="customer" class="">Select Customer</label>
                             @if($data['customer'])
                             <select  class="form-control mb-3" name="customer">
+                                <option value="">Select Customer</option>
                                 @foreach($data['customer'] as $row)
                                 <option value="{{$row->id}}"> {{$row->customer_name}}</option>
                             @endforeach
@@ -205,17 +205,177 @@
     });
 
     $(function(){
-        $("body").on("click","#add_languages",function(){ 
-            var html = $(".add_field_set").first().clone();
-            $(html).find(".change_button").html("<a class=' mb-4 text-danger trash' >- Remove</a>");
+        $("body").on("click","#add_languages",function(){
+            var sectionCount = $(this).data('section') 
+
+            var upSection = parseInt(sectionCount)+1;
+        
+            $(this).data('section',upSection);
+
+            var headlineData = $('#headline').val();
+            var firstText = $('#firstText').val();
+            var lastText = $('#lastText').val();
+
+            // var langSelect =  $("#s"+sectionCount).val($("#s"+sectionCount+" option:first").val());
+            console.log('section=====', $("#s"+sectionCount).val() );
+            var selectedValue =  $("#s"+sectionCount).val();
+           
+
+
+            var langSelect = $("#s"+sectionCount).prop("selectedIndex", 0).val();
+            console.log('selected lang', langSelect)
+
+            if($("#s"+sectionCount).val()=='' ){
+                alert("Please Select any Language");
+                return;
+            }
+            // var langD = '<?= getLanguageIdFromSession() ?>';
+            // console.log('langD---',langD);
+            // var matchLang = false;
+            // $.each(langD, function(key, value){
+            //     if(value == langSelect){
+            //         matchLang = true;
+            //     }
+            // });
+            // console.log('---',matchLang)
+            
+            if(($('#headline').val() == '' || CKEDITOR.instances.firstText.getData() == '' || CKEDITOR.instances.lastText.getData() == '') ){
+                // if(matchLang == false){
+                    alert(" Headline field, First page text field and Last Page text field are required")
+                    return;
+                // }
+            }
+            $.ajaxSetup({   
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+           
+            var language_data = '<?=  getAllLanguage() ?>'
+            language_data = JSON.parse(language_data)
+            var html  = "<div class='add_field_set' ><select class='form-control mb-3 laguage_data' name='language' data-index='"+upSection+"' id='s"+upSection+"'>"+
+                            "<option value=''>Select</option>";
+                            
+            $.each( language_data, function( key, value ) { 
+
+                html +="<option value='"+value.id+"'>"+value.language+"</option>"
+            })
+            html +="</select><div class='change_button'>"+
+                        "<a class=' mb-4 text-danger trash' data-indexT="+upSection+"  id='removeOption"+upSection+"' data-k='0'>- Remove</a>"+
+                    "</div></div>";
+            // $(html).find(".change_button").html("<a class=' mb-4 text-danger trash' >- Remove</a>");
             $(".add_field_set").last().after(html);
+            
+            $.ajax({
+                type:"POST",
+                url: "{{ url('store-session-questionairs') }}",
+                dataType: 'json',
+                data: {
+                    headline:headlineData,
+                    firstText:headlineData,
+                    lastText:headlineData,
+                    language:selectedValue,
+                    langS : langSelect,
+                },
+              
+                success: function(response){
+                    console.log(response);
+                }
+            });
+            
+
         });
         
         $('body').on('click','.trash', function(){
+            // alert('remove')
             $(this).parents(".add_field_set").remove();
+            var langId = $(this).data('k')
+            
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type:"POST",
+                url: "{{ url('remove-session-questionairs') }}",
+                dataType: 'json',
+                data: {
+                    langId_ : langId
+                },
+                
+                success: function(response){
+                    console.log('response', response)
+                }
+            });
+           
+
+
         });
 
-        
+       
+
+        $("body").on('change','.laguage_data', function(){
+            
+            var getLanguage = $(this).find('option:selected').text();
+            var getLanguageId = $(this).find('option:selected').val();
+            console.log('lnag = ',getLanguageId)
+
+            // if(getLanguageId == 'deactivate' || getLanguage == 'Deactivate'){
+            //    var getLanguage1 = $(this).prop("selectedIndex", 0);
+            //     // getLanguage = getLanguage1.data('i');
+            //     getLanguageId = $(this).prop("selectedIndex", 0).val();
+            //     getLanguageId = $(this).prop("selectedIndex", 0).text();
+            //     return
+            // }
+            
+            var indexV = $(this).data('index')
+
+            $('#removeOption'+indexV).attr('data-k', getLanguageId)
+            
+
+            if(getLanguageId == 'delete'){
+                // return;
+                $("#s"+indexV).remove();
+                $("#removeOption"+indexV).remove();
+                $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type:"POST",
+                url: "{{ url('remove-session-questionairs') }}",
+                dataType: 'json',
+                data: {
+                    langId_ : getLanguage
+                },
+                
+                success: function(response){
+                    console.log('response', response)
+                }
+            });
+           
+                return;
+            }
+            if(getLanguageId == 'deactivate'){
+                $(this, "option[value='deactivate']").prop('selected',true);
+                
+                return;
+            }
+            var htmlSelect = "<select class='form-control mb-3 laguage_data' name='language'>"+
+                        "<option value='"+getLanguageId+"' data-i='"+getLanguage+"'>"+getLanguage+"</option>"+
+                        "<option value='delete' >Delete</option>"+
+                        "<option value='deactivate'>Deactivate</option>"+
+                    "</select>";
+            
+            $(this).html(htmlSelect)
+            $('#headline').val('')
+            CKEDITOR.instances.firstText.setData('');
+            CKEDITOR.instances.lastText.setData('');
+
+        });
+
 
         
 
@@ -233,53 +393,24 @@
             var formData = new FormData($('#questionairsForm')[0]);
             
             var language = [];
-
-            $.each ($(".laguage_data option:selected"), function(){              
-                language.push($(this).val());  
-            }); 
-
-            formData.append('language', language);
-            formData.append('published', 1);
-            alert(formData)
-            e.preventDefault()
-            console.log('form data=',formData)
-
-            $.ajax({
-                type:"POST",
-                url: "{{ url('store-questionairs') }}",
-                dataType: 'json',
-                
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response){
-                console.log(response);
-                if(response.success== true){
-                    alert(response.message);
-                    window.location.reload(); 
-                } 
-                },
-                
-            });
-        });
-        
-
-        $('#safe_questionairs').on('click', function(e){
-        
-            var formData = new FormData($('#questionairsForm')[0]);
-            
-            var language = [];
+            var selectedOption = [];
             var firstTextdata = CKEDITOR.instances.firstText.getData();
 
             var lastTextdata = CKEDITOR.instances.lastText.getData();
           
+            $.each($(".laguage_data").prop("selectedIndex", 0), function(){
+                language.push($(this).val()); 
+            });
+
 
             $.each ($(".laguage_data option:selected"), function(){              
-                language.push($(this).val());  
+                selectedOption.push($(this).val());  
             }); 
+            console.log('select option=========',selectedOption)
 
             formData.append('language', language);
             formData.append('published', 1);
+            formData.append('langSelectedOption',selectedOption);
             formData.append('start_page_field', firstTextdata);
             formData.append('last_page_field', lastTextdata);
         
@@ -324,6 +455,93 @@
                         // $('.message_show').css({'display':''});
                         // $('.message_alert').text(message)
                         window.location.reload(); 
+                        <?= langSessionDestroy() ?>
+                    } 
+                },
+                // error:function (response) {
+                //     console.log('RESPONSE',response);  
+                //     const errors = response.responseJSON.errors;
+                //     let errorHtml = '<ul>';
+                //     for(let key in errors) {
+                //         errorHtml += '<li>'+errors[key][0]+'</li>';
+                //     }
+                //     errorHtml += '</ul>';
+                //     $('#customer_name_error').html(errorHtml);
+                //     },
+            });
+                
+    
+        });
+        
+
+        $('#safe_questionairs').on('click', function(e){
+        
+            var formData = new FormData($('#questionairsForm')[0]);
+            
+            var language = [];
+            var selectedOption = [];
+            var firstTextdata = CKEDITOR.instances.firstText.getData();
+
+            var lastTextdata = CKEDITOR.instances.lastText.getData();
+          
+            $.each($(".laguage_data").prop("selectedIndex", 0), function(){
+                language.push($(this).val()); 
+            });
+
+
+            $.each ($(".laguage_data option:selected"), function(){              
+                selectedOption.push($(this).val());  
+            }); 
+            console.log('select option=========',selectedOption)
+
+            formData.append('language', language);
+            formData.append('published', 0);
+            formData.append('langSelectedOption',selectedOption);
+            formData.append('start_page_field', firstTextdata);
+            formData.append('last_page_field', lastTextdata);
+        
+            console.log('form data=',formData)
+            
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type:"POST",
+                url: "{{ url('store-questionairs') }}",
+                // dataType: 'json',
+                data: formData,
+                cache:false,
+                processData: false,
+                contentType: false,
+                success: function(response){
+                    console.log('response', response)
+                    if(response.errors){
+                        $('.questionair-error').text(response.errors.questionair)
+                        $('.base-color-error').text(response.errors.base_color)
+                        $('.btn-bkgound-error').text(response.errors.button_backgound)
+                        $('.btn-text-error').text(response.errors.button_text)
+                        $('.first-page-picture-error').text(response.errors.first_page_picture)
+                        $('.last-page-picture-error').text(response.errors.last_page_picture)
+                        $('.idle-timer-error').text(response.errors.idle_timer)
+                        $('.headline-error').text(response.errors.headline)
+                        $('.start-page-field-error').text(response.errors.start_page_field)
+                        $('.last-page-field-error').text(response.errors.last_page_field)
+                        $('.last-page-timer-error').text(response.errors.last_page_timer)
+                        $('.year-error').text(response.errors.year)
+                        e.preventDefault()
+                    }
+                    if(response.ques_errors){
+                        $('.ques-year-error').text(response.ques_errors)
+                        e.preventDefault()
+                    }
+                    if(response.success== true){
+                        alert(response.message);
+                        // $('.message_show').css({'display':''});
+                        // $('.message_alert').text(message)
+                        window.location.reload(); 
+                        <?= langSessionDestroy() ?>
                     } 
                 },
                 // error:function (response) {

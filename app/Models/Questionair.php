@@ -44,4 +44,12 @@ class Questionair extends Model
             return $query;
         }return false;
     }
+
+    public function getAllRecordWithCondition($condition){
+        return Questionair::where($condition)->where('deleted_at',NULL)->get();
+    }
+
+    public function getCountWithCondition($condition){
+        return Questionair::where($condition)->where('deleted_at',NULL)->count();
+    }
 }

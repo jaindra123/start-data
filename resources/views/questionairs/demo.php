@@ -12,7 +12,7 @@
     
 </style>
 @endpush('css-script')
-<div class="main-panel">
+
     
     <div class="content quereszz">
         <div class="alert alert-success alert-dismissible alert-block message_show"  style="display: none;">
@@ -94,17 +94,16 @@
                 <div class="col-md-3">
                     <div class="w-100 mb-2">
                         <label for="email" class=""> Add Language</label>
-                        <div class="add_field_set" >
+                        <div class="add_field_set">
                             @if($data['language'])
-                            <select class="form-control mb-3 laguage_data" name="language" data-index="1" id="">
-                                <option value="">Select</option>
+                            <select class="form-control mb-3 laguage_data" name="language">
                                 @foreach($data['language'] as $col)
-                                    <option value="{{$col->id}}">{{$col->language}}</option>
+                                <option value="{{$col->id}}">{{$col->language}}</option>
                                 @endforeach
                             </select>
                             @endif
                             <div class="change_button">
-                                <a href="JavaScript:void(0)" class="adds mb-4" id="add_languages" data-section="1">+ Add</a>
+                                <a href="JavaScript:void(0)" class="adds mb-4" id="add_languages">+ Add</a>
                             </div>
                         </div>
                        
@@ -174,18 +173,18 @@
                 <div class="col-md-9 mt-3 pt-1 questionair_data">
                     <div class="w-100 mb-4">
                         <label for="headline" class=""> Headline Questionair (repeats on each page)</label>
-                        <input type="text" class="form-control mb-2" placeholder="" id="headline" name="headline[]" value="{{old('headline')}}">
+                        <input type="text" class="form-control mb-2" placeholder="" id="headline" name="headline" value="{{old('headline')}}">
                         <span><p class="headline-error text-danger"></p></span>
                     </div> 
                     <div class="w-100 mb-4">
                         <label for="start_page_field" class=""> Start Page Text</label>
-                        <textarea class="form-control mb-2 ckeditor"  placeholder="" id="firstText" name="start_page_field[]"></textarea>
+                        <textarea class="form-control mb-2 ckeditor"  placeholder="" id="firstText" name="start_page_field"></textarea>
                         <span><p class="start-page-field-error text-danger"></p></span>
                         
                     </div>  
                     <div class="w-100 mb-4">
                         <label for="last_page_field" class=""> Last Page</label>
-                        <textarea class="form-control mb-2 ckeditor" placeholder="" id="lastText" name="last_page_field[]"></textarea>
+                        <textarea class="form-control mb-2 ckeditor" placeholder="" id="lastText" name="last_page_field"></textarea>
                         <span><p class="last-page-field-error text-danger"></p></span>
                     </div>     
                 </div>
@@ -206,44 +205,17 @@
     });
 
     $(function(){
-        $("body").on("click","#add_languages",function(){
-            var sectionCount = $(this).data('section') 
-          
-            // var html = $(".add_field_set").first().clone();
-            var language_data = '<?=  getAllLanguage() ?>'
-            language_data = JSON.parse(language_data)
-            var html  = "<select class='form-control mb-3 laguage_data' name='language' data-index='1' id=''>"+
-                            "<option value=''>Select</option>";
-                            console.log(html)
-            $.each( language_data, function( key, value ) { 
-
-                html +="<option value='"+value.id+"'>"+value.language+"</option>"
-            })
-            html +="</select><div class='change_button'>"+
-                        "<a class=' mb-4 text-danger trash'>- Remove</a>"+
-                    "</div>"+
-            console.log(html)
-            // $(html).find(".change_button").html("<a class=' mb-4 text-danger trash' >- Remove</a>");
+        $("body").on("click","#add_languages",function(){ 
+            var html = $(".add_field_set").first().clone();
+            $(html).find(".change_button").html("<a class=' mb-4 text-danger trash' >- Remove</a>");
             $(".add_field_set").last().after(html);
         });
         
         $('body').on('click','.trash', function(){
-            alert('remove')
-            $(this).parents(".laguage_data").remove();
+            $(this).parents(".add_field_set").remove();
         });
 
-
-        $("body").on('change','.laguage_data', function(){
-            var getLanguage = $(this).find('option:selected').text();
-            var getLanguageId = $(this).find('option:selected').val();
-            var htmlSelect = "<select class='form-control mb-3 laguage_data' name='language'>"+
-                    "<option value='"+getLanguageId+"'>"+getLanguage+"</option>"+
-                    "<option value='deactivate'>Delete</option>"+
-                    "<option value='deactivate'>Deactivate</option>"+
-                    "</select>";
-            $(this).html(htmlSelect)
-        });
-
+        
 
         
 
@@ -349,8 +321,8 @@
                     }
                     if(response.success== true){
                         alert(response.message);
-                        $('.message_show').css({'display':''});
-                        $('.message_alert').text(message)
+                        // $('.message_show').css({'display':''});
+                        // $('.message_alert').text(message)
                         window.location.reload(); 
                     } 
                 },
