@@ -34,7 +34,9 @@ fieldset {
         <!-- <div id="success_msg" style="display: none;" class="alert alert-success" role="alert">
           Successfully Updated
         </div> -->
-        <div class="col-md-12 mt-1 mb-2"><button type="button" id="addNewCustomer" class="btn btn-success">Add</button></div>
+        <div class="col-md-12 mt-1 mb-2">
+          <button type="button" id="addNewCustomer" class="btn btn-success">Add</button>
+        </div>
          <span id="res_message"></span>
         <div class="col-md-12">
             <table class="table">
@@ -59,7 +61,7 @@ fieldset {
                     <td>{{ $customer->customer_name }}</td>
                     <td>{{ $customer->customer_email }}</td>
                     <td>{{ $customer->customer_type }}</td>
-                    <td>{{ $customer->industry }}</td>
+                    <td>{{ $customer->indury }}</td>
                     <td style="width: 10%;"> <img src="{{url('/public/customer_logo',$customer->customer_logo)}}" style="width: 20%;"></td>
                     <td>{{ $customer->country }}</td>
                     <td>{{ $customer->state }}</td>
@@ -106,13 +108,13 @@ fieldset {
               </div>
               <div class="form-group">
                 <div class="col-sm-12">
-                  <input type="text" class="form-control" id="customer_password" name="customer_password" placeholder="Enter Customer Password" value="" autocomplete="off">
+                  <input type="password" class="form-control" id="customer_password" name="customer_password" placeholder="Enter Customer Password" value="" autocomplete="off">
                 </div>
               </div>
 
               <div class="form-group">
                 <div class="col-sm-12">
-                  <input type="text" class="form-control" id="password_confirm" name="password_confirm" placeholder="Enter Confirm Password" value="" autocomplete="off">
+                  <input type="password" class="form-control" id="password_confirm" name="password_confirm" placeholder="Enter Confirm Password" value="" autocomplete="off">
                 </div>
               </div>
 
@@ -121,7 +123,7 @@ fieldset {
                   <select class="form-select" id="customer_industry" name="customer_industry" aria-label="">
                     @if(isset($industries) && $industries != null)
                       @foreach ($industries as $industrie)
-                        <option value="{{ $industrie->id }}" {{$customer->id  == $industrie->id  ? 'selected' : '' }}>  {{ $industrie->industry}}  </option>
+                        <option value="{{ $industrie->id }}" {{$customer->id  == $industrie->id  ? 'selected' : '' }}>  {{ $industrie->indury}}  </option>
                       @endforeach
                     @endif
                   </select>
@@ -144,7 +146,7 @@ fieldset {
                 <fieldset>
                   <div class="form-group">
                     <div class="col-sm-12">
-                      <select class="form-select cust-country" id="country" name="country[]" >
+                      <select class="form-select customer-country" id="country" name="country[]" >
                         @if(isset($countries) && $countries != null)
                           @foreach($countries as $countrie) 
                             <option value="{{ $countrie->country_code }}" {{$customer->country  == $countrie->id  ? 'selected' : '' }}>  {{ $countrie->country}}  </option>
@@ -155,28 +157,28 @@ fieldset {
                   </div>
                   <div class="form-group">
                     <div class="col-sm-12">
-                      <input type="text" class="form-control cust-state" id="state" name="state[]" placeholder="Enter State Name" value=""  autocomplete="off">
+                      <input type="text" class="form-control customer-state" id="state" name="state[]" placeholder="Enter State Name" value=""  autocomplete="off">
                     </div>
                   </div> 
                 
                  <div class="form-group">
                   <div class="col-sm-12">
-                    <input type="text" class="form-control cust-zip" id="customer_zip" name="customer_zip[]" placeholder="enter zip" value=""  autocomplete="off">
+                    <input type="text" class="form-control customer-zip" id="customer_zip" name="customer_zip[]" placeholder="enter zip" value=""  autocomplete="off">
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <input type="text" class="form-control cust-city" id="customer_city" name="customer_city[]" placeholder="enter city" value=""  autocomplete="off">
+                    <input type="text" class="form-control customer-city" id="customer_city" name="customer_city[]" placeholder="enter city" value=""  autocomplete="off">
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <input type="text" class="form-control cust-street" id="customer_street" name="customer_street[]" placeholder="enter street" value=""  autocomplete="off">
+                    <input type="text" class="form-control customer-street" id="customer_street" name="customer_street[]" placeholder="enter street" value=""  autocomplete="off">
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <input type="text" class="form-control cust-house-no" id="cust_house_no" name="cust_house_no[]" placeholder="House No." value="" autocomplete="off">
+                    <input type="text" class="form-control customer-house-no" id="cust_house_no" name="cust_house_no[]" placeholder="House No." value="" autocomplete="off">
                   </div>
                 </div>
                 </fieldset>
@@ -246,12 +248,12 @@ fieldset {
             $('#customer_logo').val(res.customer_logo); 
             $('#primary_color').val(res.primary_color);  
             $('#customer_industry').val(res.cust_industry_id); 
-            $('.cust-country').val(res.country); 
-            $('.cust-state').val(res.state); 
-            $('.cust-zip').val(res.zip); 
-            $('.cust-city').val(res.city); 
-            $('.cust-street').val(res.street); 
-            $('.cust-house-no').val(res.house_number); 
+            $('.customer-country').val(res.country); 
+            $('.customer-state').val(res.state); 
+            $('.customer-zip').val(res.zip); 
+            $('.customer-city').val(res.city); 
+            $('.customer-street').val(res.street); 
+            $('.customer-house-no').val(res.house_number); 
           }
       });
     });
@@ -288,27 +290,28 @@ fieldset {
       var customer_type = $("#customer_type").val();
       var customer_password = $("#customer_password").val();
       var password_confirm = $("#password_confirm").val();
+
       
       var customer_logo = $("#customer_logo").val();
       var primary_color = $("#primary_color").val();
 
-      $.each ($(".cust-country option:selected"), function(){              
+      $.each ($(".customer-country option:selected"), function(){              
         countries.push($(this).val());  
       }); 
-      $.each ($(".cust-state"), function(){              
+      $.each ($(".customer-state"), function(){              
         states.push($(this).val());  
       });
-      $.each ($(".cust-zip"), function(){              
+      $.each ($(".customer-zip"), function(){              
         zip.push($(this).val());  
       });
-      $.each ($(".cust-city"), function(){              
+      $.each ($(".customer-city"), function(){              
         city.push($(this).val());  
       });
-      $.each ($(".cust-street"), function(){              
+      $.each ($(".customer-street"), function(){              
         street.push($(this).val());  
       });
 
-      $.each ($(".cust-house-no"), function(){              
+      $.each ($(".customer-house-no"), function(){              
         house_no.push($(this).val());  
       });
       formData.append('countrylist', countries);

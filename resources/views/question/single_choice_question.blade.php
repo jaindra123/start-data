@@ -29,8 +29,10 @@
 							<option value="">-- Select Question Type --</option>
 							@if(isset($questiontypes) && $questiontypes != null)
 								@foreach ($questiontypes as $questiontype)
-									<option value="{{ $questiontype->id }}">  {{ $questiontype->title}}  </option> 
+									 <option value="{{ $questiontype->id }}">  {{ $questiontype->title}}  </option> 
+
 									<!-- <option value="{{ $questiontype->id }}" {{2 == $questiontype->id  ? 'selected' : '' }}>  {{ $questiontype->title}}  </option> -->
+
 								@endforeach
 							@endif
 						</select>
@@ -121,6 +123,11 @@
 			});
 		});
 	});
+
+	/*$("select").change(function(event) {
+	    $(this).val($(this).find("option").first().val());
+	});*/
+
 
 </script>
 </body>

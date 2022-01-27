@@ -9,5 +9,4 @@ class QuestionType extends Model {
     protected $table = "question_types";
 	protected $fillable=['title','description','short_code','question_type','status'];
 	public $timestamps = false;
-
 }

@@ -1,10 +1,11 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\IndustryController;
-use App\Http\Controllers\QuestionairController;
+
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionTypeController;
 
@@ -51,33 +52,30 @@ Route::get('single-choice-question', [QuestionController::class, 'create']);
 Route::get('all-questions', [QuestionController::class, 'AllQuestionList']);
 Route::post('save-question',[QuestionController::class,'store'])->name('question.save');
 Route::get('survey/{id}', [QuestionController::class, 'survey']);
-Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');
-Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
+Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');;
+
 
 //Access Management
-Route::get('registration', [AuthController::class, 'registration'])->name('register-user');
+Route::get('registration', [AuthController::class, 'registration']);//->name('register-user')
 Route::post('user-registration', [AuthController::class, 'userRegistration'])->name('register.user'); 
-Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::get('login', [AuthController::class, 'login']); //->name('login');
 Route::post('user-login', [AuthController::class, 'userLogin'])->name('login.user');
-Route::get('dashboard', [AuthController::class, 'dashboard'])->name('dashboard'); 
+Route::get('dashboard', [AuthController::class, 'dashboard']); 
 Route::get('user-profile', [AuthController::class, 'userProfile']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('access-list', [AuthController::class, 'accessList'])->name('accesslist');
+Route::get('access-list', [AuthController::class, 'accessList']);
 Route::get('delete-customer/{id}', [AuthController::class, 'delecteCustomer'])->name('delete.cutomer');
 Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegistration'])->name('edit.registration');//edit registration
 
 //Sending Email
 Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('email.send');
-
 Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.forget');
 
-//Pages
 Route::view('questionair','backend.questionair-tool');
 Route::view('admin-dashboard','backend.admin-dashboard');
 // Route::view('dashbord','backend.dashbord');
 Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
-Route::view('question','frontend.web');
-Route::view('dataset','backend.dataset');
+
 
 //Questionairs 
 Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');

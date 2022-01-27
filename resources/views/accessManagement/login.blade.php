@@ -30,7 +30,8 @@
 
                         <div class="input-container">
                             <i class="fa fa-user icon"></i>
-                            <input type="text" placeholder="Email" id="email_address" class="input-field" name="email" required autofocus>
+                            <!-- <input class="input-field" type="text" placeholder="Username" name="usrnm"> -->
+                            <input type="text" placeholder="Username" id="username" class="input-field" name="username" required autofocus>
                             @if ($errors->has('email'))
                                 <span class="text-danger">{{ $errors->first('email') }}</span>
                             @endif
@@ -38,6 +39,7 @@
 
                         <div class="input-container">
                             <i class="fa fa-lock icon"></i>
+                            <!-- <input class="input-field" type="text" placeholder="Email" name="email"> -->
                             <input type="password" placeholder="Password" id="password" class="input-field" name="password" required>
                             @if ($errors->has('password'))
                                 <span class="text-danger">{{ $errors->first('password') }}</span>
