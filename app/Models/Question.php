@@ -13,6 +13,6 @@ class Question extends Model
         return $this->hasMany(Option::class,'questions_id','id');
     }
     public function questiontype(){
-        return $this->belongsTo(QuestionType::class);
+        return $this->belongsTo(QuestionType::class, 'question_type_id');
     }
 }
