@@ -7,6 +7,7 @@ use App\Http\Controllers\IndustryController;
 use App\Http\Controllers\QuestionairController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionTypeController;
+use App\Http\Controllers\ColorController;
 
 
 /*
@@ -77,9 +78,19 @@ Route::view('admin-dashboard','backend.admin-dashboard');
 Route::view('dashbord','backend.dashbord');
 Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
 Route::view('question','frontend.web');
+Route::view('survey-start','frontend.survey-start');
+Route::view('survey-end','frontend.survey-end');
 Route::view('dataset','backend.dataset');
+Route::view('customer-dashboard','user.dashboard');
+Route::view('cross-reference','user.cross-reference');
+Route::view('cross-ref','user.cross-ref');
+Route::view('analysis-platform-select-data','user.analysis-platform-select-data');
+Route::view('select-a-dataset','user.select-a-dataset');
 
 //Questionairs 
 Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
 Route::post('store-questionairs',[QuestionairController::class,'store_questionairs'])->name('store-questionairs');
 
+//Theme Color & Language Set
+Route::post('set-color',[ColorController::class,'addColor'])->name('add-color');
+Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-language');
