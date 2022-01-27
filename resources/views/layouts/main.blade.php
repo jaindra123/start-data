@@ -73,11 +73,12 @@ Coded by www.creative-tim.com
                             <p>ACCESS MANAGEMENT </p>
                         </a>
                     </li>
-                    <li>
+                   <!--  <li>
                         <a href="#">
                             <p>ADD NEW USER</p>
                         </a>
-                    </li>
+                    </li> -->
+                    <li> <a href="{{url('customer-list')}}"> <p> ADD NEW USER</p> </a> </li>
                 </ul>
             </div>
         </div>
