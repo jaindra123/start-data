@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Color;
 use App\Models\SystemLanguage;
+use App\Models\Questionair;
 
 
 function randAlphaNumericStringGenerator($n) {
@@ -77,6 +78,19 @@ function systemLanguage(){
         $id = Auth::user()->id;
         return $data = SystemLanguage::where('customer_id',$id)->first();
     }
+}
+
+function questionair(){
+    // if(Auth::check()){
+        // $id = Auth::user()->id;
+        // $customer_id = Auth::user()->customer_id;
+        $customer_id = 1;
+        return $data = Questionair::where([
+            ['select_customer',$customer_id],
+            ['status', '1'],
+            ['is_publish', '1']
+        ])->first();
+    // }
 }
 
 ?>

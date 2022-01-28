@@ -3,11 +3,15 @@
 @section('title','Questions')
 
 @section('front')
+@php
+    $questionair = questionair();
+@endphp
 <div class="wrapper">
     <div class="survey-start">
         <img src="{{asset('assets/img/amazon-black.svg')}}" class="img-fluid">
         <div class="mt-56">
-            <h1 class="mb-4">Besucher*innenbefragung Frankfurter Kultureinrichtungen 2021</h1>
+            <!-- <h1 class="mb-4">Besucher*innenbefragung Frankfurter Kultureinrichtungen 2021</h1> -->
+            <h1 class="mb-4">{{$questionair->headline}}</h1>
             <h6>Personal Questions</h6>
             <div class="br-77"></div>
             <div class="question-box">
@@ -84,3 +88,16 @@
     </div>
 </div>
 @endsection('front')
+
+@push('js-script')
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        setInterval(displayHello, {{$questionair->idle_timer*1000}});
+        function displayHello() {
+            window.location.href = "{{url('survey-start')}}";
+        }
+    });
+</script>
+
+@endpush

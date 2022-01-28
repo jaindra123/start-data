@@ -150,7 +150,7 @@ class AuthController extends Controller
             if($user->role == 'admin'){
                 // return view('dashboard');
                 $questionairsModel = new Questionair();
-                $draftCondition = ['is_publish' => 0,'status'=>0,'select_customer'=>0,'protected_link'=>0 ];  
+                $draftCondition = ['is_publish' => 0,'status'=> 0];  
                 $activeCondition = ['is_publish' => 1, 'status'=>1,['select_customer','>=',1],'protected_link'=>1];
                 $inactiveCondition = ['is_publish' => 0, 'status'=>0,['select_customer','>=',1],'protected_link'=>1];
 
