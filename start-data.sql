@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 18, 2022 at 08:06 AM
+-- Generation Time: Jan 27, 2022 at 09:59 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -31,6 +31,7 @@ CREATE TABLE `access_managements` (
   `id` int(11) NOT NULL,
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
+  `pass` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
   `language_id` int(11) DEFAULT NULL,
@@ -40,6 +41,38 @@ CREATE TABLE `access_managements` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `access_managements`
+--
+
+INSERT INTO `access_managements` (`id`, `username`, `password`, `pass`, `email`, `name`, `language_id`, `customer_id`, `role`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'admin', '$2y$10$9aHDnjcRGEP5ZQl22E4iNOZQzhHJKA6N7F0g4pR6QniulgoKt4zVu', 'Admin@1234', 'sanjay.chaudhary@techinventive.com', 'Sanjay', 1, 1, 'admin', '2022-01-19 07:31:36', '2022-01-21 10:55:24', NULL),
+(2, 'admin1', '$2y$10$OnzBRjWLoVsFexepr0tYrODXAgerk2bcv.T1D/M3n6ZjFX9kQHMee', 'Admin@12345', 'admin@gmail.com', 'adminyu', 1, 1, 'user', '2022-01-19 07:44:18', '2022-01-25 14:42:40', NULL),
+(3, 'qwerty', '$2y$10$xheu1fKuetO4aDhJxY2gluUg.ha0mIaIsDzG7YT/bmYzaiU5gx4lq', 'Admin@1234', 'qwerty@gmail.com', 'qwerty', 1, 1, 'user', '2022-01-19 07:56:37', '2022-01-25 06:42:21', '2022-01-25 06:42:21'),
+(4, 'Blog', '$2y$10$W.VZQGi/vsfsiOFLvgodee0dtK.GGBPTgfM607gG6ZaAc9VN4IXOy', NULL, 'Blog@k.com', 'Blog', 1, 1, 'user', '2022-01-19 08:08:02', '2022-01-19 08:08:02', NULL),
+(6, 'test', '$2y$10$GtU050gQhsjaVi1XVDCaJuH1iCbDKz2dQ/EFFllbNnmDP8MgB1JGO', NULL, 'test@qw.com', 'test', 2, 1, 'user', '2022-01-19 10:51:32', '2022-01-19 10:51:32', NULL),
+(8, 'newuser', '$2y$10$x.1u80cxkxCNjIpYqf7dP.8yDPqtA8khWk7lGR8.jfm9oebLzhY6S', NULL, 'newuser@gmail.com', 'newuser', 4, 2, 'user', '2022-01-20 15:15:30', '2022-01-20 15:15:30', NULL),
+(9, 'mail', '$2y$10$dtfX79SeaIIohTYM2wJlTelnHocqSIc48YNFEx80CXrmmqT2zcPWa', NULL, 'mail@gmail.com', 'mail', 4, 2, 'user', '2022-01-20 15:29:57', '2022-01-21 11:18:13', '2022-01-21 11:18:13'),
+(10, 'Testmail', '$2y$10$ipVMMne/Zx3xXvnFAdF1aeZbyNEpjLYi4N81dMLWbvVDOtICGCiX.', NULL, 'Testmail@v.com', 'Testmail', 2, 1, 'user', '2022-01-20 15:34:01', '2022-01-20 15:34:01', NULL),
+(11, 'Testmail1', '$2y$10$XEJ6ECHw6AxBNsaLUot7detgrb1Mv2E1SzS.V1lm8Mjo4oDT33nyq', NULL, 'Testmail1@v.com', 'Testmail', 2, 1, 'user', '2022-01-20 15:35:38', '2022-01-20 15:35:38', NULL),
+(12, 'Testmail11', '$2y$10$N2SYpc7eWnmC0.c2QKNr7eL3gTvxcXvjWvK4uNuG9SLkDtmlaCl6u', NULL, 'Testmail11@v.com', 'Testmail', 2, 1, 'user', '2022-01-20 15:36:59', '2022-01-20 15:36:59', NULL),
+(13, 'Testmail111', '$2y$10$iLjmJ9YjWTpksAk3oN/BOu5fly/Lw9/uqWOv6pfLhzfq6F3J5BFO6', NULL, 'Testmail111@v.com', 'Testmail', 2, 1, 'user', '2022-01-20 15:38:00', '2022-01-20 15:38:00', NULL),
+(14, 'newusercheck', '$2y$10$TyVWDG2SwSBnkS0kNHDcSOz1tvWcFSyfRbox0eMreJKM1qlXfHEFK', NULL, 'newusercheck@gmail.com', 'newusercheck', 2, 2, 'user', '2022-01-20 15:51:33', '2022-01-20 15:51:33', NULL),
+(15, 'test123', '$2y$10$d9pCGtPi05DPskBCAZweR.TI6wayqE49NZXdFfdUKiN7qh4BfiNR.', NULL, 'test@qw.coma', 'test', 15, 1, 'customer', '2022-01-24 15:37:31', '2022-01-24 15:37:31', NULL),
+(16, 'newtestcheck', '$2y$10$m3MlZkMkj.V8C2lh0F9KhO07sWbhfQZ6V/30k1ANMIwRbFUhYhd5O', NULL, 'newtestcheck@vmial.com', 'newtestcheck', 3, 1, 'customer', '2022-01-25 11:14:37', '2022-01-25 11:14:37', NULL),
+(17, 'newtestcheck1', '$2y$10$ElArcIFHusEu7CfSmsfWYukSP78xkXR/QClD9uR9/eQto6zHKybpq', NULL, 'newtestcheck1@vmial.com', 'newtestcheck', 3, 1, 'customer', '2022-01-25 11:16:43', '2022-01-25 11:16:43', NULL),
+(18, 'newtestcheck11', '$2y$10$9jBjVOOPztpn6VC9YjgeruUncikfKwmh1hjS84Y8vvULqfSSuMoK.', NULL, 'newtestcheck11@vmial.com', 'msg', 3, 1, 'customer', '2022-01-25 11:20:40', '2022-01-25 11:20:40', NULL),
+(19, 'newtestcheck11a', '$2y$10$.jmYfcY2NuGU4v9Ak3N3buOsmTpjTIuIE4amyp7THVamOn9MwKS0K', 'Admin@1234', 'newtestcheck113a@vmial.com', 'msg', 3, 1, 'customer', '2022-01-25 11:21:20', '2022-01-25 11:30:48', NULL),
+(20, NULL, '$2y$10$5iW018XrcXVij9eZO357ueWM8j3Vvbl7kVVAalKWpkEus.BQReA6q', 'Admin@1234', 'admins@mail.com', 'aa', 2, 1, 'customer', '2022-01-25 12:42:06', '2022-01-25 12:42:38', NULL),
+(21, NULL, '$2y$10$msINeuqMJ/vkcnVDgM/QEOuqRZw67LEpJ4FzYeEvfcjwoZTJQcHX6', NULL, 'checking@gmail.com', 'checking', 1, 1, 'customer', '2022-01-25 13:54:12', '2022-01-25 13:54:12', NULL),
+(22, NULL, '$2y$10$DRrKXlD42mwgQws46E5UpOXwUxAai4m07DAk6adniiohW/2Sh5AvC', NULL, 'checking1@gmail.com', 'checking1', 1, 1, 'customer', '2022-01-25 13:59:18', '2022-01-25 13:59:18', NULL),
+(23, NULL, '$2y$10$Zkpkd33HUm2EBnisBxwfYuHwUZ.Xq7qnvRVJ5TITgMusv.pr/6uL.', NULL, 'checking11@gmail.com', 'checking11', 1, 1, 'customer', '2022-01-25 14:01:15', '2022-01-25 14:01:15', NULL),
+(24, NULL, '$2y$10$BgzmOX4nByOo4vKh7ajwLuXLWOPP16FVZBuS5kn.g7OypYdHvG1Wa', NULL, 'checking111@gmail.com', 'checking111', 1, 1, 'customer', '2022-01-25 14:04:47', '2022-01-25 14:04:47', NULL),
+(25, NULL, '$2y$10$HhDFYYDTW31hXEWZGYI4TOi8LlLB02F/.YOjPHcGPwClRF16JgOUy', 'Admin@1234', 'checking1112@gmail.com', 'checking1112', 1, 1, 'customer', '2022-01-25 14:08:34', '2022-01-25 14:08:34', NULL),
+(26, NULL, '$2y$10$3ylbBrKQFdQwbMF4yfTQFuimBCXR5tdjr6E2XNs6M3oq0V.r2vwD2', 'Laptop@1234', 'Laptop@gmail.com', 'Laptop', 1, 1, 'customer', '2022-01-25 14:21:47', '2022-01-25 14:21:47', NULL),
+(27, NULL, '$2y$10$KJ8yY2dHm0DlV4LENQpFsuRpsQR8wEnf4VC8SKodP9nKDSrgL6c8a', 'Admin@1234', 'Laptop1@gmail.com', 'Laptop', 1, 1, 'customer', '2022-01-25 14:26:58', '2022-01-25 14:26:58', NULL),
+(28, NULL, '$2y$10$4DXfgn7GMheF0Q9QhTDObOw67RKhUUgi8tVuPfcD.0enjfTjk9Nyq', 'System@1234', 'System@gmail.com', 'System', 1, 1, 'customer', '2022-01-25 14:27:46', '2022-01-25 14:27:46', NULL);
 
 -- --------------------------------------------------------
 
@@ -80,6 +113,13 @@ CREATE TABLE `color_settings` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `color_settings`
+--
+
+INSERT INTO `color_settings` (`id`, `customer_id`, `color1`, `color2`, `color3`, `color4`, `color5`, `language_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'am', 'b0', 'ck', 'dm', 'e1', 3, '2022-01-27 07:04:44', '2022-01-27 12:55:22', NULL);
 
 -- --------------------------------------------------------
 
@@ -358,17 +398,31 @@ INSERT INTO `countries` (`id`, `country`, `country_code`, `created_at`, `updated
 --
 
 CREATE TABLE `customers` (
-  `id` int(11) NOT NULL,
-  `industry_id` int(11) DEFAULT NULL,
-  `customer_type` varchar(50) DEFAULT NULL,
-  `customer_name` varchar(50) DEFAULT NULL,
-  `customer_email` varchar(255) DEFAULT NULL,
-  `customer_password` varchar(255) DEFAULT NULL,
-  `customer_logo` varchar(255) DEFAULT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `deleted_at` datetime DEFAULT NULL
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `customer_email` varchar(255) NOT NULL,
+  `customer_password` varchar(250) NOT NULL,
+  `customer_type` varchar(255) NOT NULL,
+  `customer_logo` varchar(250) NOT NULL,
+  `primary_color` varchar(250) NOT NULL,
+  `cust_industry_id` int(11) NOT NULL,
+  `country` varchar(250) NOT NULL,
+  `state` varchar(250) NOT NULL,
+  `zip` varchar(250) NOT NULL,
+  `city` varchar(250) NOT NULL,
+  `street` varchar(250) NOT NULL,
+  `house_number` varchar(250) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`id`, `customer_name`, `customer_email`, `customer_password`, `customer_type`, `customer_logo`, `primary_color`, `cust_industry_id`, `country`, `state`, `zip`, `city`, `street`, `house_number`, `created_at`, `updated_at`) VALUES
+(1, 'Jaindra55', 'jai55@gmail.com', '$2y$10$NuO1ij2ne2d7fG.G5VlayuBx7t6nry2/LpWM9jKFt5urOMHMH5oQ.', 'Test55', '2080447076.jpg', '#dsdsd', 3, 'IN', 'Delhi', '110067', 'New Delhi', 'Strret1', '101', '2022-01-17 00:49:45', '2022-01-20 19:45:36'),
+(2, 'Sanjay', 'sanjay@gmail.com', '$2y$10$1C5K7dAFMYofShYr8Bh0x.KUesMxYyLtNctgAoWO7/RcVZkt3N4.i', 'Education', '1258284984.png', '#sdss', 2, 'IN', 'Punjab', '172002', 'Mohali', 'Franco', '111', '2022-01-17 02:57:42', '2022-01-20 00:48:39');
 
 -- --------------------------------------------------------
 
@@ -395,11 +449,19 @@ CREATE TABLE `headings` (
 
 CREATE TABLE `industries` (
   `id` int(11) NOT NULL,
-  `indury` varchar(255) DEFAULT NULL,
+  `industry` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `industries`
+--
+
+INSERT INTO `industries` (`id`, `industry`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(2, 'Medical', '2022-01-19 07:44:30', '2022-01-19 11:53:58', NULL),
+(3, 'Edication', '2022-01-19 08:02:19', '2022-01-19 08:02:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -461,6 +523,35 @@ CREATE TABLE `locations` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `options`
+--
+
+CREATE TABLE `options` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `questions_id` int(10) UNSIGNED NOT NULL,
+  `option` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `options`
+--
+
+INSERT INTO `options` (`id`, `questions_id`, `option`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Agra', NULL, NULL, NULL),
+(2, 1, 'Delhi', NULL, NULL, NULL),
+(3, 1, 'Noida', NULL, NULL, NULL),
+(4, 1, 'Faridabad', NULL, NULL, NULL),
+(5, 2, '111', NULL, NULL, NULL),
+(6, 2, '115', NULL, NULL, NULL),
+(7, 2, '103', NULL, NULL, NULL),
+(8, 2, '104', NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `questionairs`
 --
 
@@ -487,6 +578,31 @@ CREATE TABLE `questionairs` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `questions`
+--
+
+CREATE TABLE `questions` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `question_type_id` int(10) UNSIGNED NOT NULL,
+  `question` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `answer` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `options` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `questions`
+--
+
+INSERT INTO `questions` (`id`, `question_type_id`, `question`, `answer`, `status`, `options`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Where is Taj Mahal', 'Agra', NULL, NULL, '2022-01-23 20:02:08', '2022-01-23 20:02:08'),
+(2, 1, 'What is the no. between [100, 110]', '103,104', NULL, NULL, '2022-01-23 20:03:20', '2022-01-23 20:03:20');
 
 -- --------------------------------------------------------
 
@@ -549,6 +665,29 @@ INSERT INTO `question_types` (`id`, `title`, `description`, `short_code`, `quest
 (8, 'Country Question', NULL, 'cq', 'Country', '2022-01-18 10:54:00', '2022-01-18 10:54:00', NULL),
 (9, 'Ranking Question', NULL, 'rq', 'Ranking', '2022-01-18 10:54:00', '2022-01-18 10:54:00', NULL),
 (10, 'Other Question/ Elements', NULL, 'oq', 'Other', '2022-01-18 10:54:00', '2022-01-18 10:54:00', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `system_languages`
+--
+
+CREATE TABLE `system_languages` (
+  `id` int(11) NOT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `language` varchar(50) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `system_languages`
+--
+
+INSERT INTO `system_languages` (`id`, `customer_id`, `language`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 1, 'English', '2022-01-27 11:21:47', '2022-01-27 20:44:20', NULL),
+(2, 2, 'German', '2022-01-27 16:24:16', '2022-01-27 16:24:21', NULL);
 
 --
 -- Indexes for dumped tables
@@ -627,6 +766,12 @@ ALTER TABLE `question_types`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `system_languages`
+--
+ALTER TABLE `system_languages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -634,7 +779,7 @@ ALTER TABLE `question_types`
 -- AUTO_INCREMENT for table `access_managements`
 --
 ALTER TABLE `access_managements`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `answers`
@@ -646,7 +791,7 @@ ALTER TABLE `answers`
 -- AUTO_INCREMENT for table `color_settings`
 --
 ALTER TABLE `color_settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -658,7 +803,7 @@ ALTER TABLE `countries`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `headings`
@@ -670,7 +815,7 @@ ALTER TABLE `headings`
 -- AUTO_INCREMENT for table `industries`
 --
 ALTER TABLE `industries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `languages`
@@ -701,6 +846,12 @@ ALTER TABLE `question_lists`
 --
 ALTER TABLE `question_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `system_languages`
+--
+ALTER TABLE `system_languages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

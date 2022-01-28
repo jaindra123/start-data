@@ -24,38 +24,46 @@
                         <h1>{{$type}}</h1>
                         <div class="input-container">
                             <i class="fa fa-user icon"></i>
-                            <input type="text" value="@if(isset($user)){{old('name',$user->name)}}@else{{old('name')}}@endif" placeholder="Name" id="name" class="input-field hrftyu" name="name" required autofocus>
-                            @if ($errors->has('name'))
-                                <span class="text-danger">{{ $errors->first('name') }}</span>
-                            @endif
+                            <input type="text" value="@if(isset($user)){{old('name',$user->name)}}@else{{old('name')}}@endif" placeholder="Name" id="name" class="input-field hrftyu" name="name" autofocus>
+                            <div>
+                                @if ($errors->has('name'))
+                                    <span class="text-danger">{{ $errors->first('name') }}</span>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="input-container">
                             <i class="fa fa-envelope-o icon" aria-hidden="true"></i>
-                            <input type="text" value="@if(isset($user)){{old('email',$user->email)}}@else{{old('email')}}@endif" placeholder="Email" id="email_address" class="input-field hrftyu" name="email" required autofocus>
-                            @if ($errors->has('email'))
-                                <span class="text-danger">{{ $errors->first('email') }}</span>
-                            @endif
+                            <input type="text" value="@if(isset($user)){{old('email',$user->email)}}@else{{old('email')}}@endif" placeholder="Email" id="email_address" class="input-field hrftyu" name="email" autofocus>
+                            <div>
+                                @if ($errors->has('email'))
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="input-container">
                             <i class="fa fa-lock icon"></i>
-                            <input type="password" value="" placeholder="Password" id="password" class="input-field hrftyu" name="password" required>
-                            @if ($errors->has('password'))
-                                <span class="text-danger">{{ $errors->first('password') }}</span>
-                            @endif
+                            <input type="password" value="" placeholder="Password" id="password" class="input-field hrftyu" name="password">
+                            <div>
+                                @if ($errors->has('password'))
+                                    <span class="text-danger">{{ $errors->first('password') }}</span>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="input-container">
                             <i class="fa fa-lock icon"></i>
-                            <input type="password" value="" placeholder="Confirm Password" id="password_confirm" class="input-field hrftyu" name="password_confirm" required>
-                            @if ($errors->has('password_confirm'))
-                                <span class="text-danger">{{ $errors->first('password_confirm') }}</span>
-                            @endif
+                            <input type="password" value="" placeholder="Confirm Password" id="password_confirm" class="input-field hrftyu" name="password_confirm">
+                            <div>
+                                @if ($errors->has('password_confirm'))
+                                    <span class="text-danger">{{ $errors->first('password_confirm') }}</span>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="input-container">
-                            <select class="input-field" name="language" id="language" style="width:98%">
+                            <select class="input-field" name="language" id="language" style="width:94%">
                                 <option value="">--Select Language--</option>
                                 @foreach ( $languages as $language)
                                     @if(isset($id)) 
@@ -73,13 +81,15 @@
                                     @endif
                                 @endforeach
                             </select>
-                            @if ($errors->has('language'))
-                                <span class="text-danger">{{ $errors->first('language') }}</span>
-                            @endif
+                            <div>
+                                @if ($errors->has('language'))
+                                    <span class="text-danger">{{ $errors->first('language') }}</span>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="input-container">
-                            <select class="input-field" name="customer" id="customer" style="width:98%">
+                            <select class="input-field" name="customer" id="customer" style="width:94%">
                                 <option value="">--Select Customer--</option>
                                 @foreach ( $customers as $customer)
                                     @if(isset($id))
@@ -97,9 +107,11 @@
                                     @endif
                                 @endforeach
                             </select>
-                            @if ($errors->has('customer'))
-                                <span class="text-danger">{{ $errors->first('customer') }}</span>
-                            @endif
+                            <div>
+                                @if ($errors->has('customer'))
+                                    <span class="text-danger">{{ $errors->first('customer') }}</span>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="container-login100-form-btn">

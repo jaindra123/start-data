@@ -11,7 +11,7 @@
             </div>
             <div class="col-md-3">
                 <a href="{{route('register-user')}}">
-                    <button class="btn btn-primary">
+                    <button class="custom-button">
                         Add Access User
                     </button>
                 </a>

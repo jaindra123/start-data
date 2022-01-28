@@ -5,7 +5,11 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\Industry;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+
 
 class CustomerController extends Controller
 {
@@ -19,7 +23,7 @@ class CustomerController extends Controller
                     ->orderBy('customers.id','ASC')
                     ->get(['customers.*', 'industries.industry', 'countries.country']);
 
-        return view('customer/list', compact('customers','countries','industries'));
+        return view('customer/customer-data', compact('customers','countries','industries'));
     }
 #--------------------------- Insert/Edit Customer ------------------------------#   
     public function store(Request $request) {
