@@ -30,9 +30,6 @@ Route::get('customer-list', [CustomerController::class, 'index']);
 Route::post('add-update-customer', [CustomerController::class, 'store']);
 Route::post('edit-customer', [CustomerController::class, 'edit']);
 Route::post('delete-customer', [CustomerController::class, 'destroy']);
-Route::get('customer/login', [CustomerController::class, 'CustomerLoginForm']);
-Route::post('customer-login', [CustomerController::class, 'CustomerLogin'])->name('login.customer');
-Route::get('customer-logout', [CustomerController::class, 'customer-logout'])->name('customer-logout');
 
 //Industry 
 Route::get('industry-list', [IndustryController::class, 'index']);
@@ -47,13 +44,21 @@ Route::post('edit-question-type', [QuestionTypeController::class, 'edit']);
 Route::post('delete-question-type', [QuestionTypeController::class, 'destroy']);
 
 //Multiple-Choice Question
-Route::get('question-type', [QuestionController::class, 'index']);
-Route::get('single-choice-question', [QuestionController::class, 'create']);
-Route::get('all-questions', [QuestionController::class, 'AllQuestionList']);
-Route::post('save-question',[QuestionController::class,'store'])->name('question.save');
-Route::get('survey/{id}', [QuestionController::class, 'survey']);
-Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');
+//Route::get('question-type', [QuestionController::class, 'index']);
+Route::get('create-question', [QuestionController::class, 'create']);
+//Route::get('question-lists', [QuestionController::class, 'AllQuestionList']);   ---------------
+Route::post('save-question',[QuestionController::class,'store'])->name('question.save');      
 Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
+//Route::get('survey/{id}', [QuestionController::class, 'survey']);
+//Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');
+Route::get('questionairs',[QuestionairController::class,'AllQuestionairs']);
+Route::post('save-questionairs',[QuestionairController::class,'QuestionairSave'])->name('questionairs.save');
+Route::post('/autocomplete',[QuestionairController::class,'AutoCompleteSearch'])->name('questionairs.search');
+
+
+
+
+
 
 //Access Management
 Route::get('registration', [AuthController::class, 'registration'])->name('register-user');
@@ -69,7 +74,6 @@ Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegis
 
 //Sending Email
 Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('email.send');
-
 Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.forget');
 
 //Pages

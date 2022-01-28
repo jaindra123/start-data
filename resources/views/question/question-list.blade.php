@@ -12,7 +12,7 @@
 <body>
 	<div class="page-header"><h1>All Question Types
 		<small><i class="ace-icon fa fa-angle-double-right"></i></small>
-		<br/><a href="http://localhost/start-data/question-create">Add new Question </a>
+		<br/><a href="http://localhost/start-data/public/create-question">Add new Question </a>
 		</h1>
 	</div>
 	<div class="row">

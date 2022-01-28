@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+
 class CustomerController extends Controller
 {
 #---------------------------- Display All Customer-----------------------------#     
@@ -39,12 +40,7 @@ class CustomerController extends Controller
 			'password_confirm.same' => 'Password and Confirm Password should be same',
 			'customer_logo.required' => 'Customer logo must be a file of type : JPG & svg',
 		]);
-		/*
-        $validator = Validator::make(Input::all(), $ValidationRules);
-        if ($validator->fails()) {
-            return Response::json(array('success' => false,'errors' => $validator->getMessageBag()->toArray() ), 400); 
-        }
-		*/
+
         $country_code = $request->countrylist;
         $states = $request->stateslist;
         $zip = $request->ziplist;
@@ -95,44 +91,5 @@ class CustomerController extends Controller
         $customer = Customer::where('id',$request->id)->delete();
         return response()->json(['success' => true]);
     }
-
-#--------------------------- Customer Login Page --------------------------------------#
-    public function CustomerLoginForm() {
-        //login check
-        if(Auth::check()){
-            $id = Auth::user()->id;
-            $user = User::where(['id'=>$id])->first();
-            if($user->role == 'admin'){
-                return redirect('dashboard');
-            }
-            else{
-                return redirect('customer-list');
-            }
-        }
-        else{
-            return view('customer/login');
-        }
-    }
-#--------------------------- Customer Login  --------------------------------------#
-    public function CustomerLogin(Request $request) {
-        $request->validate([
-            'customer_email' => 'required',
-            'customer_password' => 'required',
-        ]);
-
-
-        if (Auth::guard('customer')->attempt(['customer_email' => $request->customer_email, 'customer_password' => $request->customer_password], $request->get('remember'))) {
-
-            return redirect()->intended('/admin');
-        }
-        return back()->withInput($request->only('email', 'remember'));
-
-
-    }
-
-#---------------------------  --------------------------------------#
-
-
-
-            
+#---------------------------  --------------------------------------#            
 }

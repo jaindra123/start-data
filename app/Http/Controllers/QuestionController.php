@@ -10,7 +10,7 @@ use App\Models\Survey;
 
 class QuestionController extends Controller
 {
-#---------------------------- Question Type Lists -----------------------------#     
+#---------------------------- Question Type Lists ---------------------#     
     public function index()
     {
         //$questiontypes = QuestionType::paginate(1);
@@ -28,15 +28,13 @@ class QuestionController extends Controller
     public function create()
     {
         $questiontypes = QuestionType::all();
-        return view('question.single_choice_question',compact('questiontypes'));
+        return view('question.create_question',compact('questiontypes'));
     }
 #----------------------------All Questions -----------------------------#  
     public function AllQuestionList()
     {
         $questions = Question::with('option')->with('questiontype')->get();
-		//echo "<pre>";
-		//print_r($questions);
-        return view('question.all-questions',compact('questions'));
+        return view('question.all-question',compact('questions'));
     }
 #--------------------------- Insert Question ------------------------------#   
     public function store(Request $request) {
@@ -46,14 +44,16 @@ class QuestionController extends Controller
             'question_type_id'=>'required',
         ]);
         $data=$request->all();
-        $ques= Questions::create($data);
+       // print_r($data);      //Array ( [0] => aa [1] => bb [2] => cc [3] => dd )
+       // die();
+        $ques= Question::create($data);
         if(count($request->option) > 0) {
             foreach ($request->option as $item=>$v) {
                 $datad=array(
                   'questions_id'=>$ques->id,
                   'option'=>$request->option[$item]
                 );
-                Options::insert($datad);
+                Option::insert($datad);
             }
         }
        return redirect()->back()->with('success','Data add successfully');           

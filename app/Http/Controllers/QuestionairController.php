@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Customer;
 use App\Models\Language;
 use App\Models\Questionair;
@@ -10,10 +8,13 @@ use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
+use App\Models\QuestionType;
+use App\Models\Question;
+use App\Models\Option;
+use Illuminate\Support\Facades\DB;
 
 class QuestionairController extends Controller
 {
-    //
     public function add_questionairs(Request $request){
         $languageModel = new Language();
         $cutomerModel = new Customer();
@@ -22,13 +23,14 @@ class QuestionairController extends Controller
         $data['customer'] = $cutomerModel->getAllCustomer();
         return view('questionairs.add', compact('data'));
     }
-
     public function store_questionairs(Request $request){
-
         $questionairModel  = new Questionair();
+
+
         $quesOtherLangModel = new QuestionairOtherLanguage();
 
         // print_r($request->all()); die;
+
         $validator = validator()->make($request->post(),[
                 'questionair'               => 'required|string',
                 'year'                      => 'required|digits:4|numeric',
@@ -36,8 +38,6 @@ class QuestionairController extends Controller
                 'button_backgound'          => 'required',
                 'button_text'               => 'required',
                 'language'                  => 'required',
-                // 'first_page_picture'        => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-                // 'last_page_picture'         => 'required|image|mimes:jpeg,png,jpg,gif,svg',
                 'last_page_timer'           => 'required|numeric',
                 'idle_timer'                => 'required|numeric',
                 // 'customer'                  => 'required',
@@ -46,24 +46,15 @@ class QuestionairController extends Controller
                 'last_page_field'           => 'required|string',
            
         ]);
-
-        // $validation = Validator::make(Input::all(), $validator);
-        // if ($validation->fails()) {
-        //     return Response::json(array('success' => false,'errors' => $validation->getMessageBag()->toArray() ), 400); 
-        // }
-
         if ($validator->fails())
         {
             return response()->json(['success' => false,'errors'=>$validator->errors()]);
         }
-
         $checkQuestionairsExist = $questionairModel->getSingleRecord(['year'=>$request->year, 'name'=>$request->questionair,'deleted_at'=>NULL]);
         if($checkQuestionairsExist){
-            // $request->session()->flash('ques_error','Questionair Already Exist in '.$checkQuestionairsExist->year.' year');
             return response()->json(['success' => false,'ques_errors'=>'Questionair Already Exist in '.$checkQuestionairsExist->year.' year']);
         }
         if ( $request->hasfile( 'first_page_picture' ) ) {
-            // print_r( $request->file( 'first_page_picture' )); die;
             $datetime     = date( 'Ymd_His' );
             $first_page_picture = $request->file( 'first_page_picture' );
             $filename     = $datetime . '-' .  $first_page_picture->getClientOriginalName() ;
@@ -73,8 +64,6 @@ class QuestionairController extends Controller
         } else {
             $first_page_picture = '';
         }
-        
-
         if ( $request->hasfile( 'last_page_picture' ) ) {
             $datetime     = date( 'Ymd_His' );
             $last_page_picture = $request->file( 'last_page_picture' );
@@ -85,6 +74,14 @@ class QuestionairController extends Controller
         } else {
             $last_page_picture = '';
         }
+
+
+     //   if(($request->published) != 0){
+          //  $lang = $request->language;
+       // }else{
+         //   $languages = $request->language;
+         //   $lang = implode(",",$languages);
+      //  }
 
         // if(($request->published) != 0){
         //     $lang = $request->language;
@@ -100,6 +97,7 @@ class QuestionairController extends Controller
         // print_r($selectedOption);echo '<br>';
         //     print_r($selOption);
         // die;
+
         $data = [
             'name'                          =>      trim(ucfirst($request->questionair)),
             'year'                          =>      trim($request->year),
@@ -112,7 +110,6 @@ class QuestionairController extends Controller
             'last_img'                      =>      $last_page_picture, 
             'is_publish'                    =>      ($request->published == 0) ? 0 : 1,
             'protected_link'                =>      isset($request->protected_link_with_password) ? 1 :0,
-            // 'password_for_protected_link'   =>      trim($request->password),
             'headline'                      =>      trim($request->headline),
             'start_text'                    =>      $request->start_page_field,
             'last_text'                     =>      $request->last_page_field,
@@ -122,13 +119,10 @@ class QuestionairController extends Controller
             'select_customer'               =>      trim($request->customer),
             'status'                        =>      $selOption == 'deactivate' ? 0 :1,
         ];
-
-
         if(isset($request->protected_link_with_password)){
             $data['password_for_protected_link']  = randAlphaNumericStringGenerator(10);
         }
 
-        
         $insertedRecord = $questionairModel->insertRecord($data);
         if(!empty($insertedRecord)){
             if($request->session()->has('ques_lang')){
@@ -149,11 +143,60 @@ class QuestionairController extends Controller
                 }
             }
             return response()->json(['success' => true,'message'=>'Questionairs created Sucessfully']);   
-            //             $request->session()->flash('ques', 'Questionairs created sucessfully');
-            // return redirect('add-questionairs');
-            
         }
     }
+
+
+    #----------------------------All Questions -----------------------------#  
+    public function AllQuestionairs(){   
+        $languages = DB::table('languages')->get();
+        $questions = Question::with('option')->with('questiontype')->get();
+        return view('backend.questionair-tool',compact('questions','languages'));
+    }
+    #---------------------------  ------------------------------#   
+    public function QuestionairSave(Request $request) {
+       
+        
+        $this->validate($request,[
+            'question'=>'required|unique:questions,question,NULL,id,question_type_id,'.$request->question_type_id,
+            'question_type_id'=>'required',
+        ]);
+        $data = $request->all();
+        print_r($data);
+        die();
+        $ques= Question::create([
+            'language' => $request->language,
+            'question' => $request->question,
+            'std_qns' => $request->std_qns,
+            'question_type_id' => $request->question_type_id,
+        ]);
+        
+        if(count($request->option) > 0) {
+            foreach ($request->option as $item=>$v) {
+                $datad=array(
+                  'questions_id'=>$ques->id,
+                  'option'=>$request->option[$item],
+                  'display_text'=>$request->display_text[$item]
+                );
+                
+                Option::insert($datad);
+            }
+        }
+       return redirect()->back()->with('success','Data add successfully');           
+    }
+    #--------------------------- Search  -------------------#
+    public function AutoCompleteSearch(Request $request){
+        $search = $request->search;
+        $query = $request->get('term','');
+        $questions=Question::where('title','LIKE','%'.$query.'%')->get();
+
+        $response = array();
+        foreach($questions as $question){
+            $response[] = array("value"=>$question->question);
+        }
+      return response()->json($response);
+    }
+    #---------------------------  -------------------#
 
     public function store_session_questionairs(Request $request){
         // print_r($request->all());
@@ -241,4 +284,5 @@ class QuestionairController extends Controller
         
         return view('admin_dashboard.list', compact(['draftCount','activeCount','inactiveCount','draftRecord','activeRecord','inactiveRecord']));
     }
+
 }
