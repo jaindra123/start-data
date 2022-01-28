@@ -29,7 +29,7 @@ function langSessionDestroy(){
     if(session()->has('ques_lang')){
         session()->forget('ques_lang');
 
-        
+
     }
 }
 
@@ -38,7 +38,8 @@ function getLanguageIdFromSession(){
         $data = session()->get('ques_lang');
         $langData =array();
         foreach($data as $row){
-            $langData[] = $row['langS'];
+            $langData[] = $row['langS'];   
+            
         }
         return $langData;
     }
