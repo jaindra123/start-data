@@ -28,6 +28,8 @@ function getAllLanguage(){
 function langSessionDestroy(){
     if(session()->has('ques_lang')){
         session()->forget('ques_lang');
+
+        
     }
 }
 
