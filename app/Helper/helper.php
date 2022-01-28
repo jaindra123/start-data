@@ -20,6 +20,7 @@ function randAlphaNumericStringGenerator($n) {
 
 
 function getAllLanguage(){
+    
     $data = DB::table('languages')->where('deleted_at',NULL)->get();
     return $data;
 }
@@ -39,7 +40,7 @@ function getLanguageIdFromSession(){
         $langData =array();
         foreach($data as $row){
             $langData[] = $row['langS'];   
-            
+
         }
         return $langData;
     }

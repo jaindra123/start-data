@@ -23,7 +23,7 @@
                     <div class="box-conrt">
                       <h3>Active Questionairs</h3>
                       <h4>{{$activeCount}}</h4>
-                    </div>
+                    </div>  
                </div>
           </div>
           <div class="col-md-4">

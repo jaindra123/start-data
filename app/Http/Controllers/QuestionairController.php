@@ -235,6 +235,9 @@ class QuestionairController extends Controller
         // return $draftRecord;
         // return $activeRecord;
         // return $inactiveRecord;
+
+
+        
         
         return view('admin_dashboard.list', compact(['draftCount','activeCount','inactiveCount','draftRecord','activeRecord','inactiveRecord']));
     }
