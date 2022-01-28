@@ -101,7 +101,7 @@ Route::post('store-session-questionairs',[QuestionairController::class,'store_se
 Route::post('remove-session-questionairs',[QuestionairController::class,'remove_session_questionairs'])->name('remove-session-questionairs');
 
 
-Route::get('dashboard',[QuestionairController::class, 'dashboard'])->name('dashboard');
+// Route::get('dashboard',[QuestionairController::class, 'dashboard'])->name('dashboard');
 //Theme Color & Language Set
 Route::post('set-color',[ColorController::class,'addColor'])->name('add-color');
 Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-language');

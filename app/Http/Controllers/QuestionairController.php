@@ -23,6 +23,7 @@ class QuestionairController extends Controller
         $data['customer'] = $cutomerModel->getAllCustomer();
         return view('questionairs.add', compact('data'));
     }
+
     public function store_questionairs(Request $request){
         $questionairModel  = new Questionair();
 
@@ -116,8 +117,8 @@ class QuestionairController extends Controller
             'display_progress_bar'          =>      isset($request->progress_bar) ? 1 : 0,
             'last_page_timer'               =>      trim($request->last_page_timer),
             'idle_timer'                    =>      trim($request->idle_timer),
-            'select_customer'               =>      trim($request->customer),
-            'status'                        =>      $selOption == 'deactivate' ? 0 :1,
+            'select_customer'               =>      ($request->customer == ''? 0 : trim($request->customer)),
+            'status'                        =>      ($request->published == 0 ? 0 : 1),
         ];
         if(isset($request->protected_link_with_password)){
             $data['password_for_protected_link']  = randAlphaNumericStringGenerator(10);

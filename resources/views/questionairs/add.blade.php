@@ -454,7 +454,8 @@
                         alert(response.message);
                         // $('.message_show').css({'display':''});
                         // $('.message_alert').text(message)
-                        window.location.reload(); 
+                        window.location.href = '{!! route("dashboard") !!}'
+                        // window.location.reload(); 
                         <?= langSessionDestroy() ?>
                     } 
                 },
@@ -540,7 +541,8 @@
                         alert(response.message);
                         // $('.message_show').css({'display':''});
                         // $('.message_alert').text(message)
-                        window.location.reload(); 
+                        window.location.href = '{!! route("dashboard") !!}'
+                        // window.location.reload(); 
                         <?= langSessionDestroy() ?>
                     } 
                 },
