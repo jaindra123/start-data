@@ -75,7 +75,7 @@ Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.
 //Pages
 Route::view('questionair','backend.questionair-tool');
 Route::view('admin-dashboard','backend.admin-dashboard');
-Route::view('dashbord','backend.dashbord');
+// Route::view('dashbord','backend.dashbord');
 Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
 Route::view('question','frontend.web');
 Route::view('survey-start','frontend.survey-start');
@@ -91,6 +91,13 @@ Route::view('select-a-dataset','user.select-a-dataset');
 Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
 Route::post('store-questionairs',[QuestionairController::class,'store_questionairs'])->name('store-questionairs');
 
+Route::post('store-session-questionairs',[QuestionairController::class,'store_session_questionairs'])->name('store-session-questionairs');
+
+
+Route::post('remove-session-questionairs',[QuestionairController::class,'remove_session_questionairs'])->name('remove-session-questionairs');
+
+
+Route::get('dashboard',[QuestionairController::class, 'dashboard'])->name('dashboard');
 //Theme Color & Language Set
 Route::post('set-color',[ColorController::class,'addColor'])->name('add-color');
 Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-language');
