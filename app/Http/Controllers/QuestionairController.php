@@ -165,7 +165,7 @@ class QuestionairController extends Controller
             // return $session_data['ques'];
             foreach($session_data['ques'] as $row){
                 if($row['langS'] == $request->langS){
-                   return 'hellooooo';
+                //    return 'hellooooo';
                     $row['firstText']   = $request->firstText;
                     $row['lastText']   = $request->lastText;
                     $row['headline']   = $request->headline;
