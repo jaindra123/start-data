@@ -1,5 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Models\Color;
+use App\Models\SystemLanguage;
+
 
 function randAlphaNumericStringGenerator($n) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -49,6 +54,25 @@ function changeNewsDateFormat($datetime)
     $str = strtotime($datetime);
 
     return date('jS F Y', $str);
+}
+function checkUser(){
+    $user = Auth::User();
+    Session::put('user', $user);
+    return $user;
+}
+
+function colorData(){
+    if(Auth::check()){
+        $id = Auth::user()->id;
+        return $data = Color::where('customer_id',$id)->first();
+    }
+}
+
+function systemLanguage(){
+    if(Auth::check()){
+        $id = Auth::user()->id;
+        return $data = SystemLanguage::where('customer_id',$id)->first();
+    }
 }
 
 ?>
