@@ -100,6 +100,8 @@ Route::post('store-session-questionairs',[QuestionairController::class,'store_se
 
 Route::post('remove-session-questionairs',[QuestionairController::class,'remove_session_questionairs'])->name('remove-session-questionairs');
 
+Route::get('edit-questionairs/{id}',[QuestionairController::class,'edit_questionair'])->name('edit-questionairs');
+
 
 // Route::get('dashboard',[QuestionairController::class, 'dashboard'])->name('dashboard');
 //Theme Color & Language Set

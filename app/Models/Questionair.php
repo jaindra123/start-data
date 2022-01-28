@@ -52,4 +52,13 @@ class Questionair extends Model
     public function getCountWithCondition($condition){
         return Questionair::where($condition)->where('deleted_at',NULL)->count();
     }
+
+    public function getQuestionairWithOtherLanguage($condition) {
+        $query = Questionair::leftJoin('questionair_other_language','questionairs.id','=','questionair_other_language.questiaonair_id')
+            ->select('questionairs.*','questionair_other_language.id as quesId','questionair_other_language.language_id as quesLang','questionair_other_language.start_text as quesStartText','questionair_other_language.last_text as quesLastText', 'questionair_other_language.headline as quesHeadline','questionair_other_language.status as quesStatus')
+            ->where('questionairs.deleted_at',NULL)
+            ->where('questionair_other_language.deleted_at',NULL)
+            ->where($condition)->get();
+        return $query;
+    }
 }

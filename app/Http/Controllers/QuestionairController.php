@@ -201,7 +201,7 @@ class QuestionairController extends Controller
 
     public function store_session_questionairs(Request $request){
         // print_r($request->all());
-        // $request->session()->forget('ques_lang'); 
+        // // $request->session()->forget('ques_lang'); 
         // return;
         $sessionData = [];
         $session_data = ['ques' => []];
@@ -222,12 +222,12 @@ class QuestionairController extends Controller
                 } 
             }
             if(!$hasQuesInLang){
-                $sessionData = $request->all();
+                $sessionData = array('firstText'=>$request->firstText, 'lastText'=>$request->lastText, 'headline'=>$request->headline,'language'=>$request->language,'langS'=>$request->langS);
             }
             $session_data['ques'][] = $sessionData;
             $request->session()->put('ques_lang',$session_data);
         }else{
-            $sessionData = $request->all();
+            $sessionData = array('firstText'=>$request->firstText, 'lastText'=>$request->lastText, 'headline'=>$request->headline,'language'=>$request->language,'langS'=>$request->langS);
             $session_data['ques'][] = $sessionData;
             $request->session()->put('ques_lang',$session_data);
         }
@@ -284,6 +284,40 @@ class QuestionairController extends Controller
         
         
         return view('admin_dashboard.list', compact(['draftCount','activeCount','inactiveCount','draftRecord','activeRecord','inactiveRecord']));
+    }
+
+    public function edit_questionair(Request $request, $id){
+        langSessionDestroy();
+        $ques_id = encrypt_decrypt($id,'decrypt');
+
+        $questionairModel = new Questionair();
+        $quesOtherLangModel = new QuestionairOtherLanguage();
+        $languageModel = new Language();
+        $cutomerModel = new Customer();
+
+        $questionairData = $questionairModel->getAllRecordWithCondition(['questionairs.id'=>$ques_id]);
+        $questionair = array();
+        if($questionairData){
+            foreach($questionairData as $row){
+                $quesLang = $quesOtherLangModel->getRecordWithCondition(['questiaonair_id'=>$row->id]);
+                if(!empty($quesLang)){
+                    $row->quesLanguage = $quesLang; 
+                }else{
+                    $row->quesLanguage = [];
+                }
+                $questionair[] = $row;
+            }
+        }
+        // $questionair = $questionairModel->getQuestionairWithOtherLanguage(['questionairs.id'=>$ques_id]);
+        // return $questionair[0];
+        
+        $data['language'] = $languageModel->getAllRecord();
+        $data['customer'] = $cutomerModel->getAllCustomer();
+        $data['questionair']   = $questionair;
+        return view('questionairs.edit', compact('data'));
+
+
+        
     }
 
 }

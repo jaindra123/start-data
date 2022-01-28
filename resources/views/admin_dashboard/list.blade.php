@@ -66,7 +66,7 @@
                           
                             @foreach($draftRecord as $row)
                           <tr>
-                            <td><a href="#">{{$row->name}}</a></td>
+                            <td><a href="{{route('edit-questionairs',encrypt_decrypt($row->id))}}">{{$row->name}}</a></td>
                             <td>{{$row->updated_at == NULL ? changeNewsDateFormat($row->created_at) : changeNewsDateFormat($row->updated_at)}} </td>
                           </tr>
                             @endforeach
@@ -103,7 +103,7 @@
                             
                             @foreach($inactiveRecord as $row)
                           <tr>
-                            <td><a href="#">{{$row->name}}</a></td>
+                            <td><a href="{{route('edit-questionairs',encrypt_decrypt($row->id))}}">{{$row->name}}</a></td>
                             <td>{{$row->password_for_protected_link}}</td>
                             <td>{{$row->updated_at == NULL ? changeNewsDateFormat($row->created_at) : changeNewsDateFormat($row->updated_at)}} </td>
                             <td>0</td>
@@ -143,7 +143,7 @@
                             
                             @foreach($activeRecord as $row)
                           <tr>
-                            <td><a href="#">{{$row->name}}</a></td>
+                            <td><a href="{{route('edit-questionairs',encrypt_decrypt($row->id))}}">{{$row->name}}</a></td>
                             <td>{{$row->password_for_protected_link}}</td>
                             <td>{{$row->updated_at == NULL ? changeNewsDateFormat($row->created_at) : changeNewsDateFormat($row->updated_at)}} </td>
                             <td>0</td>
