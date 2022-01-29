@@ -12,7 +12,11 @@
     
 </style>
 @endpush('css-script')
+<<<<<<< HEAD
+
+=======
 <div class="main-panel">
+>>>>>>> e085b510e9b8d64f96cf35140fe4928ed555f3bf
     
     <div class="content quereszz">
         <div class="alert alert-success alert-dismissible alert-block message_show"  style="display: none;">
@@ -94,17 +98,29 @@
                 <div class="col-md-3">
                     <div class="w-100 mb-2">
                         <label for="email" class=""> Add Language</label>
+<<<<<<< HEAD
+                        <div class="add_field_set">
+                            @if($data['language'])
+                            <select class="form-control mb-3 laguage_data" name="language">
+                                @foreach($data['language'] as $col)
+                                <option value="{{$col->id}}">{{$col->language}}</option>
+=======
                         <div class="add_field_set" >
                             @if($data['language'])
                             <select class="form-control mb-3 laguage_data" name="language" data-index="1" id="">
                                 <option value="">Select</option>
                                 @foreach($data['language'] as $col)
                                     <option value="{{$col->id}}">{{$col->language}}</option>
+>>>>>>> e085b510e9b8d64f96cf35140fe4928ed555f3bf
                                 @endforeach
                             </select>
                             @endif
                             <div class="change_button">
+<<<<<<< HEAD
+                                <a href="JavaScript:void(0)" class="adds mb-4" id="add_languages">+ Add</a>
+=======
                                 <a href="JavaScript:void(0)" class="adds mb-4" id="add_languages" data-section="1">+ Add</a>
+>>>>>>> e085b510e9b8d64f96cf35140fe4928ed555f3bf
                             </div>
                         </div>
                        
@@ -174,18 +190,30 @@
                 <div class="col-md-9 mt-3 pt-1 questionair_data">
                     <div class="w-100 mb-4">
                         <label for="headline" class=""> Headline Questionair (repeats on each page)</label>
+<<<<<<< HEAD
+                        <input type="text" class="form-control mb-2" placeholder="" id="headline" name="headline" value="{{old('headline')}}">
+=======
                         <input type="text" class="form-control mb-2" placeholder="" id="headline" name="headline[]" value="{{old('headline')}}">
+>>>>>>> e085b510e9b8d64f96cf35140fe4928ed555f3bf
                         <span><p class="headline-error text-danger"></p></span>
                     </div> 
                     <div class="w-100 mb-4">
                         <label for="start_page_field" class=""> Start Page Text</label>
+<<<<<<< HEAD
+                        <textarea class="form-control mb-2 ckeditor"  placeholder="" id="firstText" name="start_page_field"></textarea>
+=======
                         <textarea class="form-control mb-2 ckeditor"  placeholder="" id="firstText" name="start_page_field[]"></textarea>
+>>>>>>> e085b510e9b8d64f96cf35140fe4928ed555f3bf
                         <span><p class="start-page-field-error text-danger"></p></span>
                         
                     </div>  
                     <div class="w-100 mb-4">
                         <label for="last_page_field" class=""> Last Page</label>
+<<<<<<< HEAD
+                        <textarea class="form-control mb-2 ckeditor" placeholder="" id="lastText" name="last_page_field"></textarea>
+=======
                         <textarea class="form-control mb-2 ckeditor" placeholder="" id="lastText" name="last_page_field[]"></textarea>
+>>>>>>> e085b510e9b8d64f96cf35140fe4928ed555f3bf
                         <span><p class="last-page-field-error text-danger"></p></span>
                     </div>     
                 </div>
@@ -206,6 +234,11 @@
     });
 
     $(function(){
+<<<<<<< HEAD
+        $("body").on("click","#add_languages",function(){ 
+            var html = $(".add_field_set").first().clone();
+            $(html).find(".change_button").html("<a class=' mb-4 text-danger trash' >- Remove</a>");
+=======
         $("body").on("click","#add_languages",function(){
             var sectionCount = $(this).data('section') 
           
@@ -224,10 +257,17 @@
                     "</div>"+
             console.log(html)
             // $(html).find(".change_button").html("<a class=' mb-4 text-danger trash' >- Remove</a>");
+>>>>>>> e085b510e9b8d64f96cf35140fe4928ed555f3bf
             $(".add_field_set").last().after(html);
         });
         
         $('body').on('click','.trash', function(){
+<<<<<<< HEAD
+            $(this).parents(".add_field_set").remove();
+        });
+
+        
+=======
             alert('remove')
             $(this).parents(".laguage_data").remove();
         });
@@ -244,6 +284,7 @@
             $(this).html(htmlSelect)
         });
 
+>>>>>>> e085b510e9b8d64f96cf35140fe4928ed555f3bf
 
         
 
@@ -349,8 +390,13 @@
                     }
                     if(response.success== true){
                         alert(response.message);
+<<<<<<< HEAD
+                        // $('.message_show').css({'display':''});
+                        // $('.message_alert').text(message)
+=======
                         $('.message_show').css({'display':''});
                         $('.message_alert').text(message)
+>>>>>>> e085b510e9b8d64f96cf35140fe4928ed555f3bf
                         window.location.reload(); 
                     } 
                 },

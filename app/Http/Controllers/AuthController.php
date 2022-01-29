@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\LoginAccess;
 use App\Models\Customer;
 use App\Models\Language;
+use App\Models\Color;
 
 // use App\Mail\LoginAccess;
-
+// admin@gmail.com
+// Admin@12345
 
 class AuthController extends Controller
 {
@@ -30,7 +32,7 @@ class AuthController extends Controller
                 return redirect('dashboard');
             }
             else{
-                return redirect('user-profile');
+                return redirect('customer-dashboard');
             }
         }
         else{
@@ -81,7 +83,10 @@ class AuthController extends Controller
             else{
                 return redirect('user-profile');
             }
-        }/*else{
+        }else{
+            return redirect('login');
+        }
+        /*else{
             $data['type'] = 'Register Access User';
             $data['button'] = 'Sign up';
             $data['languages'] = DB::table('languages')->get();
@@ -147,11 +152,12 @@ class AuthController extends Controller
                 $cutomerModel = new Customer();
                 $data['language'] = $languageModel->getAllRecord();
                 $data['customer'] = $cutomerModel->getAllCustomer();
-                return view('questionairs.add', compact('data'));
+                return view('backend.admin-dashboard', compact('data'));
+                // return view('questionairs.add', compact('data'));
                 // return view('backend/dashbord');
             }
             else{
-                return view('user/userProfile');
+                return view('user.dashboard');
             }
         }
         return redirect('login');
@@ -163,7 +169,7 @@ class AuthController extends Controller
         if(Auth::check()){
             $id = Auth::user()->id;
             $user = User::where(['id'=>$id])->first();
-            return view('user/userProfile');
+            return view('user.dashboard');
         }
         return redirect('login');
     }
@@ -286,7 +292,7 @@ class AuthController extends Controller
                 // return redirect('access-list');
             }
             else{
-                return view('user/userProfile');
+                return view('user.dashboard');
             }
         }
     }
