@@ -148,14 +148,19 @@
                 <ul class="pagesss mb-3">
                     <li>Load Question</li>
                 </ul>
-                <div class="form-group has-search">
-                    <span class="fa fa-search form-control-feedback"></span>
-                    <input type="text" class="form-control" id='questioner_search' placeholder="Search Question">
-                </div>
+
+        
+                    <div class="form-group has-search">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="text" class="form-control"  id='questioner_search' name="questioner_search" placeholder="Search Question">
+                    </div>
+                    <div id="product_list"></div>
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card table-new">
                             <div class="card-body">
+                                <div id="product_list"></div>
                                 <table class="table">
                                     <thead class="text-primary">
                                         <tr>
@@ -166,30 +171,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach($questions as $key=>$ques)
                                         <tr>
-                                            <td>How did you like the Exhibition?</td>
-                                            <td>Skalar </td>
-                                            <td>3</td>
-                                            <td>6</td>
+                                            <td>{{$ques->question}} </td>
+                                            <td> {{$ques->questiontype->title}} </td>
+                                            <td> {{$ques->questiontype->language}} </td>
+                                            <td> {{$ques->questiontype->ans}} </td>
                                         </tr>
-                                        <tr>
-                                            <td>Age</td>
-                                            <td>Single </td>
-                                            <td>2</td>
-                                            <td>7</td>
-                                        </tr>
-                                        <tr>
-                                            <td>ZIP Code</td>
-                                            <td>Multi </td>
-                                            <td>4</td>
-                                            <td>1</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gender</td>
-                                            <td>Multi </td>
-                                            <td>7</td>
-                                            <td>3</td>
-                                        </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -321,11 +310,9 @@
                     </thead>
                     <tbody id="addee">
                         <tr>
-                            <td>
-                                1
-                            </td>
-                            <td><input type="text"  class="form-control answer" placeholder="d" name="answer[]" /></td>
-                            <td><input type="text" class="form-control display_text"  name="display_text[]" ></td>
+                            <td> 1 </td>
+                            <td><input type="text"  class="form-control answer" placeholder="" name="answer[]" /></td>
+                            <td><input type="text" class="form-control display_text" placeholder="" name="display_text[]" ></td>
 
                             <td class="text-center">
                                 <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
@@ -352,30 +339,41 @@
 
 @endsection
 
-<!-- <link href="http://demo.expertphp.in/css/jquery.ui.autocomplete.css" rel="stylesheet">
-<script src="http://demo.expertphp.in/js/jquery.js"></script>
-<script src="http://demo.expertphp.in/js/jquery-ui.min.js"></script> -->
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"> </script>
 
 <script type="text/javascript">
+    $(document).ready(function(){
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+        $("#questioner_search").keyup(function(){
+            var search = $(this).val();
+            $.ajax({
+                url:"{{route('questionairs.search')}}",
+                type: 'post',
+                dataType: "json",
+                data: {
+                   search: search
+                },
+                success: function( data ) {
+                    console.log(data);
+                    $('#product_list').html(data);
+                }
+            });
+        });
+    });
+
+
     jQuery(document).ready(function(){
-    
         $('#addform').on('submit',function(e){
             e.preventDefault();
-            //var alldata = new FormData();  
-           // var alldata = $('#addform').serialize();
-            var answers = [];
-            $.each ($(".answer"), function(){              
-                answers.push($(this).val());  
-            });
-            alert(answers);
             $.ajax({
                 type:"POST",
                 url: "{{ url('save-questionairs') }}",
                 data:$('#addform').serialize(),
                 dataType: 'json', 
-               // encode  : true,
                 success:function(response){
                     console.log(response)
                     $('.alert-success').show()
@@ -384,29 +382,4 @@
         });
     });
 
-
-   /* var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-    jQuery(document).ready(function(){
-        jQuery( "#questioner_search" ).autocomplete({
-            source: function( request, response ) {
-              $.ajax({
-                url:"{{route('questionairs.search')}}",
-                type: 'post',
-                dataType: "json",
-                data: {
-                   _token: CSRF_TOKEN,
-                   search: request.term
-                },
-                success: function( data ) {
-                   response( data );
-                }
-              });
-            },
-            select: function (event, ui) {
-               $('#questioner_search').val(ui.item.label); 
-               //$('#blogid').val(ui.item.value); 
-               return false;
-            }
-        });
-    });*/
 </script>

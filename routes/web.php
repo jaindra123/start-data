@@ -52,7 +52,7 @@ Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
 //Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');
 Route::get('questionairs',[QuestionairController::class,'AllQuestionairs']);
 Route::post('save-questionairs',[QuestionairController::class,'QuestionairSave'])->name('questionairs.save');
-Route::post('/autocomplete',[QuestionairController::class,'AutoCompleteSearch'])->name('questionairs.search');
+Route::post('autocomplete',[QuestionairController::class,'AutoCompleteSearch'])->name('questionairs.search');
 
 
 

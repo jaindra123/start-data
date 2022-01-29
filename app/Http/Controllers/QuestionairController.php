@@ -105,20 +105,18 @@ class QuestionairController extends Controller
     #----------------------------All Questions -----------------------------#  
     public function AllQuestionairs(){   
         $languages = DB::table('languages')->get();
-        $questions = Question::with('option')->with('questiontype')->get();
+        $questions = Question::with('option')->with('questiontype')
+                    ->join('languages as lang', 'questions.language', '=', 'lang.language_code')
+                    ->get(['lang.language', 'questions.*']);
         return view('backend.questionair-tool',compact('questions','languages'));
     }
     #---------------------------  ------------------------------#   
     public function QuestionairSave(Request $request) {
-       
-        
         $this->validate($request,[
             'question'=>'required|unique:questions,question,NULL,id,question_type_id,'.$request->question_type_id,
             'question_type_id'=>'required',
         ]);
         $data = $request->all();
-        print_r($data);
-        die();
         $ques= Question::create([
             'language' => $request->language,
             'question' => $request->question,
@@ -126,14 +124,13 @@ class QuestionairController extends Controller
             'question_type_id' => $request->question_type_id,
         ]);
         
-        if(count($request->option) > 0) {
-            foreach ($request->option as $item=>$v) {
+        if(count($request->answer) > 0) {
+            foreach ($request->answer as $item=>$v) {
                 $datad=array(
                   'questions_id'=>$ques->id,
-                  'option'=>$request->option[$item],
+                  'option'=>$request->answer[$item],
                   'display_text'=>$request->display_text[$item]
                 );
-                
                 Option::insert($datad);
             }
         }
@@ -141,15 +138,21 @@ class QuestionairController extends Controller
     }
     #--------------------------- Search  -------------------#
     public function AutoCompleteSearch(Request $request){
-        $search = $request->search;
-        $query = $request->get('term','');
-        $questions=Question::where('title','LIKE','%'.$query.'%')->get();
-
-        $response = array();
-        foreach($questions as $question){
-            $response[] = array("value"=>$question->question);
+        $query = $request->search;
+        $questions = DB::table('questions')->where('question','LIKE','%'.$query.'%')->get();
+        $output = '';
+        if (count($questions)>0) {
+            $output = '<table class="table"> <thead class="text-primary"><tr> <th> Question Name </th> <th> Question Type </th> </tr></thead>   <tbody>';
+            foreach ($questions as $question) {
+                $output .= '<tr> <td>'.$question->question.'</td> </tr>';
+                $output .= '<tr> <td> '.$question->question_type_id.'</td> </tr>';
+            }
+            $output .= '</tbody></table>';
+        }else {
+            $output .= '<div class="list-group-item">'.'No Data Found'.'</div>';
         }
-      return response()->json($response);
+        return $output;
+        return response()->json($questions);
     }
     #---------------------------  -------------------#
 }

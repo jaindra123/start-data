@@ -275,12 +275,12 @@ Coded by www.creative-tim.com
             $(document).ready(function () {
 
                 var html =
-                    '<tr><td>1</td><td><input type="text" class="form-control" placeholder=""></td><td><input type="text" class="form-control" placeholder=""></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
+                    '<tr><td>1</td><td><input type="text" class="form-control" placeholder="888" "></td><td><input type="text" class="form-control" placeholder="22"></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
                 $("#addProduct").click(function () {
                     $('tbody#addee').append(html);
                 });
                 var html =
-                    '<tr><td>1</td><td><input type="text" class="form-control" placeholder=""></td><td><input type="text" class="form-control" placeholder=""></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
+                    '<tr><td>1</td><td><input type="text" class="form-control answer" name="answer[]" placeholder=""></td><td><input type="text" class="form-control display_text" name="display_text[]" placeholder=""></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
                 $("#addProducts").click(function () {
                     $('tbody#addeed').append(html);
                 });
