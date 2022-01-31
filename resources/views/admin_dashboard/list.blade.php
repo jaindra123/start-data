@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title','Create New Questionair')
+@section('title','Dashboard')
 
 @section('content')
 @push('css-script')
@@ -147,7 +147,7 @@
                             <td>{{$row->password_for_protected_link}}</td>
                             <td>{{$row->updated_at == NULL ? changeNewsDateFormat($row->created_at) : changeNewsDateFormat($row->updated_at)}} </td>
                             <td>0</td>
-                            <td class="text-left"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+                            <td class="text-left"> <a href="{{url($row->url_link)}}" target="_blank"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
                           </tr>
                             @endforeach
                           @endif

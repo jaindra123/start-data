@@ -8,6 +8,7 @@ use App\Http\Controllers\QuestionairController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionTypeController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\SurveyController;
 
 
 /*
@@ -69,7 +70,7 @@ Route::get('dashboard', [AuthController::class, 'dashboard'])->name('dashboard')
 Route::get('user-profile', [AuthController::class, 'userProfile']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('access-list', [AuthController::class, 'accessList'])->name('accesslist');
-Route::get('delete-customer/{id}', [AuthController::class, 'delecteCustomer'])->name('delete.cutomer');
+Route::post('delete-customer/{id}', [AuthController::class, 'delecteCustomer'])->name('delete.cutomer');
 Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegistration'])->name('edit.registration');//edit registration
 
 //Sending Email
@@ -81,11 +82,11 @@ Route::view('questionair','backend.questionair-tool');
 Route::view('admin-dashboard','backend.admin-dashboard');
 // Route::view('dashbord','backend.dashbord');
 Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
-Route::view('question','frontend.web');
-Route::view('survey-start','frontend.survey-start');
-Route::view('survey-end','frontend.survey-end');
+// Route::view('question/{id}','frontend.web');
+// Route::view('survey-start/{id}','frontend.survey-start');
+// Route::view('survey-end/{id}','frontend.survey-end');
 Route::view('dataset','backend.dataset');
-Route::view('customer-dashboard','user.dashboard');
+// Route::view('customer-dashboard','user.dashboard');
 Route::view('cross-reference','user.cross-reference');
 Route::view('cross-ref','user.cross-ref');
 Route::view('analysis-platform-select-data','user.analysis-platform-select-data');
@@ -105,3 +106,8 @@ Route::post('remove-session-questionairs',[QuestionairController::class,'remove_
 //Theme Color & Language Set
 Route::post('set-color',[ColorController::class,'addColor'])->name('add-color');
 Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-language');
+
+//Survey
+Route::get('survey-start/{questionair}/{language}',[SurveyController::class,'surveyStart'])->name('survey-start');
+Route::get('question/{questionair}/{language}',[SurveyController::class,'survey'])->name('question');
+Route::get('survey-end/{questionair}/{language}',[SurveyController::class,'surveyEnd'])->name('survey-end');

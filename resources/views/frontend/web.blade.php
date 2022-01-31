@@ -4,7 +4,8 @@
 
 @section('front')
 @php
-    $questionair = questionair();
+    $url_id = Request::segment(2);
+    //$questionair = questionair($url_id);
 @endphp
 <div class="wrapper">
     <div class="survey-start">
@@ -95,7 +96,8 @@
     $(document).ready(function () {
         setInterval(displayHello, {{$questionair->idle_timer*1000}});
         function displayHello() {
-            window.location.href = "{{url('survey-start')}}";
+            alert('Time Expired');
+            window.location.href = "{{url('survey-start/'.$url_id.'/'.$questionair->language_id)}}";
         }
     });
 </script>

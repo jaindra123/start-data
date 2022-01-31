@@ -80,17 +80,24 @@ function systemLanguage(){
     }
 }
 
-function questionair(){
-    // if(Auth::check()){
-        // $id = Auth::user()->id;
-        // $customer_id = Auth::user()->customer_id;
-        $customer_id = 1;
-        return $data = Questionair::where([
-            ['select_customer',$customer_id],
-            ['status', '1'],
-            ['is_publish', '1']
-        ])->first();
-    // }
+function getLanguage($value){
+    $data = DB::table('languages')->where('deleted_at',NULL)->where('id',$value)->get();
+    return $data;
+}
+
+function questionair($id){
+    // echo $id;
+    // return $data = Questionair::where([['id',$id],['status', '1'],['is_publish', '1']])->first();
+    /*
+    if(Auth::check()){
+        $id = Auth::user()->id;
+        $customer_id = Auth::user()->customer_id;
+        // $customer_id = 1;
+        $data = Questionair::where([['select_customer',$customer_id],['status', '1'],['is_publish', '1']])->first();
+        if(!empty($data)){
+            return $data;
+        }
+    }*/
 }
 
 ?>
