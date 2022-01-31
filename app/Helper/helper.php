@@ -79,10 +79,10 @@ function systemLanguage(){
 }
 
 
-function getLanguage($value){
-    $data = DB::table('languages')->where('deleted_at',NULL)->where('id',$value)->get();
-    return $data;
-}
+// function getLanguage($value){
+//     $data = DB::table('languages')->where('deleted_at',NULL)->where('id',$value)->get();
+//     return $data;
+// }
 
 function questionair($id){
     // echo $id;
@@ -97,6 +97,7 @@ function questionair($id){
             return $data;
         }
     }*/
+}
 
 
 function encrypt_decrypt($string, $action = 'encrypt')

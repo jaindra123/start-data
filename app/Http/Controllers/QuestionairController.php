@@ -74,6 +74,11 @@ class QuestionairController extends Controller
 
         $selectedOption =  $request->langSelectedOption;
         $selOption = substr($selectedOption, -1);
+        if(substr($request->language,-1) == ''){
+            $lang = $request->language;
+        }else{   
+            $lang = substr($request->language,-1);
+        }
         $data = [
             'name'                          =>      trim(ucfirst($request->questionair)),
             'year'                          =>      trim($request->year),
