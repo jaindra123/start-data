@@ -97,6 +97,7 @@ Coded by www.creative-tim.com
             });
         });
     </script>
+    @stack('js-script')
 </body>
 
 </html>

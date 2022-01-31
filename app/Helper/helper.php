@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Color;
 use App\Models\SystemLanguage;
+use App\Models\Questionair;
 
 
 function randAlphaNumericStringGenerator($n) {
@@ -78,6 +79,26 @@ function systemLanguage(){
 }
 
 
+function getLanguage($value){
+    $data = DB::table('languages')->where('deleted_at',NULL)->where('id',$value)->get();
+    return $data;
+}
+
+function questionair($id){
+    // echo $id;
+    // return $data = Questionair::where([['id',$id],['status', '1'],['is_publish', '1']])->first();
+    /*
+    if(Auth::check()){
+        $id = Auth::user()->id;
+        $customer_id = Auth::user()->customer_id;
+        // $customer_id = 1;
+        $data = Questionair::where([['select_customer',$customer_id],['status', '1'],['is_publish', '1']])->first();
+        if(!empty($data)){
+            return $data;
+        }
+    }*/
+
+
 function encrypt_decrypt($string, $action = 'encrypt')
 {
     $encrypt_method = "AES-256-CBC";
@@ -92,6 +113,7 @@ function encrypt_decrypt($string, $action = 'encrypt')
         $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
     }
     return $output;
+
 }
 
 ?>
