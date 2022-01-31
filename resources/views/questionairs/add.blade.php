@@ -167,6 +167,8 @@
                             @endforeach
                             </select>
                             @endif
+                            <span><p class="customer-error text-danger"></p></span>
+
                         </div>
                     </div>
                 </div>
@@ -213,8 +215,8 @@
             $(this).data('section',upSection);
 
             var headlineData = $('#headline').val();
-            var firstText = $('#firstText').val();
-            var lastText = $('#lastText').val();
+            var firstText =  CKEDITOR.instances.firstText.getData(); 
+            var lastText = CKEDITOR.instances.lastText.getData();
 
             // var langSelect =  $("#s"+sectionCount).val($("#s"+sectionCount+" option:first").val());
             console.log('section=====', $("#s"+sectionCount).val() );
@@ -225,7 +227,7 @@
             var langSelect = $("#s"+sectionCount).prop("selectedIndex", 0).val();
             console.log('selected lang', langSelect)
 
-            if($("#s"+sectionCount).val()=='' ){
+            if($("#s"+sectionCount).val() =='' ){
                 alert("Please Select any Language");
                 return;
             }
@@ -272,8 +274,8 @@
                 dataType: 'json',
                 data: {
                     headline:headlineData,
-                    firstText:headlineData,
-                    lastText:headlineData,
+                    firstText:firstText,
+                    lastText:lastText,
                     language:selectedValue,
                     langS : langSelect,
                 },
@@ -286,11 +288,41 @@
 
         });
         
+
+        $('body').on('click','#langAdd', function(){
+            var sectionCount = $(this).data('section') 
+
+            var upSection = parseInt(sectionCount)+1;
+        
+            $(this).data('section',upSection);
+            var language_data = '<?=  getAllLanguage() ?>'
+            language_data = JSON.parse(language_data)
+            var html  = "<div class='add_field_set' ><select class='form-control mb-3 laguage_data' name='language' data-index='"+upSection+"' id='s"+upSection+"'>"+
+                            "<option value=''>Select</option>";
+                            
+            $.each( language_data, function( key, value ) { 
+
+                html +="<option value='"+value.id+"'>"+value.language+"</option>"
+            })
+            html +="</select><div class='change_button'>"+
+                        "<a class=' mb-4 text-danger trash' data-indexT="+upSection+"  id='removeOption"+upSection+"' data-k='0'>- Remove</a>"+
+                    "</div></div>";
+            // $(html).find(".change_button").html("<a class=' mb-4 text-danger trash' >- Remove</a>");
+            $(".add_field_set").last().after(html); 
+        });
+
         $('body').on('click','.trash', function(){
             // alert('remove')
             $(this).parents(".add_field_set").remove();
             var langId = $(this).data('k')
-            
+
+            if(langId == '0'){
+                $('#add_languages').prop('id', 'langAdd');
+                return;
+            }
+
+            $('#add_languages').prop('id', 'langAdd');
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -321,6 +353,9 @@
             var getLanguageId = $(this).find('option:selected').val();
             console.log('lnag = ',getLanguageId)
 
+            if($('#langAdd').length){
+                $('#langAdd').prop('id', 'add_languages')
+            }
             // if(getLanguageId == 'deactivate' || getLanguage == 'Deactivate'){
             //    var getLanguage1 = $(this).prop("selectedIndex", 0);
             //     // getLanguage = getLanguage1.data('i');
@@ -336,8 +371,23 @@
 
             if(getLanguageId == 'delete'){
                 // return;
-                $("#s"+indexV).remove();
-                $("#removeOption"+indexV).remove();
+                $('#add_languages').prop('id', 'langAdd')
+                if(indexV == '1'){
+                    var language_data = '<?=  getAllLanguage() ?>'
+                    language_data = JSON.parse(language_data)
+                    var html  = "<select class='form-control mb-3 laguage_data' name='language' data-index='1' id='s1'>"+
+                                    "<option value=''>Select</option>";
+                                    
+                    $.each( language_data, function( key, value ) { 
+
+                        html +="<option value='"+value.id+"'>"+value.language+"</option>"
+                    })
+                    html +="</select>";
+                    $("#s"+indexV).html(html)
+                }else{
+                    $("#s"+indexV).remove();
+                    $("#removeOption"+indexV).remove();
+                }
                 $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -410,6 +460,7 @@
 
             formData.append('language', language);
             formData.append('published', 1);
+            formData.append('urlLink','start-survey')
             formData.append('langSelectedOption',selectedOption);
             formData.append('start_page_field', firstTextdata);
             formData.append('last_page_field', lastTextdata);
@@ -454,7 +505,8 @@
                         alert(response.message);
                         // $('.message_show').css({'display':''});
                         // $('.message_alert').text(message)
-                        window.location.reload(); 
+                        window.location.href = '{!! route("dashboard") !!}'
+                        // window.location.reload(); 
                         <?= langSessionDestroy() ?>
                     } 
                 },
@@ -540,7 +592,8 @@
                         alert(response.message);
                         // $('.message_show').css({'display':''});
                         // $('.message_alert').text(message)
-                        window.location.reload(); 
+                        window.location.href = '{!! route("dashboard") !!}'
+                        // window.location.reload(); 
                         <?= langSessionDestroy() ?>
                     } 
                 },
