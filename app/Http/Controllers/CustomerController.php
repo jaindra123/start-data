@@ -23,7 +23,7 @@ class CustomerController extends Controller
                     ->orderBy('customers.id','ASC')
                     ->get(['customers.*', 'industries.industry', 'countries.country']);
 
-        return view('customer/customer-data', compact('customers','countries','industries'));
+        return view('customer/list', compact('customers','countries','industries'));
     }
 #--------------------------- Insert/Edit Customer ------------------------------#   
     public function store(Request $request) {

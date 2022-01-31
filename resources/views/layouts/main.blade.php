@@ -82,8 +82,9 @@ $user = checkUser();
                             <p>ACCESS MANAGEMENT </p>
                         </a>
                     </li>
-                    <li>
-                        <a href="#">
+
+                    <li class="{{ request()->is('customer-list') ? 'active' : '' }}">
+                        <a href="{{url('customer-list')}}">
                             <p>ADD NEW USER</p>
                         </a>
                     </li>
