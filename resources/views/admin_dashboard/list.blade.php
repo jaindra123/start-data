@@ -123,7 +123,7 @@
 						<td>{{$row->password_for_protected_link}}</td>
 						<td>{{$row->updated_at == NULL ? changeNewsDateFormat($row->created_at) : changeNewsDateFormat($row->updated_at)}} </td>
 						<td>0</td>
-						<td class="text-left"><i id="link{{$row->id}}" href="{{config('CONSTANT.QUESTIONAIR_URL')}}/{{$row->url_link}}" data-index="{{$row->id}}" class="fa fa-pencil-square-o linkCopy" aria-hidden="true"></i></td>
+						<td class="text-left"><i id="link{{$row->id}}" href="{{config('CONSTANT.QUESTIONAIR_URL')}}/{{$row->url_link}}/{{$row->language_id}}" data-index="{{$row->id}}" class="fa fa-pencil-square-o linkCopy" aria-hidden="true"></i></td>
 						</tr>
 						@endforeach
 						@endif
@@ -167,7 +167,7 @@
 						<td>{{$row->password_for_protected_link}}</td>
 						<td>{{$row->updated_at == NULL ? changeNewsDateFormat($row->created_at) : changeNewsDateFormat($row->updated_at)}} </td>
 						<td>0</td>
-						<td class="text-left"><i id="link{{$row->id}}"  href="{{config('CONSTANT.QUESTIONAIR_URL')}}/{{$row->url_link}}" data-index="{{$row->id}}" class="fa fa-pencil-square-o linkCopy" aria-hidden="true"></i></td>
+						<td class="text-left"><i id="link{{$row->id}}"  href="{{config('CONSTANT.QUESTIONAIR_URL')}}/{{$row->url_link}}/{{$row->language_id}}" data-index="{{$row->id}}" class="fa fa-pencil-square-o linkCopy" aria-hidden="true"></i></td>
 						</tr>
 						@endforeach
 						@endif
