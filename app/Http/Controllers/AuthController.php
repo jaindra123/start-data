@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 use App\Mail\LoginAccess;
 use App\Models\Customer;
 use App\Models\Language;
@@ -183,7 +184,15 @@ class AuthController extends Controller
         if(Auth::check()){
             $id = Auth::user()->id;
             $user = User::where(['id'=>$id])->first();
-            return view('user.dashboard');
+            $customer_id = Auth::user()->customer_id;
+            $questionairsModel = new Questionair();
+            $activeCondition = ['is_publish' => 1, 'status'=>1,['select_customer','=',$customer_id],'protected_link'=>1];
+            $inactiveCondition = ['is_publish' => 0, 'status'=>0,['select_customer','=',$customer_id],'protected_link'=>1];
+            $activeCount = $questionairsModel->getCountWithCondition($activeCondition);
+            $inactiveCount = $questionairsModel->getCountWithCondition($inactiveCondition);
+            $activeRecord = $questionairsModel->getAllRecordWithCondition($activeCondition);
+            $inactiveRecord = $questionairsModel->getAllRecordWithCondition($inactiveCondition);
+            return view('user.dashboard', compact(['activeCount','inactiveCount','activeRecord','inactiveRecord']));
         }
         return redirect('login');
     }
@@ -291,19 +300,14 @@ class AuthController extends Controller
         }
     }
 
-    public function delecteCustomer($value){
+    public function delecteCustomer(Request $request, $value){
         if(Auth::check()){
             $id = Auth::user()->id;
             $user = User::where(['id'=>$id])->first();
             if($user->role == 'admin'){
-                // return view('dashboard');
-                // echo $value;
-                // die;
-                $user = User::find($value);
-                return view('backend.delete', compact('user'));
-                // User::where('id',$value)->delete();
-                // $request->session()->flash('msg','Customer access credentials deleted Successfully');
-                // return redirect('access-list');
+                User::where('id',$value)->delete();
+                $request->session()->flash('message','Customer access credentials deleted Successfully');
+                return Redirect::to('access-list');
             }
             else{
                 return view('user.dashboard');

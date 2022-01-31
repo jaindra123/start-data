@@ -55,7 +55,7 @@ $user = checkUser();
     <div class="wrapper ">
         <div class="sidebar" data-color="#323759" data-active-color="danger">
             <div class="logo">
-                <a href="https://www.creative-tim.com" class="simple-text logo-mini">
+                <a href="@if($user->id == 1){{url('dashboard')}}@else{{url('user-profile')}}@endif" class="simple-text logo-mini">
                     <div class="logo-image-small">
                         <img src="{{asset('assets/img/new-logo.svg')}}">
                     </div>
@@ -90,7 +90,7 @@ $user = checkUser();
                 </ul>
                 @else
                 <ul class="nav">
-                    <li class=" {{ request()->is('customer-dashboard') ? 'active' : '' }}  ">
+                    <li class=" {{ request()->is('customer-dashboard') || request()->is('user-profile') ? 'active' : '' }}  ">
                         <a href="#">
                             <p>DASHBOARD</p>
                         </a>
@@ -438,17 +438,17 @@ $user = checkUser();
                 demo.initChartsPages();
             });
             $(document).ready(function () {
+                var html =
+                    '<tr><td>1</td><td><input type="text" class="form-control answer" name="answer[]" placeholder=""></td><td><input type="text" class="form-control display_text" name="display_text[]" placeholder=""></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
+                $("#addMore").click(function () {
+                    $('tbody#add_more').append(html);
+                });
 
-                var html =
-                    '<tr><td>1</td><td><input type="text" class="form-control" placeholder=""></td><td><input type="text" class="form-control" placeholder=""></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
-                $("#addProduct").click(function () {
-                    $('tbody#addee').append(html);
-                });
-                var html =
-                    '<tr><td>1</td><td><input type="text" class="form-control" placeholder=""></td><td><input type="text" class="form-control" placeholder=""></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
-                $("#addProducts").click(function () {
-                    $('tbody#addeed').append(html);
-                });
+               /* var html1 =
+                    '<tr><td>1</td><td><input type="text" class="form-control single-ans" name="single_answer[]" placeholder="888" "></td><td><input type="text" class="form-control" placeholder="22"></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
+                $("#addSingleChoice").click(function () {
+                    $('tbody#single_choice').append(html1);
+                });*/
                 $(document).on('click', '.remove', function () {
                     $(this).parents('tr').remove();
                 });

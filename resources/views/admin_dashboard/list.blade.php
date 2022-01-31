@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title','Create New Questionair')
+@section('title','Dashboard')
 
 @section('content')
 @push('css-script')
@@ -181,6 +181,7 @@
 				</div>
 			</div>
 			</div>
+
               
         </div>
       </div>

@@ -54,10 +54,11 @@
                                             <td>{{$value->language[0]['language']}}</td>
                                             <td>{{$value->customer[0]['customer_name']}}</td>
                                             <td class="text-left">
-                                                <a href="{{route('edit.registration',['id'=>$value->id])}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> | 
-                                                {{-- <a data-toggle="modal" data-target="#deleteModal" href="{{route('delete.cutomer',['id'=>$value->id])}}"><i class="fa fa-trash-o" aria-hidden="true"></i></a> | --}}
+                                                <a href="{{route('edit.registration',['id'=>$value->id])}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> |
+                                                <a href="#" data-toggle="modal" data-target="#modalDelete{{$value->id}}"><i class="fa fa-trash-o" aria-hidden="true"></i></a> |
                                                 <a href="{{route('email.send',['id'=>$value->id])}}"><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
                                             </td>
+                                            @include('accessManagement.delete')
                                         </tr>
                                     @endforeach
                                 @else
