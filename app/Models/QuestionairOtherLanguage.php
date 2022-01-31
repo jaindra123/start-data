@@ -22,4 +22,16 @@ class QuestionairOtherLanguage extends Model
     public function inserRecord($data){   
         return QuestionairOtherLanguage::create($data);
     }
+
+    public function getRecordWithCondition($condition){
+        return QuestionairOtherLanguage::where('deleted_at',NULL)
+            ->where('status','<>',2)
+            ->where($condition)
+            ->get();
+    }
+
+    public function getSingleRecord($condition){
+        return QuestionairOtherLanguage::where('deleted_at',NULL)->where($condition)->first();
+        
+    }
 }
