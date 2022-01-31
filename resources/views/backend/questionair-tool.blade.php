@@ -54,7 +54,9 @@
         </div>
     </nav> --}}
     <!-- End Navbar -->
+   
     <div class="content quereszz">
+        <div class="alert alert-success" role="alert" style="display: none;"> Question Added Successfully!</div>
         <div class="row">
             <div class="col-md-12">
                 <h1>Questionair Development</h1>
@@ -326,7 +328,7 @@
         <!--End Multiple Choice Question-->
 
         <!--Start Single Choice Question-->
-       <!--  <form action="{{route('questionairs.save')}}" method="POST"  id="addsingleform">
+        <form action="{{route('questionairs.save')}}" method="POST"  id="addsingleform">
             {{csrf_field()}}
         <div class="row w-100 mt-5 mb-5">
             <div class="col-md-9">
@@ -444,7 +446,7 @@
                 <button class="btndfd" id="single_choice">+ Add</button>
             </div>
         </div>
-    </form> -->
+    </form>
         <!--Single Choice Question-->
 
     </div>
@@ -511,7 +513,7 @@
             });
         });
 
-        $('#addsingleform').on('submit',function(e){
+       /* $('#addsingleform').on('submit',function(e){
             e.preventDefault();
             $.ajax({
                 type:"POST",
@@ -523,7 +525,7 @@
                     $('.alert-success').show()
                 },
             });
-        });
+        });*/
     });
 
  

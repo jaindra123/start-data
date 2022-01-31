@@ -83,7 +83,8 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <button class="custom-button"><i class="fa fa-pencil" aria-hidden="true"></i> Start Edit</button>
+                    <button class="custom-button"><i class="fa fa-pencil" aria-hidden="true"></i>
+                        <a href="{{url('question-list')}}" target="_blank" style="color: #fff;"> Start Edit</a></button>
                     <button class="custom-button" id="safe_questionairs"><i class="fa fa-floppy-o" aria-hidden="true"></i> Safe Draft</button>
                     <button class="custom-button"><i class="fa fa-trash" aria-hidden="true"></i> Delete Draft</button>
                 </div>

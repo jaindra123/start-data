@@ -51,7 +51,7 @@ Route::post('save-question',[QuestionController::class,'store'])->name('question
 Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
 //Route::get('survey/{id}', [QuestionController::class, 'survey']);
 //Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');
-Route::get('questionairs',[QuestionairController::class,'AllQuestionairs']);
+Route::get('question-list',[QuestionairController::class,'AllQuestionairs']);
 Route::post('save-questionairs',[QuestionairController::class,'QuestionairSave'])->name('questionairs.save');
 Route::post('autocomplete',[QuestionairController::class,'AutoCompleteSearch'])->name('questionairs.search');
 Route::get('questionairs/{id}', [QuestionairController::class, 'delete'])->name('questionairs.delete');
