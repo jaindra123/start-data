@@ -54,6 +54,7 @@ Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
 Route::get('questionairs',[QuestionairController::class,'AllQuestionairs']);
 Route::post('save-questionairs',[QuestionairController::class,'QuestionairSave'])->name('questionairs.save');
 Route::post('autocomplete',[QuestionairController::class,'AutoCompleteSearch'])->name('questionairs.search');
+Route::get('questionairs/{id}', [QuestionairController::class, 'delete'])->name('questionairs.delete');
 
 
 

@@ -13,7 +13,7 @@
                           <form action="" method="POST" name="exam">
 											        {{csrf_field()}}
 											        <div class="col-md-12">
-											            @foreach($questions as $key=>$ques)
+											          @foreach($questions as $key=>$ques)
 															<hr>
 															<h6 style="color:red">Question Type : {{$ques->questiontype->title}}</h6>
 															@if ($ques->question_type_id == 2)

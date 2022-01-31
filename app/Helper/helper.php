@@ -14,13 +14,11 @@ function randAlphaNumericStringGenerator($n) {
         $index = rand(0, strlen($characters) - 1);
         $randomString .= $characters[$index];
     }
-  
     return $randomString;
 }
 
 
 function getAllLanguage(){
-    
     $data = DB::table('languages')->where('deleted_at',NULL)->get();
     return $data;
 }
@@ -29,8 +27,6 @@ function getAllLanguage(){
 function langSessionDestroy(){
     if(session()->has('ques_lang')){
         session()->forget('ques_lang');
-
-
     }
 }
 

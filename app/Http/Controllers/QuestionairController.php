@@ -25,12 +25,8 @@ class QuestionairController extends Controller
     }
     public function store_questionairs(Request $request){
         $questionairModel  = new Questionair();
-
-
         $quesOtherLangModel = new QuestionairOtherLanguage();
-
         // print_r($request->all()); die;
-
         $validator = validator()->make($request->post(),[
                 'questionair'               => 'required|string',
                 'year'                      => 'required|digits:4|numeric',
@@ -74,30 +70,9 @@ class QuestionairController extends Controller
         } else {
             $last_page_picture = '';
         }
-
-
-     //   if(($request->published) != 0){
-          //  $lang = $request->language;
-       // }else{
-         //   $languages = $request->language;
-         //   $lang = implode(",",$languages);
-      //  }
-
-        // if(($request->published) != 0){
-        //     $lang = $request->language;
-        // }else{
-        //     $languages = $request->language;
-        //     $lang = implode(",",$languages);
-        // }
-        
         $lang = substr($request->language,-1);
         $selectedOption =  $request->langSelectedOption;
         $selOption = substr($selectedOption, -1);
-
-        // print_r($selectedOption);echo '<br>';
-        //     print_r($selOption);
-        // die;
-
         $data = [
             'name'                          =>      trim(ucfirst($request->questionair)),
             'year'                          =>      trim($request->year),
@@ -151,7 +126,7 @@ class QuestionairController extends Controller
     public function AllQuestionairs(){   
         $languages = DB::table('languages')->get();
         $questions = Question::with('option')->with('questiontype')
-                    ->join('languages as lang', 'questions.language', '=', 'lang.language_code')
+                    ->join('languages as lang', 'questions.lang_code', '=', 'lang.language_code')
                     ->get(['lang.language', 'questions.*']);
         return view('backend.questionair-tool',compact('questions','languages'));
     }
@@ -162,11 +137,14 @@ class QuestionairController extends Controller
             'question_type_id'=>'required',
         ]);
         $data = $request->all();
+        print_r($data );
+        exit;
         $ques= Question::create([
-            'language' => $request->language,
+            'lang_code' => $request->language,
             'question' => $request->question,
             'std_qns' => $request->std_qns,
             'question_type_id' => $request->question_type_id,
+            'dependent_answer' => $request->dependent_answer,
         ]);
         
         if(count($request->answer) > 0) {
@@ -184,23 +162,32 @@ class QuestionairController extends Controller
     #--------------------------- Search  -------------------#
     public function AutoCompleteSearch(Request $request){
         $query = $request->search;
-        $questions = DB::table('questions')->where('question','LIKE','%'.$query.'%')->get();
+        $questions = Question::with('option')->with('questiontype')
+                    ->join('languages as lang', 'questions.lang_code', '=', 'lang.language_code')
+                    ->where('question','LIKE','%'.$query.'%')
+                    ->get(['lang.language', 'questions.*']);
         $output = '';
         if (count($questions)>0) {
-            $output = '<table class="table"> <thead class="text-primary"><tr> <th> Question Name </th> <th> Question Type </th> </tr></thead>   <tbody>';
+            $output = '<table class="table"> <thead class="text-primary"><tr> <th> Question Name </th> <th> Question Type </th><th>Languages</th><th>Answers</th> </tr></thead>   <tbody>';
             foreach ($questions as $question) {
-                $output .= '<tr> <td>'.$question->question.'</td> </tr>';
-                $output .= '<tr> <td> '.$question->question_type_id.'</td> </tr>';
+                $output .= '<tr> <td>'.$question->question.'</td> ';
+                $output .= ' <td> '.$question->question_type_id.'</td> ';
+                $output .= ' <td> '.$question->language.'</td> ';
+                $output .= ' <td> Ans</td> </tr>';
             }
             $output .= '</tbody></table>';
         }else {
             $output .= '<div class="list-group-item">'.'No Data Found'.'</div>';
         }
-        return $output;
-        return response()->json($questions);
+        return response()->json($output);
     }
     #---------------------------  -------------------#
-
+    public function delete($id)
+    {
+        Question::find($id)->delete();
+        return back()->with('success','Question deleted successfully');
+    }
+ #---------------------------  -------------------#
     public function store_session_questionairs(Request $request){
         // print_r($request->all());
         // $request->session()->forget('ques_lang'); 
