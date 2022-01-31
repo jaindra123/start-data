@@ -36,7 +36,7 @@
                                             <td>{{$customer->customer_email}}</td>
                                             <td>{{$customer->customer_type}}</td>
                                             <td>{{$customer->industry}}</td>
-                                            <td> <img src="{{url('/customer_logo',$customer->customer_logo)}}" style="width: 40%;"></td>
+                                            <td> <img src="{{url('/public/customer_logo',$customer->customer_logo)}}" style="width: 40%;"></td>
                                             <td>{{ $customer->country }}</td>
                                             <td>{{ $customer->state }}</td>
                                             <td>{{ $customer->zip }}</td>

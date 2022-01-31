@@ -155,9 +155,9 @@ class QuestionairController extends Controller
             'question'=>'required|unique:questions,question,NULL,id,question_type_id,'.$request->question_type_id,
             'question_type_id'=>'required',
         ]);
-        $data = $request->all();
-        print_r($data );
-        exit;
+        //$data = $request->all();
+       // print_r($data );
+       // exit;
         $ques= Question::create([
             'lang_code' => $request->language,
             'question' => $request->question,
