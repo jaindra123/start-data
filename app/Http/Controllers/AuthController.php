@@ -150,21 +150,22 @@ class AuthController extends Controller
             if($user->role == 'admin'){
                 // return view('dashboard');
                 $questionairsModel = new Questionair();
-                $draftCondition = ['is_publish' => 0,'status'=>0,'select_customer'=>0,'protected_link'=>0 ];  
-                $activeCondition = ['is_publish' => 1, 'status'=>1,['select_customer','>=',1],'protected_link'=>1];
-                $inactiveCondition = ['is_publish' => 0, 'status'=>0,['select_customer','>=',1],'protected_link'=>1];
+                $draftCondition = ['url_link'=>NULL,['status','<>',2]];  
+                $activeCondition = ['is_publish' => 1, 'status'=>1,['select_customer','>=',1]];
+                $inactiveCondition = ['is_publish' => 0, 'status'=>0,['select_customer','>=',1]];
 
                 $draftCount = $questionairsModel->getCountWithCondition($draftCondition);
 
-                $activeCount = $questionairsModel->getCountWithCondition($activeCondition);
+                $activeCount = $questionairsModel->getActiveAndInactiveRecordsCount($activeCondition);
 
-                $inactiveCount = $questionairsModel->getCountWithCondition($inactiveCondition);
+                $inactiveCount = $questionairsModel->getActiveAndInactiveRecordsCount($inactiveCondition);
         
-                $draftRecord = $questionairsModel->getAllRecordWithCondition($draftCondition);
+                $draftRecord =   Questionair::where($draftCondition)->where('deleted_at',NULL)->orderBy('created_at','DESC')->paginate(6,['*'],'draft_paginate');
 
-                $activeRecord = $questionairsModel->getAllRecordWithCondition($activeCondition);
 
-                $inactiveRecord = $questionairsModel->getAllRecordWithCondition($inactiveCondition);
+                $activeRecord = Questionair::where($activeCondition)->where('deleted_at',NULL)->orderBy('created_at','DESC')->paginate(6,['*'],'active_paginate');
+
+                $inactiveRecord = Questionair::where($inactiveCondition)->where('deleted_at',NULL)->orderBy('created_at','DESC')->paginate(6,['*'],'inactive_paginate');
                 return view('admin_dashboard.list', compact(['draftCount','activeCount','inactiveCount','draftRecord','activeRecord','inactiveRecord']));
                 // return view('questionairs.add', compact('data'));
                 // return view('backend/dashbord');

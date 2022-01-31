@@ -25,6 +25,11 @@ function getAllLanguage(){
     return $data;
 }
 
+function getLanguage($id){
+    $data = DB::table('languages')->where('deleted_at',NULL)->where('id',$id)->first();
+    return $data;
+
+}  
 
 function langSessionDestroy(){
     if(session()->has('ques_lang')){
@@ -38,11 +43,8 @@ function getLanguageIdFromSession(){
     if(session()->has('ques_lang')){
         $data = session()->get('ques_lang');
         $langData =array();
-        foreach($data as $row){
-            $langData[] = $row['langS'];   
-
-        }
-        return $langData;
+        
+        return $data;
     }
 }
 

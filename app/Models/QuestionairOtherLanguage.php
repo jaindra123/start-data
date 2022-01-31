@@ -29,4 +29,9 @@ class QuestionairOtherLanguage extends Model
             ->where($condition)
             ->get();
     }
+
+    public function getSingleRecord($condition){
+        return QuestionairOtherLanguage::where('deleted_at',NULL)->where($condition)->first();
+        
+    }
 }
