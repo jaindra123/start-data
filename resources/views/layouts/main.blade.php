@@ -55,7 +55,7 @@ $user = checkUser();
     <div class="wrapper ">
         <div class="sidebar" data-color="#323759" data-active-color="danger">
             <div class="logo">
-                <a href="https://www.creative-tim.com" class="simple-text logo-mini">
+                <a href="@if($user->id == 1){{url('dashboard')}}@else{{url('user-profile')}}@endif" class="simple-text logo-mini">
                     <div class="logo-image-small">
                         <img src="{{asset('assets/img/new-logo.svg')}}">
                     </div>
@@ -91,7 +91,7 @@ $user = checkUser();
                 </ul>
                 @else
                 <ul class="nav">
-                    <li class=" {{ request()->is('customer-dashboard') ? 'active' : '' }}  ">
+                    <li class=" {{ request()->is('customer-dashboard') || request()->is('user-profile') ? 'active' : '' }}  ">
                         <a href="#">
                             <p>DASHBOARD</p>
                         </a>

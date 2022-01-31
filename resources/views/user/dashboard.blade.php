@@ -108,28 +108,18 @@
                                     <th>Copy Link</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Questionair Name 1 (Hyperlink)</td>
-                                    <td>asd23gD4a </td>
-                                    <td>2020-02-02</td>
-                                    <td>326</td>
-                                    <td class="text-left"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>Questionair Name 2 (Hyperlink)</td>
-                                    <td>das83d44 </td>
-                                    <td>2020-02-02</td>
-                                    <td>1530</td>
-                                    <td class="text-left"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>Questionair Name 3 (Hyperlink) </td>
-                                    <td>asd23gD4a </td>
-                                    <td>2020-09-04</td>
-                                    <td>896</td>
-                                    <td class="text-left"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                                </tr>
+                            <tbody class="list">
+                            @if($activeRecord)
+                            @foreach($activeRecord as $row)
+                            <tr>
+                                <td><a href="#">{{$row->name}}</a></td>
+                                <td>{{$row->password_for_protected_link}}</td>
+                                <td>{{$row->updated_at == NULL ? changeNewsDateFormat($row->created_at) : changeNewsDateFormat($row->updated_at)}} </td>
+                                <td>0</td>
+                                <td class="text-left"> <a href="{{url($row->url_link.'/'.$row->language_id)}}" target="_blank"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                            </tr>
+                            @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>
@@ -156,28 +146,18 @@
                                     <th>Copy Link</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Questionair Name 1 (Hyperlink) (No Data can be submitted anymore)</td>
-                                    <td>asd23gD4a </td>
-                                    <td>2020-02-02</td>
-                                    <td>326</td>
-                                    <td class="text-left"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>Questionair Name 2 (Hyperlink) (No Data can be submitted anymore)</td>
-                                    <td>das83d44 </td>
-                                    <td>2020-02-02</td>
-                                    <td>1530</td>
-                                    <td class="text-left"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>Questionair Name 3 (Hyperlink) (No Data can be submitted anymore)</td>
-                                    <td>asd23gD4a </td>
-                                    <td>2020-09-04</td>
-                                    <td>896</td>
-                                    <td class="text-left"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
-                                </tr>
+                            <tbody class="list">
+                            @if($inactiveRecord)
+                            @foreach($inactiveRecord as $row)
+                            <tr>
+                                <td><a href="#">{{$row->name}}</a></td>
+                                <td>{{$row->password_for_protected_link}}</td>
+                                <td>{{$row->updated_at == NULL ? changeNewsDateFormat($row->created_at) : changeNewsDateFormat($row->updated_at)}} </td>
+                                <td>0</td>
+                                <td class="text-left">{{}}<i class="fa fa-pencil-square-o" aria-hidden="true"></i></td>
+                            </tr>
+                            @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>

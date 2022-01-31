@@ -151,7 +151,7 @@ outline: 0px solid;
   }
   .survey-wrapper::before{
     content: '';
-    background: url(../img/bg55.svg);
+    /* background: url(../img/bg55.svg); */
     position: absolute;
     background-size: cover;
     width: 100%;
