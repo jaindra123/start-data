@@ -15,6 +15,7 @@ use App\Mail\LoginAccess;
 use App\Models\Customer;
 use App\Models\Language;
 use App\Models\Color;
+use App\Models\Questionair;
 
 // use App\Mail\LoginAccess;
 // admin@gmail.com
@@ -148,11 +149,24 @@ class AuthController extends Controller
             $user = User::where(['id'=>$id])->first();
             if($user->role == 'admin'){
                 // return view('dashboard');
-                $languageModel = new Language();
-                $cutomerModel = new Customer();
-                $data['language'] = $languageModel->getAllRecord();
-                $data['customer'] = $cutomerModel->getAllCustomer();
-                return view('backend.admin-dashboard', compact('data'));
+                $questionairsModel = new Questionair();
+                $draftCondition = ['url_link'=>NULL,['status','<>',2]];  
+                $activeCondition = ['is_publish' => 1, 'status'=>1,['select_customer','>=',1]];
+                $inactiveCondition = ['is_publish' => 0, 'status'=>0,['select_customer','>=',1]];
+
+                $draftCount = $questionairsModel->getCountWithCondition($draftCondition);
+
+                $activeCount = $questionairsModel->getActiveAndInactiveRecordsCount($activeCondition);
+
+                $inactiveCount = $questionairsModel->getActiveAndInactiveRecordsCount($inactiveCondition);
+        
+                $draftRecord =   Questionair::where($draftCondition)->where('deleted_at',NULL)->orderBy('created_at','DESC')->paginate(6,['*'],'draft_paginate');
+
+
+                $activeRecord = Questionair::where($activeCondition)->where('deleted_at',NULL)->orderBy('created_at','DESC')->paginate(6,['*'],'active_paginate');
+
+                $inactiveRecord = Questionair::where($inactiveCondition)->where('deleted_at',NULL)->orderBy('created_at','DESC')->paginate(6,['*'],'inactive_paginate');
+                return view('admin_dashboard.list', compact(['draftCount','activeCount','inactiveCount','draftRecord','activeRecord','inactiveRecord']));
                 // return view('questionairs.add', compact('data'));
                 // return view('backend/dashbord');
             }
