@@ -75,6 +75,7 @@ function systemLanguage(){
     if(Auth::check()){
         $id = Auth::user()->id;
         return $data = SystemLanguage::where('customer_id',$id)->first();
+        
     }
 }
 
