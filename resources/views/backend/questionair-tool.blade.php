@@ -328,7 +328,7 @@
         <!--End Multiple Choice Question-->
 
         <!--Start Single Choice Question-->
-        <form action="{{route('questionairs.save')}}" method="POST"  id="addsingleform">
+        <!-- <form action="{{route('questionairs.save')}}" method="POST"  id="addsingleform">
             {{csrf_field()}}
         <div class="row w-100 mt-5 mb-5">
             <div class="col-md-9">
@@ -446,7 +446,7 @@
                 <button class="btndfd" id="single_choice">+ Add</button>
             </div>
         </div>
-    </form>
+    </form> -->
         <!--Single Choice Question-->
 
     </div>
