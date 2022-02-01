@@ -47,7 +47,7 @@ Route::post('delete-question-type', [QuestionTypeController::class, 'destroy']);
 //Multiple-Choice Question
 //Route::get('question-type', [QuestionController::class, 'index']);
 Route::get('create-question', [QuestionController::class, 'create']);
-//Route::get('question-lists', [QuestionController::class, 'AllQuestionList']);   ---------------
+Route::get('question-lists', [QuestionController::class, 'AllQuestionList']);
 Route::post('save-question',[QuestionController::class,'store'])->name('question.save');      
 Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
 //Route::get('survey/{id}', [QuestionController::class, 'survey']);
@@ -116,5 +116,5 @@ Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-lan
 
 //Survey
 Route::get('survey-start/{questionair}/{language}',[SurveyController::class,'surveyStart'])->name('survey-start');
-Route::get('question/{questionair}/{language}',[SurveyController::class,'survey'])->name('question');
-Route::get('survey-end/{questionair}/{language}',[SurveyController::class,'surveyEnd'])->name('survey-end');
+Route::match(['get','post'],'question/{questionair}/{language}/{id?}',[SurveyController::class,'survey'])->name('question');
+Route::match(['get','post'],'survey-end/{questionair}/{language}',[SurveyController::class,'surveyEnd'])->name('survey-end');
