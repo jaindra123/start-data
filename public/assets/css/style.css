@@ -1120,3 +1120,284 @@ outline: 0px solid;
   .alert-dismissible {
     padding-right: 1.25rem !important;
   }
+  .form-groupdd {
+    display: block;
+    margin-bottom: 15px;
+  }
+  
+  .form-groupdd input {
+    padding: 0;
+    height: initial;
+    width: initial;
+    margin-bottom: 0;
+    display: none;
+    cursor: pointer;
+  }
+  
+  .form-groupdd label {
+    position: relative;
+    cursor: pointer;
+    text-align: left;
+    font: normal normal normal 30px/53px Segoe UI;
+    letter-spacing: 0px;
+    color: #4B4142;
+  }
+  
+  .form-groupdd label:before {
+    content:'';
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: 2px solid #0079bf;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+  }
+  
+  .form-groupdd input:checked + label:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 12px;
+    left: 17px;
+    width: 15px;
+    height: 28px;
+    border: solid #0079bf;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .greatForm > label, .greatForm > span {
+  position: relative;
+  top: 0;
+  left:0;
+  color: #ccc;
+  font-size: 2em;
+  background-color: transparent;
+  font-family: Lato;
+  border: 1px solid #ccc;
+  padding: .3em .6em;
+  border-radius: 0%;
+  width: 50px;
+  line-height: 1.1;
+  height: 50px;
+  -webkit-transition: background-color .5s, top .1s;
+  transition: background-color .5s, top .1s;
+}
+
+.greatForm > input[type=radio]{
+  background-color: #CC0000;
+  height: 0em;
+  width: 0em;
+  background: none;
+  opacity: 0;
+}
+.greatForm > input[type=radio]:checked + label,
+.greatForm > input[type=radio]:checked + span {
+  background-color: #323759;
+  width: 50px;
+  height: 50px;
+  color: #fff;
+}
+.img-33 img {
+  box-shadow: 0 0 0 10px transparent;
+  transition: box-shadow 0.1s;
+}
+.img-33{
+  padding: 10px 10px;
+  border: 1px solid #ccc;
+  background: #ccc;
+}
+.img-33 input {
+  display: none;
+}
+
+.img-33 input:checked + .checfrs {
+  box-shadow: 0 0 0 10px #323759;
+  background: #323759 ;
+  transition: box-shadow 0.11s;
+  border-radius: 0;
+  color: #fff;
+  border: 1px solid #333;
+}
+.img-33 input:checked + .checfrs .img-chschs {
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+.img-chschs{
+  border: 1px solid #333;
+  color: #333;
+  padding: 5px;
+  display: block;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  margin: 20px auto 0px;
+  font: normal normal normal 20px/35px Segoe UI;
+  letter-spacing: 0px;
+  color: #4B4142;
+}
+
+.clacdd table {
+  margin: 0;
+  background-color: transparent;
+  width: 295px;
+  height: 325px;
+  text-align: center;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.code-post #calculator {
+  position: absolute;
+  max-width: 60%;
+  left: 58%;
+  top: 10%;
+}
+
+.code-post input {
+  outline: 0;
+  position: relative;
+  border: 0;
+  color: #495069;
+  background-color: #fff;
+  border-radius: 4px;
+  width: 60px;
+  height: 50px;
+  float: left;
+  margin: 5px;
+  font-size: 20px;
+  border: 1px solid #333;
+}
+
+.code-post input:hover {
+  border: 0 solid #000;
+  color: #495069;
+  background-color: #8F5FD4;
+  border-radius: 4px;
+  width: 60px;
+  height: 50px;
+  float: left;
+  margin: 5px;
+  font-size: 20px;
+  box-shadow: 0 4px #644294;
+}
+
+.code-post input:active {
+  top: 4px;
+  border: 0 solid #000;
+  color: #495069;
+  background-color: #8F5FD4;
+  border-radius: 4px;
+  width: 60px;
+  height: 50px;
+  float: left;
+  margin: 5px;
+  font-size: 20px;
+  box-shadow: none;
+}
+
+#answer {
+  width: 270px;
+  font-size: 26px;
+  text-align: center;
+  background-color: #F1FAEB;
+  float: left;
+}
+
+#answer:hover {
+  width: 270px;
+  font-size: 26px;
+  text-align: center;
+  background-color: #F1FAEB;
+  box-shadow: 0 4px rgba(0,0,0,0.2);
+}
+
+#answer:active {
+  top: 5px;
+  width: 270px;
+  font-size: 26px;
+  text-align: center;
+  background-color: #F1FAEB;
+  box-shadow: 0 4px rgba(0,0,0,0.2);
+}
+
+.operator {
+  background-color: #f1ff92;
+  position: relative;
+}
+
+.operator:hover {
+  background-color: #E7F56B;
+  box-shadow: 0 4px #B7C259;
+}
+
+.operator:active {
+  top: 4px;
+  box-shadow: none;
+}
+
+#clear {
+  float: left;
+  position: relative;
+  display: block;
+  background-color: #ff9fa8;
+  margin-bottom: 15px;
+  width:200px;
+  height: 40px;
+}
+
+#clear:hover {
+  float: left;
+  display: block;
+  background-color: #F297A0;
+  margin-bottom: 15px;
+  box-shadow: 0 4px #CC7F86;
+}
+
+#clear:active {
+  float: left;
+  top: 4px;
+  display: block;
+  background-color: #F297A0;
+  margin-bottom: 15px;
+  box-shadow: none;
+}
+.otp-input-wrapper {
+  width: 240px;
+  text-align: left;
+  display: inline-block;
+}
+.otp-input-wrapper input {
+  padding: 0;
+  width: 264px;
+  font-size: 32px;
+  font-weight: 600;
+  color: #3e3e3e;
+  background-color: transparent;
+  border: 0;
+  margin-left: 12px;
+  letter-spacing: 48px;
+  
+  font-family: sans-serif !important;
+}
+.otp-input-wrapper input:focus {
+  box-shadow: none;
+  outline: none;
+}
+.otp-input-wrapper svg {
+  position: relative;
+  display: block;
+  width: 240px;
+  height: 2px;
+}
+.question-box .form-control{
+  font: normal normal normal 30px/53px Segoe UI;
+  letter-spacing: 0px;
+  color: #4B4142;
+}

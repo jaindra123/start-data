@@ -47,7 +47,7 @@ Route::post('delete-question-type', [QuestionTypeController::class, 'destroy']);
 //Multiple-Choice Question
 //Route::get('question-type', [QuestionController::class, 'index']);
 Route::get('create-question', [QuestionController::class, 'create']);
-Route::get('question-lists', [QuestionController::class, 'AllQuestionList']);
+// Route::get('question-lists', [QuestionController::class, 'AllQuestionList']);
 Route::post('save-question',[QuestionController::class,'store'])->name('question.save');      
 Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
 //Route::get('survey/{id}', [QuestionController::class, 'survey']);

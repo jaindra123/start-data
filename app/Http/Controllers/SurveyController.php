@@ -29,18 +29,38 @@ class SurveyController extends Controller
             $lang_id = $lid;
             $page_id = $pid-1;
             $arr = [];
+            $inserID = 0;
+            $other = $other_answer = $checked = $otherAnswer = '';
             foreach($request->all() as $key => $datas){
                 if(is_array($datas)){
-                    $datas = implode(',',$datas);
-                    $arr[$key] = $datas;
+                    $k = $key;
+                    $implode_datas = implode(',',$datas);
+                    $arr[$key] = $implode_datas;
                     $submitentry = SurveyAnswer::Create([
-                        'questionair_id' => $questionair_id,
-                        'language_id' => $lang_id,
-                        'page_id' => $page_id,
-                        'question_id'      => $key,
-                        'answer'   => $datas,
+                        'questionair_id'    => $questionair_id,
+                        'language_id'       => $lang_id,
+                        'page_id'           => $page_id,
+                        'question_id'       => $key,
+                        'answer'            => $implode_datas,
                     ]);
+                    $inserID = $submitentry->id;
+                    // $other = 'other_'.$key;
+                    $other_answer = 'input_'.$key;
                 }
+
+                /*
+                if($other == $key){
+                    $checked = 1;
+                }*/
+
+                // if($checked == 1){
+                    if($other_answer == $key){
+                        $otherAnswer = $request->all()[$key];
+                        $otherData = ['other_answer' => $otherAnswer];
+                        SurveyAnswer::where(['id'=>$inserID])->update($otherData);
+                        // $checked = 0;
+                    }
+                // }
             }
         }
         

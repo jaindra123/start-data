@@ -33,14 +33,10 @@
                             @include('question_modal.mcq')
                         @endif
                         @if($ques->question_type_id == 2)
-                            <div class="question-box">
-
-                            </div>
+                            @include('question_modal.scq')
                         @endif
                         @if($ques->question_type_id == 3)
-                            <div class="question-box">
-
-                            </div>
+                            @include('question_modal.openQuestion')
                         @endif
                         @if($ques->question_type_id == 4)
                             <div class="question-box">
@@ -105,23 +101,32 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        /*setInterval(displayHello, {{$questionair->idle_timer*1000}});
-        function displayHello() {
-            alert('Time Expired');
-            window.location.href = "{{url('survey-start/'.$questionair->id.'/'.$lang_id)}}";
-        }*/
+        // var timer = 5*1000;
+        // $(this).mousemove(function(e){
+            // timer = 5*1000;
+        //     alert('m');
+        // });
+        // $(this).keypress(function(e){
+            // timer = 5*1000;
+        //     alert('k');
+        // });
+        // setInterval(displayHello, timer);
+        // function displayHello() {
+        //     alert('Time Expired');
+        //     window.location.href = "{{url('survey-start/'.$questionair->id.'/'.$lang_id)}}";
+        // }
         $("#prev").on('click',function(){
             var page = this.value;
             // alert(page);
             var url = "{{url('question/'.$questionair->id.'/'.$lang_id)}}/"+page;
             window.location = url;
-        });
-        $("#submit").on('click',function(){
+        });/*
+        $("#submit").on('click',function(){$questionair->idle_timer
             if(!$('input[type="checkbox"]').is(":checked")){
                 alert('please select option');
                 return false;
             }
-        });
+        });*/
     });
 </script>
 
