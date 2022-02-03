@@ -29,50 +29,52 @@
                 <input type="text" id="page" value="{{$current}}" name="page" > -->
                 @if(isset($question) && !empty($question))
                     @foreach($question as $key => $ques)
-                        @if($ques->question_type_id == 1)
-                            @include('question_modal.mcq')
-                        @endif
-                        @if($ques->question_type_id == 2)
-                            @include('question_modal.scq')
-                        @endif
-                        @if($ques->question_type_id == 3)
-                            @include('question_modal.openQuestion')
-                        @endif
-                        @if($ques->question_type_id == 4)
-                            <div class="question-box">
+                        @foreach($ques->questionairAndQuestionTypeModel as $key => $type)
+                            @if($type->ques_type_id == 1)
+                                @include('question_modal.mcq')
+                            @endif
+                            @if($type->ques_type_id == 2)
+                                @include('question_modal.scq')
+                            @endif
+                            @if($type->ques_type_id == 3)
+                                @include('question_modal.openQuestion')
+                            @endif
+                            @if($type->ques_type_id == 4)
+                                <div class="question-box">
 
-                            </div>
-                        @endif
-                        @if($ques->question_type_id == 5)
-                            <div class="question-box">
+                                </div>
+                            @endif
+                            @if($type->ques_type_id == 5)
+                                <div class="question-box">
 
-                            </div>
-                        @endif
-                        @if($ques->question_type_id == 6)
-                            <div class="question-box">
+                                </div>
+                            @endif
+                            @if($type->ques_type_id == 6)
+                                <div class="question-box">
 
-                            </div>
-                        @endif
-                        @if($ques->question_type_id == 7)
-                            <div class="question-box">
+                                </div>
+                            @endif
+                            @if($type->ques_type_id == 7)
+                                <div class="question-box">
 
-                            </div>
-                        @endif
-                        @if($ques->question_type_id == 8)
-                            <div class="question-box">
+                                </div>
+                            @endif
+                            @if($type->ques_type_id == 8)
+                                <div class="question-box">
 
-                            </div>
-                        @endif
-                        @if($ques->question_type_id == 9)
-                            <div class="question-box">
+                                </div>
+                            @endif
+                            @if($type->ques_type_id == 9)
+                                <div class="question-box">
 
-                            </div>
-                        @endif
-                        @if($ques->question_type_id == 10)
-                            <div class="question-box">
+                                </div>
+                            @endif
+                            @if($type->ques_type_id == 10)
+                                <div class="question-box">
 
-                            </div>
-                        @endif
+                                </div>
+                            @endif
+                        @endforeach
                         @php $prev = $nxt = $ques->page_id; @endphp
                     @endforeach
                 @endif

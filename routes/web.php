@@ -27,41 +27,39 @@ Route::get('/', function () {
      return view('welcome');
 });
 
-//Customer 
-Route::get('customer-list', [CustomerController::class, 'index']);
-Route::post('add-update-customer', [CustomerController::class, 'store']);
-Route::post('edit-customer', [CustomerController::class, 'edit']);
-Route::post('delete-customer', [CustomerController::class, 'destroy']);
+Route::group(['middleware' => ['auth']], function(){     
 
-//Industry 
-Route::get('industry-list', [IndustryController::class, 'index']);
-Route::post('add-update-industry', [IndustryController::class, 'store']);
-Route::post('edit-industry', [IndustryController::class, 'edit']);
-Route::post('delete-industry', [IndustryController::class, 'destroy']);
- 
-//Question-Type 
-Route::get('question-type-list', [QuestionTypeController::class, 'index']);
-Route::post('add-update-question-type', [QuestionTypeController::class, 'store']);
-Route::post('edit-question-type', [QuestionTypeController::class, 'edit']);
-Route::post('delete-question-type', [QuestionTypeController::class, 'destroy']);
+     //Customer 
+     Route::get('customer-list', [CustomerController::class, 'index']);
+     Route::post('add-update-customer', [CustomerController::class, 'store']);
+     Route::post('edit-customer', [CustomerController::class, 'edit']);
+     Route::post('delete-customer', [CustomerController::class, 'destroy']);
 
-//Multiple-Choice Question
-//Route::get('question-type', [QuestionController::class, 'index']);
-Route::get('create-question', [QuestionController::class, 'create']);
-// Route::get('question-lists', [QuestionController::class, 'AllQuestionList']);
-Route::post('save-question',[QuestionController::class,'store'])->name('question.save');      
-Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
-//Route::get('survey/{id}', [QuestionController::class, 'survey']);
-//Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');
-Route::get('question-list',[QuestionairController::class,'AllQuestionairs']);
-Route::post('save-questionairs',[QuestionairController::class,'QuestionairSave'])->name('questionairs.save');
-Route::post('autocomplete',[QuestionairController::class,'AutoCompleteSearch'])->name('questionairs.search');
-Route::get('questionairs/{id}', [QuestionairController::class, 'delete'])->name('questionairs.delete');
+     //Industry 
+     Route::get('industry-list', [IndustryController::class, 'index']);
+     Route::post('add-update-industry', [IndustryController::class, 'store']);
+     Route::post('edit-industry', [IndustryController::class, 'edit']);
+     Route::post('delete-industry', [IndustryController::class, 'destroy']);
+     
+     //Question-Type 
+     Route::get('question-type-list', [QuestionTypeController::class, 'index']);
+     Route::post('add-update-question-type', [QuestionTypeController::class, 'store']);
+     Route::post('edit-question-type', [QuestionTypeController::class, 'edit']);
+     Route::post('delete-question-type', [QuestionTypeController::class, 'destroy']);
 
-
-
-
-
+     //Multiple-Choice Question
+     //Route::get('question-type', [QuestionController::class, 'index']);
+     Route::get('create-question', [QuestionController::class, 'create']);
+     // Route::get('question-lists', [QuestionController::class, 'AllQuestionList']);
+     Route::post('save-question',[QuestionController::class,'store'])->name('question.save');      
+     Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
+     //Route::get('survey/{id}', [QuestionController::class, 'survey']);
+     //Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');
+     Route::get('question-list',[QuestionairController::class,'AllQuestionairs']);
+     Route::post('save-questionairs',[QuestionairController::class,'QuestionairSave'])->name('questionairs.save');
+     Route::post('autocomplete',[QuestionairController::class,'AutoCompleteSearch'])->name('questionairs.search');
+     Route::get('questionairs/{id}', [QuestionairController::class, 'delete'])->name('questionairs.delete');
+});
 
 //Access Management
 Route::get('registration', [AuthController::class, 'registration'])->name('register-user');
@@ -79,44 +77,46 @@ Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegis
 Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('email.send');
 Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.forget');
 
-//Pages
-Route::view('questionair','backend.questionair-tool');
-Route::view('admin-dashboard','backend.admin-dashboard');
-// Route::view('dashbord','backend.dashbord');
-Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
-// Route::view('question/{id}','frontend.web');
-// Route::view('survey-start/{id}','frontend.survey-start');
-// Route::view('survey-end/{id}','frontend.survey-end');
-Route::view('dataset','backend.dataset');
-// Route::view('customer-dashboard','user.dashboard');
-Route::view('cross-reference','user.cross-reference');
-Route::view('cross-ref','user.cross-ref');
-Route::view('analysis-platform-select-data','user.analysis-platform-select-data');
-Route::view('select-a-dataset','user.select-a-dataset');
+Route::group(['middleware' => ['auth']], function(){
+     //Pages
+     Route::view('questionair','backend.questionair-tool');
+     Route::view('admin-dashboard','backend.admin-dashboard');
+     // Route::view('dashbord','backend.dashbord');
+     Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
+     // Route::view('question/{id}','frontend.web');
+     // Route::view('survey-start/{id}','frontend.survey-start');
+     // Route::view('survey-end/{id}','frontend.survey-end');
+     Route::view('dataset','backend.dataset');
+     // Route::view('customer-dashboard','user.dashboard');
+     Route::view('cross-reference','user.cross-reference');
+     Route::view('cross-ref','user.cross-ref');
+     Route::view('analysis-platform-select-data','user.analysis-platform-select-data');
+     Route::view('select-a-dataset','user.select-a-dataset');
 
-//Questionairs 
-Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
-Route::post('store-questionairs',[QuestionairController::class,'store_questionairs'])->name('store-questionairs');
-Route::post('store-session-questionairs',[QuestionairController::class,'store_session_questionairs'])->name('store-session-questionairs');
-Route::post('remove-session-questionairs',[QuestionairController::class,'remove_session_questionairs'])->name('remove-session-questionairs');
-Route::get('edit-questionairs/{id}',[QuestionairController::class,'edit_questionair'])->name('edit-questionairs');
-Route::post('update-questionairs/{id}',[QuestionairController::class,'update_questionair'])->name('update-questionairs');
-Route::post('delete-questionairs',[QuestionairController::class,'delete_questionairs'])->name('delete-questionairs');
-Route::post('delete-other-lang-questionairs',[QuestionairController::class,'delete_other_lang_questionairs'])->name('delete-other-lang-questionairs');
-// Route::get('dashboard',[QuestionairController::class, 'dashboard'])->name('dashboard');
+     //Questionairs 
+     Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
+     Route::post('store-questionairs',[QuestionairController::class,'store_questionairs'])->name('store-questionairs');
+     Route::post('store-session-questionairs',[QuestionairController::class,'store_session_questionairs'])->name('store-session-questionairs');
+     Route::post('remove-session-questionairs',[QuestionairController::class,'remove_session_questionairs'])->name('remove-session-questionairs');
+     Route::get('edit-questionairs/{id}',[QuestionairController::class,'edit_questionair'])->name('edit-questionairs');
+     Route::post('update-questionairs/{id}',[QuestionairController::class,'update_questionair'])->name('update-questionairs');
+     Route::post('delete-questionairs',[QuestionairController::class,'delete_questionairs'])->name('delete-questionairs');
+     Route::post('delete-other-lang-questionairs',[QuestionairController::class,'delete_other_lang_questionairs'])->name('delete-other-lang-questionairs');
+     // Route::get('dashboard',[QuestionairController::class, 'dashboard'])->name('dashboard');
 
-//Questions
-Route::get('questions/{questionairId}/{pageNo?}',[QuestionQController::class, 'index'])->name('questions');
-Route::post('store-question/{quesionId}/{pageNo?}',[QuestionQController::class,'store_question'])->name('store-question');
-Route::post('store-question-details/{questionId}/{pageNo?}', [QuestionQController::class,'store_question_details'])->name('store-question-details');
+     //Questions
+     Route::get('questions/{questionairId}/{pageNo?}',[QuestionQController::class, 'index'])->name('questions');
+     Route::post('store-question/{quesionId}/{pageNo?}',[QuestionQController::class,'store_question'])->name('store-question');
+     Route::post('store-question-details/{questionId}/{pageNo?}', [QuestionQController::class,'store_question_details'])->name('store-question-details');
 
+     //Theme Color & Language Set
+     Route::post('set-color',[ColorController::class,'addColor'])->name('add-color');
+     Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-language');
+});
 
-
-//Theme Color & Language Set
-Route::post('set-color',[ColorController::class,'addColor'])->name('add-color');
-Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-language');
 
 //Survey
 Route::get('survey-start/{questionair}/{language}',[SurveyController::class,'surveyStart'])->name('survey-start');
 Route::match(['get','post'],'question/{questionair}/{language}/{id?}',[SurveyController::class,'survey'])->name('question');
 Route::match(['get','post'],'survey-end/{questionair}/{language}',[SurveyController::class,'surveyEnd'])->name('survey-end');
+Route::get('password-match',[SurveyController::class,'surveyPasswordCheck'])->name('password-match');

@@ -13,9 +13,15 @@ class Question extends Model
     public function option() {
         return $this->hasMany(Option::class,'questions_id','id');
     }
+    
     public function questiontype(){
         return $this->belongsTo(QuestionType::class, 'question_type_id');
-    }  
+    }
+
+    public function questionairAndQuestionTypeModel(){
+        return $this->hasMany(QuestionairAndQuestionTypeModel::class, 'id', 'questionair_type_id');
+    }
+    
 
     public function getRecordWithCondition($select,$condition){
         $query = Question::join('questionair_and_questype', 'questionair_and_questype.id' , '=', 'questions.questionair_type_id' )

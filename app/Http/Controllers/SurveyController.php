@@ -25,6 +25,9 @@ class SurveyController extends Controller
     public function survey(Request $request, $qid, $lid, $pid = 1){
         
         if($request->all()){
+            // echo '<pre>';
+            // print_r($request->all());
+            // die;
             $questionair_id = $qid;
             $lang_id = $lid;
             $page_id = $pid-1;
@@ -72,12 +75,17 @@ class SurveyController extends Controller
 
         $data['questionair'] = Questionair::where([['id',$qid],['status', '1'],['is_publish', '1']])->first();
         $data['questionairs'] = QuestionairOtherLanguage::where([['questiaonair_id',$qid],['language_id',$lid],['status', '1']])->get();
-        $data['question'] = Question::with('option')->with('questiontype')->where([['questionair_id', $qid], ['language_id', $lid], ['page_id', $pid], ['status', '1']])->get();
-        $data['min'] = Question::where([['questionair_id', $qid], ['language_id', $lid], ['status', '1']])->min('page_id');
-        $data['max'] = Question::where([['questionair_id', $qid], ['language_id', $lid], ['status', '1']])->max('page_id');
+        // $data['question'] = Question::with('option')->with('questiontype')->where([['questionair_id', $qid], ['language_id', $lid], ['page_id', $pid], ['status', '1']])->get();
+        $data['question'] = Question::with('option')->with('questionairAndQuestionTypeModel')->where([['language_id', $lid], ['page_id', $pid], ['status', '1']])->whereHas('questionairAndQuestionTypeModel', function($subQuery) use($qid){$subQuery->where("questionair_id", $qid);})->get();
+        // $data['min'] = Question::where([['questionair_id', $qid], ['language_id', $lid], ['status', '1']])->min('page_id');
+        // $data['max'] = Question::where([['questionair_id', $qid], ['language_id', $lid], ['status', '1']])->max('page_id');
+        $data['min'] = Question::with('questionairAndQuestionTypeModel')->where([['language_id', $lid], ['status', '1']])->whereHas('questionairAndQuestionTypeModel', function($subQuery) use($qid){$subQuery->where("questionair_id", $qid);})->min('page_id');
+        $data['max'] = Question::with('questionairAndQuestionTypeModel')->where([['language_id', $lid], ['status', '1']])->whereHas('questionairAndQuestionTypeModel', function($subQuery) use($qid){$subQuery->where("questionair_id", $qid);})->max('page_id');
         $data['current'] = $pid;
         $data['nxt'] = $pid+1;
         // echo '<pre>';
+        // print_r($data['question'][0]->questionairAndQuestionTypeModel);
+        // print_r($data['min']);
         // print_r($data['max']);
         // die;
         return view('frontend.web', $data);
@@ -87,5 +95,15 @@ class SurveyController extends Controller
         $data['questionair'] = Questionair::where([['id',$qid],['status', '1'],['is_publish', '1']])->first();
         $data['questionairs'] = QuestionairOtherLanguage::where([['questiaonair_id',$qid],['language_id',$lid],['status', '1']])->get();
         return view('frontend.survey-end', $data);
+    }
+
+    public function surveyPasswordCheck(Request $request){
+        $activeCondition = ['id' => $request->questionair];
+        $activeRecord = Questionair::where($activeCondition)->where('deleted_at',NULL)->orderBy('created_at','DESC')->paginate(6,['*'],'active_paginate');
+        //password_for_protected_link
+        print_r($activeRecord);
+        print_r($request->questionair);
+        print_r($request->all());
+        die;
     }
 }
