@@ -100,7 +100,6 @@ function questionair($id){
     }*/
 }
 
-
 function encrypt_decrypt($string, $action = 'encrypt')
 {
     $encrypt_method = "AES-256-CBC";
