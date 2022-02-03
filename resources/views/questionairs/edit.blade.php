@@ -91,13 +91,14 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <button class="custom-button"><i class="fa fa-pencil" aria-hidden="true"></i>  <a href="{{url('question-list')}}" target="_blank" style="color: #fff;"> Start Edit</a></button>
                     @if(isset($data['questionair'][0]->is_publish )&& $data['questionair'][0]->is_publish==1)
+                        <button class="custom-button"><i class="fa fa-pencil" aria-hidden="true"></i>  <a href="{{route('questions',encrypt_decrypt($data['questionair'][0]->id))}}" target="_blank" style="color: #fff;"> Start Edit</a></button>
                         <button class="custom-button" id="safe_changes"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Changes</button>
                         <input type="hidden" name="published" id="publishedD" value="{{$data['questionair'][0]->is_publish}}">
                     @else
                         <button class="custom-button" id="safe_changes"><i class="fa fa-floppy-o" aria-hidden="true"></i> Safe Draft</button>
                         <input type="hidden" name="published" id="publishedD" value="0">
+                        <button class="custom-button"><i class="fa fa-pencil" aria-hidden="true"></i>  <a href="javascript:void(0);" id="start_edit"  style="color: #fff;"> Start Edit</a></button>
 
                     @endif
                     @if($data['questionair'][0]->url_link == NULL)
@@ -842,6 +843,11 @@
                 }
             });
 
+        });
+
+        
+        $('#start_edit').on('click', function(){
+            alert('Firstly Published Questionair then You able to start edit');
         });
     });
 
