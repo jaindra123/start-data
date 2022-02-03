@@ -21,7 +21,7 @@ class QuestionController extends Controller
     public function survey($id)
     {
         $data=QuestionType::find($id);
-        $questions=Questions::where('question_type_id',$id)->get();
+        $questions=Question::where('question_type_id',$id)->get();
         return view('question.details',compact('data','questions'));
     }
 #----------------------------create Single Choice -----------------------------#  
@@ -83,7 +83,7 @@ class QuestionController extends Controller
         for($i=1; $i<=$request->index; $i++){
             if(isset($data['questions_id'.$i])){
             $survey = new Survey();
-                $question=Questions::where('id',$data['questions_id'.$i])->get()->first();
+                $question=Question::where('id',$data['questions_id'.$i])->get()->first();
                 if($question->answer==$data['ans'.$i]) {
                    $result[$data['questions_id'.$i]]='Yes';
                    $survey->is_ans="yes";
