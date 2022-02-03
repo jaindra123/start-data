@@ -55,9 +55,11 @@ class SurveyController extends Controller
 
                 // if($checked == 1){
                     if($other_answer == $key){
-                        $otherAnswer = $request->all()[$key];
-                        $otherData = ['other_answer' => $otherAnswer];
-                        SurveyAnswer::where(['id'=>$inserID])->update($otherData);
+                        if(!empty($request->all()[$key])){
+                            $otherAnswer = $request->all()[$key];
+                            $otherData = ['other_answer' => $otherAnswer];
+                            SurveyAnswer::where(['id'=>$inserID])->update($otherData);
+                        }
                         // $checked = 0;
                     }
                 // }
