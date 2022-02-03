@@ -141,6 +141,7 @@ class QuestionairController extends Controller
         $languages = DB::table('languages')->get();
         $questions = Question::with('option')->with('questiontype')
                     ->join('languages as lang', 'questions.lang_code', '=', 'lang.language_code')
+                    ->sortable()
                     ->get(['lang.language', 'questions.*']);
         return view('backend.questionair-tool',compact('questions','languages'));
     }
@@ -150,7 +151,7 @@ class QuestionairController extends Controller
             'question'=>'required|unique:questions,question,NULL,id,question_type_id,'.$request->question_type_id,
             'question_type_id'=>'required',
         ]);
-        //$data = $request->all();
+       // $data = $request->all();
        // print_r($data );
        // exit;
         $ques= Question::create([
@@ -171,7 +172,8 @@ class QuestionairController extends Controller
                 Option::insert($datad);
             }
         }
-       return redirect()->back()->with('success','Data add successfully');           
+      // return redirect()->back()->with('success','Question added successfully');  
+       return response()->json(['success' => 'true','message'=>'Question added successfully']);          
     }
     #--------------------------- Search  -------------------#
     public function AutoCompleteSearch(Request $request){
@@ -508,6 +510,47 @@ class QuestionairController extends Controller
             return response()->json(['success'=>true, 'message'=>getLanguage($questionairId)->language.' Language deactivated Sucessfully']);
         }
         
+    }
+
+    public function storeMultiFile(Request $request) {
+        $this->validate($request,[
+            'question'=>'required|unique:questions,question,NULL,id,question_type_id,'.$request->question_type_id,
+            'question_type_id'=>'required',
+        ]);
+        $ques= Question::create([
+            'lang_code' => $request->language,
+            'question' => $request->question,
+            'std_qns' => $request->std_qns,
+            'question_type_id' => $request->question_type_id,
+            'dependent_answer' => $request->dependent_answer,
+        ]);
+        //print_r($request->file('file'));
+        //exit;
+        $totalfiles = count($request->file('file'));
+        $filename= [];
+        if($totalfiles > 0) {
+            for($x=0; $x < $totalfiles; $x++) {
+                if($request->hasFile('file')) {
+                    $file = $request->file('file');
+                    $name = time().'.'.$file[$x]->getClientOriginalName();
+                    $path = $file[$x]->move('public/picture_questions', $name);
+                    $filename[]=$name; 
+                }
+            }
+        }
+        if(count($request->picture_answer) > 0) {
+            $i =0;
+            foreach ($request->picture_answer as $item=>$v) {
+                $datad=array(
+                  'questions_id'=>$ques->id,
+                  'option'=>$request->picture_answer[$item],
+                  'display_text'=> $filename[$i]
+                );
+                Option::insert($datad);
+                $i++;
+            }
+        }
+        return redirect('/question-list')->with('question_added','Picture Question Added');
     }
 
 }

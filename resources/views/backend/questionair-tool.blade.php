@@ -5,6 +5,11 @@
 @section('content')
 
 {{--
+<style type="text/css">
+    div#addPicture {
+    cursor: pointer;
+}
+</style>
 <div class="main-panel">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
@@ -56,6 +61,16 @@
     <!-- End Navbar -->
    
     <div class="content quereszz">
+        @if(Session::has('question_added'))
+            <div class="alert alert-success alert-dismissible fade show">
+                {{Session::get('question_added')}}
+            </div>
+        @endif
+        @if(session()->has('message'))
+            <div class="alert alert-success">
+                {{ session()->get('success') }}
+            </div>
+        @endif
         <div class="alert alert-success" role="alert" style="display: none;"> Question Added Successfully!</div>
         <div class="row">
             <div class="col-md-12">
@@ -96,10 +111,20 @@
                                             <td> {{$key+1}}</td>
                                             <td>{{$ques->question}} </td>
                                             <td> {{$ques->questiontype->title}} </td>
-                                            <td class="text-center">
-                                                <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
-                                                <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
-                                            </td>
+
+                                        <td class="text-center">
+
+                                            <a href="{{url('question-list')}}?sort=question&direction=asc"> 
+                                                <i class="fa fa-angle-up d-block"></i>
+                                            </a>
+
+                                            <a href="{{url('question-list')}}?sort=question&direction=desc"> 
+                                                <i class="fa fa-angle-down d-block"></i>
+                                            </a>
+                                   
+                                            <!--  <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
+                                            <i class="fa fa-angle-down d-block" aria-hidden="true"></i> -->
+                                        </td>
                                              <td class="text-center">
                                                 <a href="{{ route('questionairs.delete', $ques->id) }}" class="button delete-confirm"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                             </td>
@@ -328,7 +353,7 @@
         <!--End Multiple Choice Question-->
 
         <!--Start Single Choice Question-->
-        <!-- <form action="{{route('questionairs.save')}}" method="POST"  id="addsingleform">
+        <form action="{{route('questionairs.save')}}" method="POST"  id="addsingleform">
             {{csrf_field()}}
         <div class="row w-100 mt-5 mb-5">
             <div class="col-md-9">
@@ -365,10 +390,11 @@
                     </div>
                     <div class="w-100 mt-4 mb-2">
                         <label for="email" class="">Select Dependend Answer</label>
-                        <select class="form-control mb-3">
-                            <option>Q22 Female</option>
-                            <option>Q02 First Time Visitor</option>
-                            <option>Q15 From the sourronding</option>
+                        <select class="form-control mb-3" name="dependent_answer" id="dependent_answer">
+                            <option value="">Select</option>
+                            <option value="Q22 Female">Q22 Female</option>
+                            <option value="Q02 First Time Visitor">Q02 First Time Visitor</option>
+                            <option value="Q15 From the sourronding">Q15 From the sourronding</option>
                         </select>
                     </div>
                     <div class="w-100 mt-4 mb-2">
@@ -400,10 +426,127 @@
                     <i class="fa fa-star color-dd" aria-hidden="true"></i>
                 </div>
 
-                <div class="w-100 mb-4">
+                <!-- <div class="w-100 mb-4">
                     <label for="email" class=""> Display Text</label>
                     <input class="form-control mb-2" placeholder="" type="text" name="single_display_text" 
                     id="single_display_text">
+                </div>
+                <div class="form-group has-search">
+                    <span class="fa fa-search form-control-feedback"></span>
+                    <input type="text" class="form-control" placeholder="Search Question">
+                </div> -->
+                <table class="table table-borderless table-scroll mt-3 mb-0" id="productTable">
+                    <thead>
+
+                        <tr>
+                            <th scope="col">&nbsp;</th>
+                            <th scope="col">Answers Name</th>
+                            <th scope="col">Display Text</th>
+                            <th scope="col">Order</th>
+                            <th scope="col">Delete</th>
+                            <th scope="col">Dependency</th>
+                            <th scope="col">Standard</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="singleChoice">
+                        <tr>
+                            <td>1</td>
+                            <td><input type="text" class="form-control single-ans" placeholder="sdsd" 
+                                name="answer[]" id=""></td>
+                            <td><input type="text" class="form-control single-text" placeholder="ggg" name="display_text[]" id=""></td>
+                            <td class="text-center">
+                                <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
+                                <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
+                            </td>
+                            <td class="text-center">
+                                <p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p>
+                            </td>
+                            <td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td>
+                            <td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+                <div class="btndfd" id="addSingleChoice" style="cursor: pointer;">+ Add</div>
+            </div>
+        </div>
+    </form>
+    <!--Single Choice Question-->
+
+    <!--Start Ranking Question-->
+    <form action="{{route('questionairs.save')}}" method="POST"  id="rankingform">
+            {{csrf_field()}}
+         <div class="row w-100 mt-5 mb-5">
+            <div class="col-md-9">
+                <h4 class="hedngead">Ranking Question</h3>
+            </div>
+            <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button></div>
+            <div class="col-md-3">
+                <div class="w-100 mb-2">
+                    <label for="email" class=""> Add Language</label>
+                        <select class="form-control mb-3 laguage_data" name="language" data-index="1" id="s1">
+                            <option value="">Select Language</option>
+                            @if(isset($languages) && $languages != null)
+                                @foreach($languages as $language) 
+                                    <option value="{{ $language->language_code }}" data-i="{{$language->language}}">  {{ $language->language}}  </option>
+                                @endforeach
+                            @endif
+                        </select>
+                   
+                        <div class="change_button">
+                            <a href="#" class="adds mb-4" id="single_add_languages" data-section="1">+ Add</a>
+                        </div>
+
+                    <div class="w-100 mt-4 mb-2">
+                        <label for="email" class="">Dependencies</label>
+                        <select class="form-control mb-3">
+                            <option>Only Appears if Answer Checked</option>
+                            <option>Only Appears if Answer</option>
+                            <option>Unchecked</option>
+                            <option>No Dependcy</option>
+                        </select>
+                    </div>
+                    <div class="w-100 mt-4 mb-2">
+                        <label for="email" class="">Select Dependend Answer</label>
+                        <select class="form-control mb-3" name="dependent_answer" id="dependent_answer">
+                            <option value="">Select</option>
+                            <option value="Q22 Female">Q22 Female</option>
+                            <option value="Q02 First Time Visitor">Q02 First Time Visitor</option>
+                            <option value="Q15 From the sourronding">Q15 From the sourronding</option>
+                        </select>
+                    </div>
+
+                    <div class="w-100 mt-4 mb-2">
+                        <label for="email" class="">Mandatory Question</label>
+                        <div class="wrappers">
+                            <input id="checkbox" type="checkbox" class="checkbox hidden" />
+                            <label class="switchbox" for="checkbox"></label>
+                        </div>
+                    </div>
+                    <div class="w-100 mt-4 mb-2">
+                        <label for="email" class="">Maximum Rankings</label>
+                        <input type="text" class="form-control mb-2 mr-sm-2" placeholder="4" id="email">
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-9 mt-3 pt-1">
+
+                <div class="w-100 mb-4">
+                    <label for="email" class="w-100"> Question Name</label>
+                    <input type="text" class="form-control has-search mb-2 d-inline-block" placeholder="" 
+                    name="question"  id="question">
+                    <input type="hidden" class="form-control has-search mb-2 d-inline-block" value="std_qns" name="std_qns">
+                    <input type="hidden" class="form-control has-search mb-2 d-inline-block" value="9" 
+                     name="question_type_id" >
+                    <i class="fa fa-star color-dd" aria-hidden="true"></i>
+                </div>
+                <div class="w-100 mb-4">
+                    <label for="email" class=""> Display Text</label>
+                    <input class="form-control mb-2" placeholder="">
                 </div>
                 <div class="form-group has-search">
                     <span class="fa fa-search form-control-feedback"></span>
@@ -423,12 +566,15 @@
 
                         </tr>
                     </thead>
-                    <tbody id="addSingleChoice">
+                    <tbody id="ranking">
                         <tr>
-                            <td>1</td>
-                            <td><input type="text" class="form-control single-ans" placeholder="sdsd" 
-                                name="single_answer[]" id=""></td>
-                            <td><input type="text" class="form-control" placeholder="ggg" name="single_display_text[]" id=""></td>
+                            <td>
+                                1
+                            </td>
+                            <td><input type="text" class="form-control ranking-ans" placeholder="rank" 
+                                name="answer[]" id=""></td>
+                            <td><input type="text" class="form-control ranking-text" placeholder="rd" 
+                                name="display_text[]" id=""></td>
                             <td class="text-center">
                                 <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
                                 <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
@@ -443,11 +589,137 @@
                     </tbody>
 
                 </table>
-                <button class="btndfd" id="single_choice">+ Add</button>
+                <div class="btndfd" id="addRanking" style="cursor: pointer;">+ Add</div>
+            </div>
+        </div> 
+    </form>
+
+    <!--Start Picture Question-->
+    <form id="" method="post" action="{{ route('save-picture') }}" enctype="multipart/form-data">
+    @csrf
+       <div class="row w-100 mt-5 mb-5">
+            <div class="col-md-9">
+                <h4 class="hedngead">Picture Question</h3>
+            </div>
+            <div class="col-md-3">
+                <button class="custom-button" type="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save
+                    Question</button>
+            </div>
+            <div class="col-md-3">
+                <div class="w-100 mb-2">
+                    <label for="email" class=""> Add Language</label>
+                    <div class="add_field_set" >
+                        <select class="form-control mb-3 laguage_data" name="language" data-index="1" id="s1">
+                            <option value="">Select Language</option>
+                            @if(isset($languages) && $languages != null)
+                                @foreach($languages as $language) 
+                                    <option value="{{ $language->language_code }}" data-i="{{$language->language}}">  {{ $language->language}}  </option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <div class="change_button">
+                            <a href="#" class="adds mb-4" id="add_languages" data-section="1">+ Add</a>
+                        </div>
+                    </div>
+
+                    <div class="w-100 mt-4 mb-2">
+                        <label for="email" class="">Dependencies</label>
+                        <select class="form-control mb-3">
+                            <option>Only Appears if Answer Checked</option>
+                            <option>Only Appears if Answer</option>
+                            <option>Unchecked</option>
+                            <option>No Dependcy</option>
+                        </select>
+                    </div>
+                    <div class="w-100 mt-4 mb-2">
+                        <label for="email" class="">Select Dependend Answer</label>
+                        <select class="form-control mb-3" name="dependent_answer" id="dependent_answer">
+                            <option value="">Select</option>
+                            <option value="Q22 Female">Q22 Female</option>
+                            <option value="Q02 First Time Visitor">Q02 First Time Visitor</option>
+                            <option value="Q15 From the sourronding">Q15 From the sourronding</option>
+                        </select>
+                    </div>
+                    <div class="w-100 mt-4 mb-2">
+                        <label for="email" class="">Mandatory Question</label>
+                        <div class="wrappers">
+                            <input id="checkbox" type="checkbox" class="checkbox hidden" />
+                            <label class="switchbox" for="checkbox"></label>
+                        </div>
+                    </div>
+                    <div class="w-100 mt-4 mb-2">
+                        <label for="email" class="">Maximum Answers</label>
+                        <input type="text" class="form-control mb-2 mr-sm-2" placeholder="4" id="email">
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-9 mt-3 pt-1">
+
+                <div class="w-100 mb-4">
+                    <label for="email" class="w-100"> Question Name</label>
+                   <input type="text" class="form-control has-search mb-2 d-inline-block" id="" name="question">
+                   <input type="hidden" class="form-control has-search mb-2 d-inline-block" value="std_qns" name="std_qns">
+                    <input type="hidden" class="form-control has-search mb-2 d-inline-block" value="4" 
+                     name="question_type_id" >
+                </div>
+                <!-- <div class="w-100 mb-4">
+                    <label for="email" class=""> Display Text</label>
+                    <input class="form-control mb-2" placeholder="">
+                </div> -->
+
+                <table class="table table-borderless table-scroll mt-3 mb-0" id="productTable">
+                    <thead>
+
+                        <tr>
+                            <th scope="col">&nbsp;</th>
+                            <th scope="col">Answers/ Display Name</th>
+                            <th scope="col">Pictures</th>
+                            <th scope="col">Order</th>
+                            <th scope="col">Delete</th>
+                            <th scope="col">Dependency</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="picture">
+                        <tr>
+                            <td> 1</td>
+                            <td><input type="text" class="form-control picture-answer" name="picture_answer[]"></td>
+                            <td>
+                                <div class="input-file">
+                                    <input type="file" id="file" class="file" name="file[]" />
+                                    <label for="file-upload" class="btnss">
+                                        <i class="fa fa-picture-o m-0" aria-hidden="true"></i>
+                                        <span class="">Upload Picture</span>
+                                    </label>
+                                </div>
+
+                                <!-- <div class="input-filesss">
+                                    <input type="file" id="file-uploads" class="file" name="file[]" />
+                                    <label for="file-uploads" class="btns">
+                                    <i class="fa fa-picture-o m-0" style="font-size: 30px; width: 30%;"></i>
+                                    <span class="">Upload Picture</span></label>
+                                </div> -->
+
+                            </td>
+                            <td class="text-center">
+                                <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
+                                <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
+                            </td>
+                            <td class="text-center">
+                                <p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p>
+                            </td>
+                            <td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+                <div class="btndfd" id="addPicture" style="cursor: pointer;">+ Add</div>
             </div>
         </div>
-    </form> -->
-        <!--Single Choice Question-->
+    </form>
+        <!--End Picture Question-->
 
     </div>
 
@@ -457,7 +729,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"> </script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script type="text/javascript">
+    // Delete Question
     $(document).on("click",".delete-confirm",function(){
         event.preventDefault();
         const url = $(this).attr('href');
@@ -472,12 +746,10 @@
             }
         });
     });
-
+    // Search Question
     $(document).ready(function(){
         $.ajaxSetup({
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
         });
         $("#questioner_search").keyup(function(){
             var search = $(this).val();
@@ -497,8 +769,8 @@
         });
     });
 
-
     jQuery(document).ready(function(){
+        // Multiple Choice
         $('#addform').on('submit',function(e){
             e.preventDefault();
             $.ajax({
@@ -512,8 +784,8 @@
                 },
             });
         });
-
-       /* $('#addsingleform').on('submit',function(e){
+        // Single Choice
+        $('#addsingleform').on('submit',function(e){
             e.preventDefault();
             $.ajax({
                 type:"POST",
@@ -525,7 +797,24 @@
                     $('.alert-success').show()
                 },
             });
-        });*/
+        });
+        // Ranking
+        $('#rankingform').on('submit',function(e){
+            e.preventDefault();
+            $.ajax({
+                type:"POST",
+                url: "{{ url('save-questionairs') }}",
+                data:$('#rankingform').serialize(),
+                dataType: 'json', 
+                success:function(response){
+                    console.log(response);
+                    if(response.success== true){
+                        alert(response.message);
+                        $('.alert-success').show()
+                    }    
+                },
+            });
+        });
     });
 
  
@@ -562,8 +851,6 @@
         $(".add_field_set").last().after(html);
     });
 
-
-    
     $(document).on("click","#safe_question",function(){
         var formData = new FormData($('#addform')[0]);
         var language = [];

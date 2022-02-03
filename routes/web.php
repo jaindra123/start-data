@@ -57,6 +57,9 @@ Route::post('save-questionairs',[QuestionairController::class,'QuestionairSave']
 Route::post('autocomplete',[QuestionairController::class,'AutoCompleteSearch'])->name('questionairs.search');
 Route::get('questionairs/{id}', [QuestionairController::class, 'delete'])->name('questionairs.delete');
 
+Route::post('store-multi-file', [QuestionairController::class, 'storeMultiFile'])->name('save-picture');
+
+
 
 
 

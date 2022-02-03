@@ -445,11 +445,24 @@ $user = checkUser();
                     $('tbody#add_more').append(html);
                 });
 
-               /* var html1 =
-                    '<tr><td>1</td><td><input type="text" class="form-control single-ans" name="single_answer[]" placeholder="888" "></td><td><input type="text" class="form-control" placeholder="22"></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
+                var html1 =
+                    '<tr><td>1</td><td><input type="text" class="form-control picture-answer" name="picture_answer[]" placeholder="" "></td><td> <div class="input-filesss"> <input type="file" id="file-uploads" class="form-control file" name="file[]" placeholder="22"> <label for="file-uploads" class="btns"><i class="fa fa-picture-o m-0" style="font-size: 30px; width: 30%;"></i><span class="">Upload Picture</span></label></div> </td>   <td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td></tr>';
+                $("#addPicture").click(function () {
+                    $('tbody#picture').append(html1);
+                });
+
+                var html2 =
+                    '<tr><td>1</td><td><input type="text" class="form-control single-ans" name="answer[]" placeholder="dd" "></td><td><input type="text" class="form-control single-text" name="display_text[]" placeholder="22"></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
                 $("#addSingleChoice").click(function () {
-                    $('tbody#single_choice').append(html1);
-                });*/
+                    $('tbody#singleChoice').append(html2);
+                });
+
+                var html3 =
+                    '<tr><td>1</td><td><input type="text" class="form-control ranking-ans" name="answer[]" placeholder="99" "></td><td><input type="text" class="form-control ranking-text" name="display_text[]" placeholder="66"></td><td class="text-center"><i class="fa fa-angle-up d-block" aria-hidden="true"></i> <i class="fa fa-angle-down d-block" aria-hidden="true"></i></td><td class="text-center"><p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p></td><td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td><td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td></tr>';
+                $("#addRanking").click(function () {
+                    $('tbody#ranking').append(html3);
+                });
+
                 $(document).on('click', '.remove', function () {
                     $(this).parents('tr').remove();
                 });
