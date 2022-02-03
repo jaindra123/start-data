@@ -65,7 +65,7 @@ $user = checkUser();
                 @if(!empty($user))
                 @if($user->id == 1)
                 <ul class="nav">
-                    <li class="{{ request()->is('dashboard') ? 'active' : '' }} ">
+                    <li class="{{ request()->is('dashboard') || request()->is('edit-questionairs/*') || request()->is('questions/*') ? 'active' : '' }} ">
                         <a href="{{url('dashboard')}}">
                             <p>DASHBOARD</p>
                         </a>
