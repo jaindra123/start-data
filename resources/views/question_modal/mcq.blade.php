@@ -19,11 +19,12 @@
     @if($ques->open_text_field_ans == 1)
     <div class="row" id="text_field_show{{$ques->id}}">
         <div class="col-md-5">
-            <input type="text" class="p-3 form-control has-search mb-2 d-inline-block" name="input_{{$ques->id}}" placeholder="" id="Poster">
+            <input type="text" class="p-3 form-control has-search mb-2 d-inline-block" name="input_{{$ques->id}}" placeholder="" id="mcq">
         </div>
     </div>
     @endif
 </div>
+
 @push('js-script')
 <script type="text/javascript">
     $(document).ready(function(){
@@ -45,7 +46,8 @@
             }else{
                 $(".mcqdiv").append('<input type="hidden" id="checkbox_{{$ques->id}}" name="{{$ques->id}}[]" value="skiped">');
             }
-            if(mandatory > checkedcount){
+            var txt = $('#mcq').val();
+            if(mandatory > txt.length && mandatory > checkedcount){
                 alert('This Question is Mandatory :- "{{$ques->question}}"')
                 return false;
             }
@@ -54,15 +56,6 @@
                 return false;
             }
         });
-
-        // $("#other{{$ques->id}}").on('click',function(){
-        //     if($('input[type="checkbox"]').is(":checked")){
-        //         $("#text_field_show{{$ques->id}}").attr('style','display:block');
-        //     }
-        //     else{
-        //         $("#text_field_show{{$ques->id}}").attr('style','display:none');
-        //     }
-        // });
     });
 </script>
 @endpush

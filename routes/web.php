@@ -117,6 +117,6 @@ Route::group(['middleware' => ['auth']], function(){
 
 //Survey
 Route::get('survey-start/{questionair}/{language}',[SurveyController::class,'surveyStart'])->name('survey-start');
-Route::match(['get','post'],'question/{questionair}/{language}/{id?}',[SurveyController::class,'survey'])->name('question');
+Route::match(['get','post'],'question/{questionair}/{language}/{id?}/{cid?}',[SurveyController::class,'survey'])->name('question');
 Route::match(['get','post'],'survey-end/{questionair}/{language}',[SurveyController::class,'surveyEnd'])->name('survey-end');
 Route::get('password-match',[SurveyController::class,'surveyPasswordCheck'])->name('password-match');

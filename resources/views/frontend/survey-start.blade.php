@@ -72,17 +72,22 @@
     $(document).ready(function(){
         var questionair = {{$questionair->id}};
         var language = {{$lang_id}};
-        let password = prompt("Please enter the password");
-        // alert(password);
+        var password = prompt("Please enter the password");
         if(password){
             var url = "{{route('password-match')}}";
             $.ajax({
-                type:"get",
+                method:"get",
                 url:url,
                 data:{password:password, questionair:questionair, language:language},
                 dataType: 'json',
-                success: function(res){
+                success: function(result){
+                    if(result.success == 1){
 
+                    }else{
+                        var url = "{{url('survey-start/'.$questionair->id.'/'.$lang_id)}}";
+                        window.location = url;
+                        return false;            
+                    }
                 }
             })
         }

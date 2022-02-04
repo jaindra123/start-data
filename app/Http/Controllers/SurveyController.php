@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\Models\Questionair;
 use App\Models\QuestionairOtherLanguage;
 use App\Models\Question;
@@ -22,10 +23,11 @@ class SurveyController extends Controller
         return view('frontend.survey-start', $data);
     }
 
-    public function survey(Request $request, $qid, $lid, $pid = 1){
+    public function survey(Request $request, $qid, $lid, $pid = 1, $cid = 0){
         
         if($request->all()){
             // echo '<pre>';
+            $customer = $cid;
             // print_r($request->all());
             // die;
             $questionair_id = $qid;
@@ -39,13 +41,26 @@ class SurveyController extends Controller
                     $k = $key;
                     $implode_datas = implode(',',$datas);
                     $arr[$key] = $implode_datas;
-                    $submitentry = SurveyAnswer::Create([
+                    $submitentry = SurveyAnswer::updateOrCreate([
+                        'customer_id'       => $customer,
+                        'questionair_id'    => $questionair_id,
+                        'language_id'       => $lang_id,
+                        'page_id'           => $page_id,
+                        'question_id'       => $key,
+                    ],[
                         'questionair_id'    => $questionair_id,
                         'language_id'       => $lang_id,
                         'page_id'           => $page_id,
                         'question_id'       => $key,
                         'answer'            => $implode_datas,
                     ]);
+                    /*$submitentry = SurveyAnswer::Create([
+                        'questionair_id'    => $questionair_id,
+                        'language_id'       => $lang_id,
+                        'page_id'           => $page_id,
+                        'question_id'       => $key,
+                        'answer'            => $implode_datas,
+                    ]);*/
                     $inserID = $submitentry->id;
                     // $other = 'other_'.$key;
                     $other_answer = 'input_'.$key;
@@ -58,11 +73,11 @@ class SurveyController extends Controller
 
                 // if($checked == 1){
                     if($other_answer == $key){
-                        if(!empty($request->all()[$key])){
+                        // if(!empty($request->all()[$key])){
                             $otherAnswer = $request->all()[$key];
                             $otherData = ['other_answer' => $otherAnswer];
                             SurveyAnswer::where(['id'=>$inserID])->update($otherData);
-                        }
+                        // }
                         // $checked = 0;
                     }
                 // }
@@ -83,10 +98,11 @@ class SurveyController extends Controller
         $data['max'] = Question::with('questionairAndQuestionTypeModel')->where([['language_id', $lid], ['status', '1']])->whereHas('questionairAndQuestionTypeModel', function($subQuery) use($qid){$subQuery->where("questionair_id", $qid);})->max('page_id');
         $data['current'] = $pid;
         $data['nxt'] = $pid+1;
+        $data['customer_id'] = Session::get('customer_id');
         // echo '<pre>';
         // print_r($data['question'][0]->questionairAndQuestionTypeModel);
         // print_r($data['min']);
-        // print_r($data['max']);
+        // print_r($data['customer_id']);
         // die;
         return view('frontend.web', $data);
     }
@@ -99,11 +115,15 @@ class SurveyController extends Controller
 
     public function surveyPasswordCheck(Request $request){
         $activeCondition = ['id' => $request->questionair];
-        $activeRecord = Questionair::where($activeCondition)->where('deleted_at',NULL)->orderBy('created_at','DESC')->paginate(6,['*'],'active_paginate');
-        //password_for_protected_link
-        print_r($activeRecord);
-        print_r($request->questionair);
-        print_r($request->all());
-        die;
+        $activeRecord = Questionair::where($activeCondition)->where('deleted_at',NULL)->first();
+        if($request->password == $activeRecord->password_for_protected_link){
+            // 8QHLEdlSTd
+            $user = SurveyAnswer::max('customer_id');
+            $user++;
+            Session::put('customer_id', $user);
+            return response()->json(['success' => 1, 'customer_id' => $user]);
+        }else{
+            return response()->json(['success' => 0, 'message' => 'You have enter incorrect password']);
+        }
     }
 }

@@ -20,13 +20,10 @@
         <div class="mt-56">
             <!-- <h1 class="mb-4">Besucher*innenbefragung Frankfurter Kultureinrichtungen 2021</h1> -->
             <h1 class="mb-4">@if($questionair->language_id == $lang_id){{$questionair->headline}}@else{{$questionairs[0]->headline}}@endif</h1>
-            <h6>Personal Questions</h6>
+            <!-- <h6>Personal Questions </h6> -->
             <div class="br-77"></div> 
-            <form action="{{url('question/'.$questionair->id.'/'.$lang_id)}}/{{$nxt}}" method="POST">
+            <form action="{{url('question/'.$questionair->id.'/'.$lang_id)}}/{{$nxt}}/{{$customer_id}}" method="POST">
                 @csrf
-                <!-- <input type="text" id="questionair" value="{{$questionair->id}}" name="questionair">
-                <input type="text" id="lang" value="{{$lang_id}}" name="lang" >
-                <input type="text" id="page" value="{{$current}}" name="page" > -->
                 @if(isset($question) && !empty($question))
                     @foreach($question as $key => $ques)
                         @foreach($ques->questionairAndQuestionTypeModel as $key => $type)
@@ -70,9 +67,7 @@
                                 </div>
                             @endif
                             @if($type->ques_type_id == 10)
-                                <div class="question-box">
-
-                                </div>
+                                {{--@include('question_modal.annotationQuestion')--}}
                             @endif
                         @endforeach
                         @php $prev = $nxt = $ques->page_id; @endphp
@@ -102,34 +97,39 @@
 @push('js-script')
 
 <script type="text/javascript">
+    var idleTime = 0;
     $(document).ready(function () {
-        // var timer = 5*1000;
-        // $(this).mousemove(function(e){
-            // timer = 5*1000;
-        //     alert('m');
-        // });
-        // $(this).keypress(function(e){
-            // timer = 5*1000;
-        //     alert('k');
-        // });
-        // setInterval(displayHello, timer);
-        // function displayHello() {
-        //     alert('Time Expired');
-        //     window.location.href = "{{url('survey-start/'.$questionair->id.'/'.$lang_id)}}";
-        // }
+        let idleInterval = setInterval(timerIncrement, {{$questionair->idle_timer*20}});
+        $(this).mousemove(resetTimer);
+        $(this).mousedown(resetTimer);
+        $(this).click(resetTimer);
+        $(this).keypress(resetTimer);
+        function resetTimer() {
+            console.log("Idle time reset to 0");
+            idleTime = 0;
+        }
         $("#prev").on('click',function(){
             var page = this.value;
-            // alert(page);
             var url = "{{url('question/'.$questionair->id.'/'.$lang_id)}}/"+page;
             window.location = url;
-        });/*
-        $("#submit").on('click',function(){$questionair->idle_timer
-            if(!$('input[type="checkbox"]').is(":checked")){
-                alert('please select option');
-                return false;
-            }
-        });*/
+        });
+        function disableBack() {
+            window.history.forward()
+        }
+        window.onload = disableBack();
+        window.onpageshow = function(e) {
+            if (e.persisted)
+                disableBack();
+        }
     });
+    function timerIncrement() {
+        idleTime = idleTime + 1;
+        console.log('Sec:' +idleTime+' '+{{$questionair->idle_timer}});
+        if (idleTime == {{$questionair->idle_timer}}){
+            alert('Time Expired');
+            window.location.href = "{{url('survey-start/'.$questionair->id.'/'.$lang_id)}}";
+        }
+    }
 </script>
 
 @endpush
