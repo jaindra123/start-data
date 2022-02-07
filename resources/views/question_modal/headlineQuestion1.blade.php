@@ -1,37 +1,8 @@
-<div class="question-box">
-    <h5>@if($ques->question_type_id == 11){{$ques->question}}@endif</h5>
-    <div class="row">
-        <div class="row mt-4">
-            <input type="hidden" id="mandatory_{{$ques->id}}" value="{{$ques->mandatory}}">
-            <div class="col-md-12">
-                <label for="Sales" class="radio-label d-block">Name</label>
-                <input type="text" class="p-3 form-control has-search mb-2 d-inline-block" placeholder="Name" id="name">
-                <div class="name"></div>
-            </div>
-            <div class="col-md-12 mb-4">
-                <label for="Sales" class="radio-label d-block">Email</label>
-                <input type="text" class="p-3 form-control has-search mb-2 d-inline-block" placeholder="Email" id="email">
-                <div class="email"></div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-groupdd">
-                    <input type="checkbox" id="checkbox1" name="checkbox1">
-                    <label for="checkbox1">@if($ques->question_type_id == 10){{$ques->question}}@endif</label>
-                    <div class="checkbox1"></div>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-groupdd">
-                    <input type="checkbox" id="checkbox2" name="checkbox2">
-                    <label for="checkbox2">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</label>
-                    <div class="checkbox2"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+    <h1 class="mb-4">{{$ques->question}}</h1>
+    <div class="br-77"></div> 
 @push('js-script')
-<script type="text/javascript">
+<script type="text/javascript">/*
     $(document).ready(function(){
         var checkedcount1 = 0;
         var checkedcount2 = 0;
@@ -86,6 +57,6 @@
                 return false;
             }
         });
-    });
+    });*/
 </script>
 @endpush

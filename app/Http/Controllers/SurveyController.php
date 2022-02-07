@@ -82,6 +82,8 @@ class SurveyController extends Controller
                     }
                 // }
             }
+            // print_r($arr);
+            // die;
         }
         
         if($request->Finish == "Finish"){
@@ -118,8 +120,10 @@ class SurveyController extends Controller
         $activeRecord = Questionair::where($activeCondition)->where('deleted_at',NULL)->first();
         if($request->password == $activeRecord->password_for_protected_link){
             // 8QHLEdlSTd
-            $user = SurveyAnswer::max('customer_id');
-            $user++;
+            // $user = SurveyAnswer::max('customer_id');
+            // $user++;
+            // $user = rand();
+            $user = random_int(100000, 999999);
             Session::put('customer_id', $user);
             return response()->json(['success' => 1, 'customer_id' => $user]);
         }else{

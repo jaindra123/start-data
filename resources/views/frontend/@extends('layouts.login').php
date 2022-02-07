@@ -19,14 +19,57 @@
         <img src="{{asset('assets/img/amazon-black.svg')}}" class="img-fluid">
         <div class="mt-56">
             <!-- <h1 class="mb-4">Besucher*innenbefragung Frankfurter Kultureinrichtungen 2021</h1> -->
-            <!-- <h1 class="mb-4">@if($questionair->language_id == $lang_id){{$questionair->headline}}@else{{$questionairs[0]->headline}}@endif</h1> -->
+            <h1 class="mb-4">@if($questionair->language_id == $lang_id){{$questionair->headline}}@else{{$questionairs[0]->headline}}@endif</h1>
             <!-- <h6>Personal Questions </h6> -->
-            <!-- <div class="br-77"></div>  -->
+            <div class="br-77"></div> 
             <form action="{{url('question/'.$questionair->id.'/'.$lang_id)}}/{{$nxt}}/{{$customer_id}}" method="POST">
                 @csrf
                 @if(isset($question) && !empty($question))
                     @foreach($question as $key => $ques)
-                        @foreach($ques->questionairAndQuestionTypeModel as $key => $type)
+                    @php //echo '<pre>'; print_r($ques);die; @endphp
+                            @if($ques->question_type_id == 1)
+                                @include('question_modal.mcq')
+                            @endif
+                            @if($ques->question_type_id == 2)
+                                @include('question_modal.scq')
+                            @endif
+                            @if($ques->question_type_id == 3)
+                                @include('question_modal.openQuestion')
+                            @endif
+                            @if($ques->question_type_id == 4)
+                                <div class="question-box">
+
+                                </div>
+                            @endif
+                            @if($ques->question_type_id == 5)
+                                <div class="question-box">
+
+                                </div>
+                            @endif
+                            @if($ques->question_type_id == 6)
+                                <div class="question-box">
+
+                                </div>
+                            @endif
+                            @if($ques->question_type_id == 7)
+                                <div class="question-box">
+
+                                </div>
+                            @endif
+                            @if($ques->question_type_id == 8)
+                                <div class="question-box">
+
+                                </div>
+                            @endif
+                            @if($ques->question_type_id == 9)
+                                <div class="question-box">
+
+                                </div>
+                            @endif
+                            @if($ques->question_type_id == 10)
+                                @include('question_modal.annotationQuestion')
+                            @endif
+                        {{--@foreach($ques->questionairAndQuestionTypeModel as $key => $type)
                             @if($type->ques_type_id == 1)
                                 @include('question_modal.mcq')
                             @endif
@@ -47,7 +90,9 @@
                                 </div>
                             @endif
                             @if($type->ques_type_id == 6)
-                                @include('question_modal.scaleQuestion')
+                                <div class="question-box">
+
+                                </div>
                             @endif
                             @if($type->ques_type_id == 7)
                                 <div class="question-box">
@@ -65,21 +110,9 @@
                                 </div>
                             @endif
                             @if($type->ques_type_id == 10)
-                                @include('question_modal.agreementQuestion')
+                                @include('question_modal.annotationQuestion')
                             @endif
-                            @if($type->ques_type_id == 11)
-                                @include('question_modal.headlineQuestion1')                                
-                            @endif
-                            @if($type->ques_type_id == 12)
-                                @include('question_modal.annotationQuestion1')
-                            @endif
-                            @if($type->ques_type_id == 13)
-                                @include('question_modal.headlineQuestion2')    
-                            @endif
-                            @if($type->ques_type_id == 14)
-                                @include('question_modal.annotationQuestion2')
-                            @endif
-                        @endforeach
+                        @endforeach --}}
                         @php $prev = $nxt = $ques->page_id; @endphp
                     @endforeach
                 @endif
@@ -107,9 +140,9 @@
 @push('js-script')
 
 <script type="text/javascript">
-    var idleTime = 0;
+    var idleTime = 0;/*
     $(document).ready(function () {
-        let idleInterval = setInterval(timerIncrement, {{$questionair->idle_timer*20000000000000000}});//20
+        let idleInterval = setInterval(timerIncrement, {{$questionair->idle_timer*20}});
         $(this).mousemove(resetTimer);
         $(this).mousedown(resetTimer);
         $(this).click(resetTimer);
@@ -131,15 +164,15 @@
             if (e.persisted)
                 disableBack();
         }
-    });
+    });*//*
     function timerIncrement() {
         idleTime = idleTime + 1;
-        console.log('Sec:' +idleTime+' '+{{$questionair->idle_timer}});
+        // console.log('Sec:' +idleTime+' '+{{$questionair->idle_timer}});
         if (idleTime == {{$questionair->idle_timer}}){
             alert('Time Expired');
             window.location.href = "{{url('survey-start/'.$questionair->id.'/'.$lang_id)}}";
         }
-    }
+    }*/
 </script>
 
 @endpush
