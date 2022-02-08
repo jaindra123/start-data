@@ -70,7 +70,7 @@ $user = checkUser();
                             <p>DASHBOARD</p>
                         </a>
                     </li>
-                    <li class="{{ request()->is('add-questionairs') ? 'active' : '' }}">
+                    <li class="{{ request()->is('add-questionairs') || request()->is('question-list') ? 'active' : '' }}">
                         <a href="{{url('add-questionairs')}}">
                             <p>CREATE NEW QUESTIONAIRE</p>
                         </a>
