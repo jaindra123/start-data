@@ -735,7 +735,6 @@
                 
         });
 
-
         $("#safe_changes").on('click', function(e){
             var formData = new FormData($('#questionairsForm')[0]);
             var quesId = $('#questionairsId').val();

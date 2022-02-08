@@ -109,6 +109,8 @@ Route::post('delete-other-lang-questionairs',[QuestionairController::class,'dele
 Route::get('questions/{questionairId}/{pageNo?}',[QuestionQController::class, 'index'])->name('questions');
 Route::post('store-question/{quesionId}/{pageNo?}',[QuestionQController::class,'store_question'])->name('store-question');
 Route::post('store-question-details/{questionId}/{pageNo?}', [QuestionQController::class,'store_question_details'])->name('store-question-details');
+Route::get('get-questions',[QuestionQController::class,'get_question'])->name('get-questions');
+Route::get('save-scale-question-type/{questionId}/{pageNo?}',[QuestionQController::class,'save_scale_question_type'])->name('save-scale-question-type');
 
 
 
@@ -118,5 +120,5 @@ Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-lan
 
 //Survey
 Route::get('survey-start/{questionair}/{language}',[SurveyController::class,'surveyStart'])->name('survey-start');
-Route::get('question/{questionair}/{language}',[SurveyController::class,'survey'])->name('questions/{questionairId}',[QuestionQController::class, 'index'])->name('questions');;
+Route::get('question/{questionair}/{language}',[SurveyController::class,'survey'])->name('question');
 Route::get('survey-end/{questionair}/{language}',[SurveyController::class,'surveyEnd'])->name('survey-end');
