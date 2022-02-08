@@ -1,7 +1,7 @@
 
 <div class="question-box">
     <h5>{{$ques->question}}</h5>
-    <small for="">{{$ques->scale_discription}}</small>
+    <small>{{$ques->scale_discription}}</small>
     <div class="row">
         <input type="hidden" id="mandatory_{{$ques->id}}" value="{{$ques->mandatory}}">
         <input type="hidden" id="radio_{{$ques->id}}" name="{{$ques->id}}[]" value="skiped">

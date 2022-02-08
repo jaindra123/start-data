@@ -42,9 +42,7 @@
                                 </div>
                             @endif
                             @if($type->ques_type_id == 5)
-                                <div class="question-box">
-
-                                </div>
+                                @include('question_modal.matrixQuestion')
                             @endif
                             @if($type->ques_type_id == 6)
                                 @include('question_modal.scaleQuestion')

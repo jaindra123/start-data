@@ -38,9 +38,25 @@ class SurveyController extends Controller
             $other = $other_answer = $checked = $otherAnswer = '';
             foreach($request->all() as $key => $datas){
                 if(is_array($datas)){
+                    // echo $key;
+                    if(strpos($key, '_matrix_') !== false){
+                        $ex = explode("_matrix_",$key);
+                        // print_r($ex);
+                    }
                     $k = $key;
                     $implode_datas = implode(',',$datas);
-                    $arr[$key] = $implode_datas;
+                    if(!empty($ex)){
+                        $key = $ex[1];
+                        $arr[$ex[1]][] = $implode_datas;
+                        if(is_array($arr)){
+                            $implode_datas = implode(',',$arr[$ex[1]]);
+                        }
+                        // print_r($arr);
+                    }else{
+                        $arr[$key] = $implode_datas;
+                    }
+                    // echo '<br>';
+                    
                     $submitentry = SurveyAnswer::updateOrCreate([
                         'customer_id'       => $customer,
                         'questionair_id'    => $questionair_id,
@@ -123,7 +139,7 @@ class SurveyController extends Controller
             // $user = SurveyAnswer::max('customer_id');
             // $user++;
             // $user = rand();
-            $user = random_int(100000, 999999);
+            $user = random_int(1, 999999);
             Session::put('customer_id', $user);
             return response()->json(['success' => 1, 'customer_id' => $user]);
         }else{
