@@ -1472,3 +1472,23 @@ li.draggable-item.ui-sortable-placeholder {
 	clip: rect(0,0,0,0);
 	pointer-events: none;
 }
+
+/* 09-02-2022 */
+#clear {
+  float: left;
+  position: relative;
+  display: block;
+  background-color: transparent;
+  margin-bottom: 15px;
+  width:200px;
+  height: 40px;
+  border: 1px solid #333;
+}
+
+#clear:hover {
+  float: left;
+  display: block;
+  background-color: transparent;
+  margin-bottom: 15px;
+  box-shadow: 0 4px transparent;
+}

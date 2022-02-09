@@ -48,9 +48,7 @@
                                 @include('question_modal.scaleQuestion')
                             @endif
                             @if($type->ques_type_id == 7)
-                                <div class="question-box">
-
-                                </div>
+                                @include('question_modal.numberQuestion')
                             @endif
                             @if($type->ques_type_id == 8)
                                 <div class="question-box">
@@ -58,9 +56,7 @@
                                 </div>
                             @endif
                             @if($type->ques_type_id == 9)
-                                <div class="question-box">
-
-                                </div>
+                                {{--@include('question_modal.rankingQuestion')--}}
                             @endif
                             @if($type->ques_type_id == 10)
                                 @include('question_modal.agreementQuestion')

@@ -33,7 +33,6 @@
         </div>
     </div>
     <div class="row">
-        <!-- {{$ques->option}} -->
         @foreach($ques->option as $value)
             @if($value->axis == 'y')
             @php $count++; @endphp
@@ -43,7 +42,7 @@
                 <div class="col-md-8">
                     <div class="greatForm mt-3">
                         @for($i = 1; $i <= $ques->max_ans_size; $i++)
-                            <input type="radio" class="matrix_check_{{$ques->id}} matrix_ck_{{$ques->id}} {{$value->option}}_{{$ques->id}}" name="{{$value->option}}_matrix_{{$ques->id}}[]" id="{{$value->option}}_check_{{$i}}" value="{{$i}}" />
+                            <input type="radio" class="matrix_check_{{$ques->id}} matrix_ck_{{$ques->id}} {{$value->option}}_{{$ques->id}}" name="{{$value->option}}_matrix_{{$ques->id}}[]" id="{{$value->option}}_check_{{$i}}" rowid="{{$value->option}}_{{$ques->id}}" value="{{$i}}" />
                             <label for="{{$value->option}}_check_{{$i}}">{{$i}}</label>
                         @endfor
                     </div>
@@ -73,70 +72,46 @@
         var mandatory = $("#mandatory_{{$ques->id}}").val();
         $(".matrix_check_{{$ques->id}}").on('click',function(){
             if($(this).is(":checked")){
-                // checkedcount++;
                 checkedcount = 1;
             }else{
                 checkedcount = 0;
             }
         });
+
         @foreach($ques->option as $value)
         $(".{{$value->option}}_{{$ques->id}}").on('click',function(){
-            // if($(this).is(":checked")){
-            //     // count++;
-            //     myId = $(this).attr('id');
-            //     alert( myId );
-            //     // checkedcount = 1;
-            // }
-            // else{
-            //     checkedcount = 0;
-            // }
             $(this).each(function() {
-                myArray.push($(this).attr('id')); 
-                console.log(myArray);
+                myArray.push($(this).attr('rowid')); 
             });
             
-            var unique = myArray.filter(function(itm, i, a) {
+            var unique = myArray.filter(function(itm, i, myArray) {
                 return i == myArray.indexOf(itm);
             });
 
-            console.log(unique);
-            // console.log(unique[0]);
+            count = unique.length;
         });
         @endforeach
+
         $("#submit").on('click',function(){
             var check = true;
             if($('.matrix_check_{{$ques->id}}').is(":checked")){
                 $("#radio_{{$ques->id}}").remove();
             }
+
             if($('.matrix_ck_{{$ques->id}}').is(":checked")){
                 $("#checkbox_{{$ques->id}}").remove();
             }
-            if(count < {{$count}}){
-                alert('This Mandatory to select all option');
-                check = false;
-            }else{
-                check = true;
-            }
-            alert(count);
-            exit();
+
             if(mandatory > checkedcount){
                 alert('This Question is Mandatory :- "{{$ques->question}}"');
                 check = false;
             }
-            // else{
-            //     @foreach($ques->option as $value)
-            //         @if($value->axis == 'y')
-            //             @for($i = 1; $i <= $ques->max_ans_size; $i++)
-            //                 if($("#{{$value->option}}_check_{{$i}}").is(":checked")){
-            //                     alert($("#{{$value->option}}_check_{{$i}}").val());
-            //                     alert('Mandatory to rate all options');
-            //                 }else{
-            //                     check = false;
-            //                 }
-            //             @endfor
-            //         @endif
-            //     @endforeach
-            // }
+
+            if(count < {{$count}}){
+                alert('This Mandatory to select all option');
+                check = false;
+            }
+
             if(check == false){
                 return false;
             }

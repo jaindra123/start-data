@@ -28,16 +28,21 @@
 @push('js-script')
 <script type="text/javascript">
     $(document).ready(function(){
+        var mcq = [];
         var checkedcount = 0;
         var mandatory = $("#mandatory_{{$ques->id}}").val();
         var max_ans_size = $("#max_ans_size_{{$ques->id}}").val();
         $(".ans_{{$ques->id}}").on('click',function(){
             if($(this).is(":checked")){
-                checkedcount++;
+                $(this).each(function() {
+                    mcq.push($(this).attr('id')); 
+                });
+            }else{
+                $(this).each(function() {
+                    mcq.pop($(this).attr('id')); 
+                });
             }
-            else{
-                checkedcount--;
-            }
+            checkedcount = mcq.length;
         });
 
         $("#submit").on('click',function(){
