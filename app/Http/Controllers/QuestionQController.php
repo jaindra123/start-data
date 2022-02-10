@@ -108,6 +108,7 @@ class QuestionQController extends Controller{
                 'success'   =>  true,
                 'message'   =>  'Question Type ',
                 'data'      =>  $loadedQuestion,
+                'questionairTypeId' => $checkQuesType->id,
             ]);
         }
         $data = [
@@ -136,8 +137,9 @@ class QuestionQController extends Controller{
 
         if($insertedData){
             return response()->json([
-                'success'   =>  true,
-                'message'   =>  'Question Type '
+                'success'   =>  'success',
+                'message'   =>  'Question Type ',
+                'data1'=> $insertedData->id
             ]);
         }
     }
@@ -223,6 +225,7 @@ class QuestionQController extends Controller{
         // return $request->quesId;
         $questionModel = new Question();
         $questioanairWithTypeModel = new QuestionairAndQuestionTypeModel();
+        $optionModel = new Option();
 
         $questions = $questionModel->getSingleRecord(['id'=>$request->quesId]);
         // return $questions;
@@ -236,35 +239,58 @@ class QuestionQController extends Controller{
                 'questions.display_texts as displayText',
                 'questions.std_qns as stdAns',
                 'questions.language_id as languageId',
+                'questions.scale_discription as scale_description'
             ],
             [
                [ 'questions.id','>=',$request->quesId]
             ], $questions->language_count);
-        return $quesWithOtherLang;   
+        return ['questionTitle'=>$quesWithOtherLang];   
     }
 
     public function save_scale_question_type(Request $request, $questionairTypeId, $pageNo = 1){
-        // return $request->all();
-
+        
         $questionModel = new Question();
         $questioanairWithTypeModel = new QuestionairAndQuestionTypeModel();
         $optionModel =  new Option();
 
+        $data = $request->all();
+       
+        // return $request->all();
+
+        //  $request->all();
+
+
         $questionair_and_type = $questioanairWithTypeModel->getSingleRecordWithCondition(['id'=>$questionairTypeId]);
         
         $data = $request->all();
-        
+        if($questionair_and_type->ques_type_id == 5  || $questionair_and_type->ques_type_id == 9 ){
+            $c= count($data['questionData']['language_id'])* (int)($data['questionData']['total_option']);
+        }
+        if($questionair_and_type->ques_type_id == 5  || $questionair_and_type->ques_type_id == 9 ){
+            if(in_array(null,$data['questionData']['ansdisplayText_y'], true)){
+                return array('error'=>'All y-axis Option are required according to all languages');
+            }
+            if(count($data['questionData']['ansdisplayText_y']) != $c){
+                return array('error'=>'All y-axis Option are required according to all languages');
+            }
+        }
+        // $arr= [count($data['questionData']['ansdisplayText_y']), $c];
+       
+        // return  $arr;
         if(in_array(null,$data['questionData']['question'], true)){
             return array('error'=>'All Question Name Field are required according to all languages');
         }
         if(in_array(null,$data['questionData']['display_texts'], true)){
             return array('error'=>'All Display Field are required according to all languages');
         }
-        if(in_array(null,$data['questionData']['scale_des'], true)){
-            return array('error'=>'All Scale Description Field are required according to all languages');
+        if($questionair_and_type->ques_type_id == 5 || $questionair_and_type->ques_type_id == 6  ){
+            if(in_array(null,$data['questionData']['scale_des'], true)){
+                return array('error'=>'All Scale Description Field are required according to all languages');
+            }
         }
 
-        $total_options = $data['questionData']['total_option'];
+        // return $data;
+        // $total_options = $data['questionData']['total_option'];
         $insertedId =[];
 
         $data__=  ($data['questionData']['question']);
@@ -295,7 +321,7 @@ class QuestionQController extends Controller{
                 // 'dependent_answer'                  =>                  $data['questionData'],
                 'display_texts'                     =>                  $data['questionData']['display_texts'][$i],
                 // 'options'                           =>                  $data['questionData'],
-                'scale_discription'                 =>                  $data['questionData']['scale_des'][$i],
+                'scale_discription'                 =>                   $questionair_and_type->ques_type_id == 9 ? NULL : $data['questionData']['scale_des'][$i],
                 'status'                            =>                  $data['questionData']['selectedStatusOfLang'][$i] == 'deactivate' ? 0 : 1,
             ];
             $insertedRecord = $questionModel->insertRecord($data_);
@@ -306,48 +332,50 @@ class QuestionQController extends Controller{
             }
             $insertedId[]=$insertedRecord->id;
         }
-        $k=0;
-        foreach($insertedId as $key => $value){
-            $k = $key;
-           
-            if($k == 0){
-                $data__ = [
-                    'questions_id'  =>  $insertedId[$k],
-                    'option'  =>  $data['questionData']['answerName'][$k],
-                    'display_text'  =>  $data['questionData']['ansdisplayText'][$k],
-                    'std_opt'  =>  $data['questionData']['optionStar'][$k],
-                ];
-                $optionModel->insertRecord($data__);
-                $data1__ = [
-                    'questions_id'  =>  $insertedId[$k],
-                    'option'  =>  $data['questionData']['answerName'][$k+1],
-                    'display_text'  =>  $data['questionData']['ansdisplayText'][$k+1],
-                    'std_opt'  =>  $data['questionData']['optionStar'][$k+1],
-                ];
-                $optionModel->insertRecord($data1__);
-                                                                   
+        if($questionair_and_type->ques_type_id == 5 || $questionair_and_type->ques_type_id == 6 ){
+            $k=0;
+            foreach($insertedId as $key => $value){
+                $k = $key;
+                for($i = 0; $i < count($data['questionData']['answerName'])/count($insertedId); $i++){
+                    if($k == 0){
+                        $data__ = [
+                            'questions_id'  =>  $insertedId[$k],
+                            'option'  =>  $data['questionData']['answerName'][$k+$i],
+                            'display_text'  =>  $data['questionData']['ansdisplayText'][$k+$i],
+                            'std_opt'  =>  $data['questionData']['optionStar'][$k+$i],
+                        ];
+                        $optionModel->insertRecord($data__);
+                                                                        
+                    }
+                    else{
+                        $data2__ = [
+                            'questions_id'  =>  $insertedId[$k],
+                            'option'  =>  $data['questionData']['answerName'][$k*2+$i],
+                            'display_text'  =>  $data['questionData']['ansdisplayText'][$k*2+$i],
+                            'std_opt'  =>  $data['questionData']['optionStar'][$k*2+$i],
+                        ];
+                        $optionModel->insertRecord($data2__);
+                    }
+                }
             }
-            else{
-                $data2__ = [
-                    'questions_id'  =>  $insertedId[$k],
-                    'option'  =>  $data['questionData']['answerName'][$k*2],
-                    'display_text'  =>  $data['questionData']['ansdisplayText'][$k*2],
-                    'std_opt'  =>  $data['questionData']['optionStar'][$k*2],
-                ];
-                $optionModel->insertRecord($data2__);
-                $data3__ = [
-                    'questions_id'  =>  $insertedId[$k],
-                    'option'  =>  $data['questionData']['answerName'][$k*2+1],
-                    'display_text'  =>  $data['questionData']['ansdisplayText'][$k*2+1],
-                    'std_opt'  =>  $data['questionData']['optionStar'][$k*2+1],
-                ];
-                $optionModel->insertRecord($data3__);
-                // echo $data['questionData']['ansdisplayText'][$k*2];
-                // echo $data['questionData']['answerName'][$k*2+1];
-            }
-            // echo '<br>';
         }
-       
+        if($questionair_and_type->ques_type_id == 5  ||$questionair_and_type->ques_type_id ==9 ){
+            $l=0;
+            for($z=0;$z<count($insertedId);$z++){
+           
+                for($j = 0; $j < count($data['questionData']['ansdisplayText_y'])/count($insertedId); $j++){
+                    $data__ = [
+                        'questions_id'  =>  $insertedId[$z],
+                        'option'  =>  $data['questionData']['answerName_y'][$l],
+                        'display_text'  =>  $data['questionData']['ansdisplayText_y'][$l],
+                        'std_opt'  =>  $data['questionData']['optionStar_y'][$l],
+                        'axis'      => $questionair_and_type->ques_type_id == 5 ? 'y' : 'x'
+                        ];
+                    $optionModel->insertRecord($data__);   
+                    $l++;
+                }
+            }       
+        }
         return response()->json(['success'=>true, 'message'=>'Question Added Successfully','data'=>$insertedId]);
     }
 }
