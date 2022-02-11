@@ -77,42 +77,46 @@ Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegis
 Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('email.send');
 Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.forget');
 
+
 Route::group(['middleware' => ['auth']], function(){
      //Pages
-     Route::view('questionair','backend.questionair-tool');
-     Route::view('admin-dashboard','backend.admin-dashboard');
-     // Route::view('dashbord','backend.dashbord');
-     Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
-     // Route::view('question/{id}','frontend.web');
-     // Route::view('survey-start/{id}','frontend.survey-start');
-     // Route::view('survey-end/{id}','frontend.survey-end');
-     Route::view('dataset','backend.dataset');
-     // Route::view('customer-dashboard','user.dashboard');
-     Route::view('cross-reference','user.cross-reference');
-     Route::view('cross-ref','user.cross-ref');
-     Route::view('analysis-platform-select-data','user.analysis-platform-select-data');
-     Route::view('select-a-dataset','user.select-a-dataset');
+Route::view('questionair','backend.questionair-tool');
+Route::view('admin-dashboard','backend.admin-dashboard');
+// Route::view('dashbord','backend.dashbord');
+Route::view('analysis-platform-dashboard','backend.analysis-platform-dashboard');
+// Route::view('question/{id}','frontend.web');
+// Route::view('survey-start/{id}','frontend.survey-start');
+// Route::view('survey-end/{id}','frontend.survey-end');
+Route::view('dataset','backend.dataset');
+// Route::view('customer-dashboard','user.dashboard');
+Route::view('cross-reference','user.cross-reference');
+Route::view('cross-ref','user.cross-ref');
+Route::view('analysis-platform-select-data','user.analysis-platform-select-data');
+Route::view('select-a-dataset','user.select-a-dataset');
 
-     //Questionairs 
-     Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
-     Route::post('store-questionairs',[QuestionairController::class,'store_questionairs'])->name('store-questionairs');
-     Route::post('store-session-questionairs',[QuestionairController::class,'store_session_questionairs'])->name('store-session-questionairs');
-     Route::post('remove-session-questionairs',[QuestionairController::class,'remove_session_questionairs'])->name('remove-session-questionairs');
-     Route::get('edit-questionairs/{id}',[QuestionairController::class,'edit_questionair'])->name('edit-questionairs');
-     Route::post('update-questionairs/{id}',[QuestionairController::class,'update_questionair'])->name('update-questionairs');
-     Route::post('delete-questionairs',[QuestionairController::class,'delete_questionairs'])->name('delete-questionairs');
-     Route::post('delete-other-lang-questionairs',[QuestionairController::class,'delete_other_lang_questionairs'])->name('delete-other-lang-questionairs');
-     // Route::get('dashboard',[QuestionairController::class, 'dashboard'])->name('dashboard');
+//Questionairs 
+Route::get('add-questionairs',[QuestionairController::class,'add_questionairs'])->name('add-questionairs');
+Route::post('store-questionairs',[QuestionairController::class,'store_questionairs'])->name('store-questionairs');
+Route::post('store-session-questionairs',[QuestionairController::class,'store_session_questionairs'])->name('store-session-questionairs');
+Route::post('remove-session-questionairs',[QuestionairController::class,'remove_session_questionairs'])->name('remove-session-questionairs');
+Route::get('edit-questionairs/{id}',[QuestionairController::class,'edit_questionair'])->name('edit-questionairs');
+Route::post('update-questionairs/{id}',[QuestionairController::class,'update_questionair'])->name('update-questionairs');
+Route::post('delete-questionairs',[QuestionairController::class,'delete_questionairs'])->name('delete-questionairs');
+Route::post('delete-other-lang-questionairs',[QuestionairController::class,'delete_other_lang_questionairs'])->name('delete-other-lang-questionairs');
+// Route::get('dashboard',[QuestionairController::class, 'dashboard'])->name('dashboard');
 
-     //Questions
-     Route::get('questions/{questionairId}/{pageNo?}',[QuestionQController::class, 'index'])->name('questions');
-     Route::post('store-question/{quesionId}/{pageNo?}',[QuestionQController::class,'store_question'])->name('store-question');
-     Route::post('store-question-details/{questionId}/{pageNo?}', [QuestionQController::class,'store_question_details'])->name('store-question-details');
+//Questions
+Route::get('questions/{questionairId}/{pageNo?}',[QuestionQController::class, 'index'])->name('questions');
+Route::post('store-question/{quesionId}/{pageNo?}',[QuestionQController::class,'store_question'])->name('store-question');
+Route::post('store-question-details/{questionId}/{pageNo?}', [QuestionQController::class,'store_question_details'])->name('store-question-details');
+Route::get('get-questions',[QuestionQController::class,'get_question'])->name('get-questions');
+Route::get('save-scale-question-type/{questionId}/{pageNo?}',[QuestionQController::class,'save_scale_question_type'])->name('save-scale-question-type');
 
      //Theme Color & Language Set
      Route::post('set-color',[ColorController::class,'addColor'])->name('add-color');
      Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-language');
 });
+
 
 
 //Survey
