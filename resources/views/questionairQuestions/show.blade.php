@@ -7,6 +7,44 @@
     .displayClass{
         display: none;
     }
+    .dropdown-check-list {
+    display: inline-block;
+    }
+    .dropdown-check-list .anchor {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 50px 5px 10px;
+    border: 1px solid #ccc;
+    }
+    .dropdown-check-list .anchor:after {
+    position: absolute;
+    content: "";
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    padding: 5px;
+    right: 10px;
+    top: 20%;
+    -moz-transform: rotate(-135deg);
+    -ms-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+    }
+    .dropdown-check-list .anchor:active:after {
+    right: 8px;
+    top: 21%;
+    }
+    .dropdown-check-list ul.items {
+    padding: 2px;
+    display: none;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+    }
+    .dropdown-check-list ul.items li {
+    list-style: none;
+    }
 </style>
 @endpush('css-script')
 <div class="content quereszz">
@@ -19,13 +57,14 @@
         <div class="col-md-9">
             <ul class="pagesss mb-5">
                 <li>Page</li>
-                <li><a href="javascript:void(0);" class="active pageno changePageno" data-page="1" >1</a></li>
-                <li><a href="javascript:void(0);" class="changePageno" data-page="2" >2</a></li>
-                <li><a href="javascript:void(0);" class="changePageno" data-page="3" >3</a></li>
-                <li><a href="javascript:void(0);" class="changePageno" data-page="4" >4</a></li>
-                <li><a href="javascript:void(0);" class="addPageno" data-page="5" >+Add</a></li>
+                <li><a href="javascript:void(0);" class="{{ request()->is('questions/*/01') ? 'active' : '' }}  pageno changePageno" data-page="01" >1</a></li>
+                <li><a href="javascript:void(0);" class="changePageno {{ request()->is('questions/*/02')  ? 'active' : '' }}" data-page="02" >2</a></li>
+                <li><a href="javascript:void(0);" class="changePageno {{ request()->is('questions/*/03') ? 'active' : '' }}" data-page="03" >3</a></li>
+                <li><a href="javascript:void(0);" class="changePageno {{ request()->is('questions/*/04') ? 'active' : '' }}" data-page="04" >4</a></li>
+                <li><a href="javascript:void(0);" class="addPageno " data-page="05" >+Add</a></li>
             </ul>
 
+            <input type="hidden" name="langCount" id="languageId" value="{{$data['questionair'][0]->language_id}}">
                 <!-- Questionair Id, page number store in hidden input-->
                     <input type="hidden" name="questionairId" id="questionairId" value="{{$data['questionairId']}}">
                     <input type="hidden" name="pageNumber" id="pageNumber" value="{{$data['pagNo']}}">
@@ -388,7 +427,7 @@
                             <h4 class="hedngead">
                             Single Choice Question</h3>
                         </div>
-                        <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Question</button></div>
+                        <div class="col-md-3"><button class="custom-button saveQuestion6" data-value="{{$row->id}}" data-index="{{$row->id}}" id="save_question{{$row->id}}"><i class="fa fa-flopp-o" aria-hidden="true"></i> Save Question</button></div>
                         <div class="col-md-3">
                             <div class="w-100 mb-2">
                                 <label for="email" class=""> Add Language</label>
@@ -429,20 +468,71 @@
                                 <!-- <a href="#" class="adds mb-4">+ Add</a> -->
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="">Dependencies</label>
-                                    <select  class="form-control mb-3">
-                                        <option>Only Appears if Answer Checked</option>
-                                        <option>Only Appears if Answer</option>
-                                        <option>Unchecked</option>
-                                        <option>No Dependcy</option>
+                                    <select  class="form-control  dependency{{$row->id}}{{$row->id}} mb-3 ">
+                                        <option value="1">Only Appears if Answer Checked</option>
+                                        <option value="0">Only Appears if Answer Unchecked</option>
+                                        <option value="2">No Dependcy</option>
                                     </select>
                                 </div>
                                 <div class="w-100 mt-4 mb-2">
-                                    <label for="email" class="">Select Dependend Answer</label>
-                                    <select  class="form-control mb-3">
-                                        <option>Q22 Female</option>
-                                        <option>Q02 First Time Visitor</option>
-                                        <option>Q15 From the sourronding</option>
-                                    </select>
+                                    <label for="email" class="dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}">Select Dependend Answer</label>
+                                    <div id="list{{$data['questionair'][0]->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" tabindex="100">
+                                        <span class="anchor">Select Dependend Answer</span>
+                                        <ul id="items{{$data['questionair'][0]->language_id}}" class="items dependent_list{{$data['questionair'][0]->language_id}}">
+                                            @php
+                                                $depenedentAnswer = getDependencyAnswer($row->id);
+                                                foreach($depenedentAnswer as $c){
+                                                    if($c->language_id == $data['questionair'][0]->language_id){
+                                                
+                                            @endphp
+                                                <li><input type="checkbox" value="{{$c->id}}" name="ddCheck" class="dd dependent{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" />Q{{$c->question_id}}  {{$c->answer_name}}</li>
+                                                
+
+                                            @php
+                                                    }
+                                                }
+
+                                            @endphp
+                                        </ul>
+                                    </div>
+                                    @if(isset($data['questionair'][0]['quesLanguage']))
+                                        @foreach($data['questionair'][0]['quesLanguage'] as $key => $i)
+                                        
+                                        <div id="list{{$i->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$i->language_id}}" tabindex="100" style="display: none;">
+                                        <span class="anchor">Select Dependend Answer</span>
+                                        <ul id="items{{$i->language_id}}" class="items dependent_list{{$i->language_id}}">
+                                            @php
+                                                $depenedentAnswer = getDependencyAnswer($row->id);
+                                                foreach($depenedentAnswer as $d){
+                                                    if($d->language_id == $i->language_id){
+                                                
+                                            @endphp
+                                            <li><input type="checkbox"  value="{{$d->id}}" name="ddCheck"  class="dd dependent{{$row->id}}{{$row->id}}{{$i->language_id}}" />Q{{$d->question_id}}  {{$d->answer_name}} </li>
+                                            @php
+                                                    }
+                                                }
+
+                                            @endphp
+                                            </ul>
+                                        </div>
+                                        @endforeach
+                                       
+                                        
+                                    @endif
+                                </div>
+                                
+
+
+                                <div class="w-100 mt-4 mb-2">
+                                    <label for="email" class="dependency_logic">Dependencies Logic</label>
+                                    <div class="radiodd">
+                                        <input id="che-1" name="radio_dep_logic" type="radio" value='1' class="individual">
+                                        <label for="che-1" class="radio-label">Logic AND</label>
+                                    </div>
+                                    <div class="radiodd">
+                                        <input id="che-2" name="radio_dep_logic" type="radio" value='2' class="individual">
+                                        <label for="che-2" class="radio-label">Logic OR</label>
+                                    </div>
                                 </div>
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="">Mandatory Question</label>
@@ -466,7 +556,7 @@
                                 <label for="email" class="w-100"> Question Name</label>
                                 <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" id="email"> 
 
-                                <i class="fa fa-star startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
+                                <i class="fa fa-star questionStd startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
 
                                 <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="1">
                             </div>
@@ -506,8 +596,13 @@
                                         <td class="text-center">
                                             <p class=" op_remove" data-i="1" data-index="{{$row->id}}{{$row->id}}" data-language="{{$data['questionair'][0]->language_id}}"><i class="fa fa-trash " aria-hidden="true"></i></p>
                                         </td>
-                                        <td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td>
+
+                                        <td class="text-center"> <i class="fa fa-link dependecy dependencyCheck1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} " data-language="{{$data['questionair'][0]->language_id}}" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" data-i="1"  aria-hidden="true"></i></td>
+
+                                        <input type="hidden" class="dependencyCheckValue1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="linkData" value="0">
+
                                         <td class="text-center"> <i class="fa fa-star starOption_y starcheckOption_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} " data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" data-i="1" aria-hidden="true"></i></td>
+
                                         <input type="hidden" class="startCheckOptionValue_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="0">
                                     </tr>
                                 </tbody>
@@ -563,7 +658,11 @@
                                                 <td class="text-center">
                                                     <p class=" op_remove" data-i="1" data-index="{{$row->id}}{{$row->id}}" data-language="{{$i->language_id}}"><i class="fa fa-trash " aria-hidden="true"></i></p>
                                                 </td>
-                                                <td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td>
+
+                                                <td class="text-center"> <i class="fa fa-link dependecy dependencyCheck1{{$row->id}}{{$row->id}}{{$i->language_id}} " data-language="{{$i->language_id}}" data-value="{{$row->id}}{{$row->id}}{{$i->language_id}}" data-i="1"  aria-hidden="true"></i></td>
+
+                                                <input type="hidden" class="dependencyCheckValue1{{$row->id}}{{$row->id}}{{$i->language_id}}" name="linkData" value="0">
+
                                                 <td class="text-center"> <i class="fa fa-star starOption_y starcheckOption_y1{{$row->id}}{{$row->id}}{{$i->language_id}} " data-value="{{$row->id}}{{$row->id}}{{$i->language_id}}" data-i="1" aria-hidden="true"></i></td>
                                                 <input type="hidden" class="startCheckOptionValue_y1{{$row->id}}{{$row->id}}{{$i->language_id}}" name="starData" value="0">
                                             </tr>
@@ -671,7 +770,7 @@
                                 <label for="email" class="w-100"> Question Name</label>
                                 <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" id="email"> 
 
-                                <i class="fa fa-star startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
+                                <i class="fa fa-star questionStd startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
 
                                 <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="1">
                             </div>
@@ -998,7 +1097,7 @@
                                 <label for="email" class="w-100"> Question Name</label>
                                 <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" > 
 
-                                <i class="fa fa-star startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
+                                <i class="fa fa-star questionStd startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
 
                                 <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="1">
                             </div>
@@ -1251,7 +1350,7 @@
                                 <label for="email" class="w-100"> Question Name</label>
                                 <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" id="email"> 
 
-                                <i class="fa fa-star startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
+                                <i class="fa fa-star questionStd startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
 
                                 <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="1">
                             </div>
@@ -1491,7 +1590,7 @@
                                 <label for="email" class="w-100"> Question Name</label>
                                 <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" > 
 
-                                <i class="fa fa-star startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
+                                <i class="fa fa-star questionStd startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
 
                                 <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="1">
                             </div>
@@ -1733,7 +1832,7 @@
                                     <label for="email" class="w-100"> Question Name</label>
                                     <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" id="email"> 
 
-                                    <i class="fa fa-star startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
+                                    <i class="fa fa-star questionStd startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
 
                                     <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="1">
                                 </div>

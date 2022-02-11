@@ -9,6 +9,7 @@ use App\Models\Question;
 use App\Models\Questionair;
 use App\Models\QuestionairAndQuestionTypeModel;
 use App\Models\QuestionairOtherLanguage;
+use App\Models\QuestionDependency;
 use App\Models\QuestionType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ class QuestionQController extends Controller{
         $questionsModel = new Question();
         $languageModel = new Language();
         $questioanairWithTypeModel = new QuestionairAndQuestionTypeModel();
+        $questionDependencyModel= new QuestionDependency();
 
         $questionairId = encrypt_decrypt($id,'decrypt');
         $data['questionairId'] =$questionairId;
@@ -53,23 +55,29 @@ class QuestionQController extends Controller{
 
         // return $data['question'];
         $questionairData = $questionairModel->getAllRecordWithCondition(['questionairs.id'=>$questionairId]);
+        $langCount = $questionairOtherLanguageModel->getCountWithCondition(['questiaonair_id'=>$questionairId]);
         $questionair = array();
         if($questionairData){
             foreach($questionairData as $row){
                 $quesLang = $questionairOtherLanguageModel->getRecordWithCondition(['questiaonair_id'=>$row->id]);
                 if(!empty($quesLang)){
                     $row->quesLanguage = $quesLang; 
+                   
                 }else{
                     $row->quesLanguage = [];
+               
                 }
                 $questionair[] = $row;
             }
         }
 
-        $data['loadQuestion'] = '';
-        /** Pending Load Question */
-
         $data['questionair'] = $questionair;
+        $data['langCount'] = $langCount;
+
+        
+        // return $data['langCount'];
+
+
 
         return view('questionairQuestions.show',compact('data'));
     }
@@ -252,6 +260,7 @@ class QuestionQController extends Controller{
         $questionModel = new Question();
         $questioanairWithTypeModel = new QuestionairAndQuestionTypeModel();
         $optionModel =  new Option();
+        $dependencyModel =new QuestionDependency();
 
         $data = $request->all();
        
@@ -321,7 +330,7 @@ class QuestionQController extends Controller{
                 // 'dependent_answer'                  =>                  $data['questionData'],
                 'display_texts'                     =>                  $data['questionData']['display_texts'][$i],
                 // 'options'                           =>                  $data['questionData'],
-                'scale_discription'                 =>                   $questionair_and_type->ques_type_id == 9 ? NULL : $data['questionData']['scale_des'][$i],
+                'scale_discription'                 =>                   $questionair_and_type->ques_type_id == 9||$questionair_and_type->ques_type_id == 2 ? NULL : $data['questionData']['scale_des'][$i],
                 'status'                            =>                  $data['questionData']['selectedStatusOfLang'][$i] == 'deactivate' ? 0 : 1,
             ];
             $insertedRecord = $questionModel->insertRecord($data_);
@@ -375,6 +384,102 @@ class QuestionQController extends Controller{
                     $l++;
                 }
             }       
+        }
+        if($questionair_and_type->ques_type_id == 2 ){
+            $l=0;
+            $optionId =[];
+            $getDependentAnswer = [];
+            $getQuesWithLang = [];
+            $dependentData =[];
+            $dependentData_ =[];
+            $questionIDLatest =[];
+            for($z=0;$z<count($insertedId);$z++){
+           
+                for($j = 0; $j < count($data['questionData']['ansdisplayText_y'])/count($insertedId); $j++){
+                    $data__ = [
+                        'questions_id'  =>  $insertedId[$z],
+                        'option'  =>  $data['questionData']['answerName_y'][$l],
+                        'display_text'  =>  $data['questionData']['ansdisplayText_y'][$l],
+                        'std_opt'  =>  $data['questionData']['optionStar_y'][$l],
+                        'axis'      => 'x',
+                        'is_dependent'=>$data['questionData']['dependency'][$l],
+                        ];
+                    $optionId[] = $optionModel->insertRecord($data__);   
+                    $l++;
+                }
+            }   
+            foreach($insertedId as $m){
+                $depData = $optionModel->getRecordWithCondition(['questions_id'=>$m,'is_dependent'=>1]);
+                $getDependentAnswer[] = $depData;
+            }
+            // return $getDependentAnswer;
+            for($f=0; $f < count($getDependentAnswer); $f++){
+                for($h=0; $h<count($depData); $h++){
+                    $dataD = [
+                        'option_id'             =>      $getDependentAnswer[$f][$h]['id'],
+                        'question_id'           =>      $getDependentAnswer[$f][$h]['questions_id'],
+                        'question_type_id'      =>      $questionair_and_type->ques_type_id,
+                        'dependency'            =>      $data['questionData']['dependencyCheck'],
+                        'answer_name'           =>      $getDependentAnswer[$f][$h]['option'],
+                        'dependecy_logic'       =>      isset($data['questionData']['dependencyLogic']) ? $data['questionData']['dependencyLogic'] : '',
+                        'status'                =>      1,
+                    ];
+                    $dependentData[] = $dependencyModel->insertRecord($dataD);
+                }
+            }
+            // return $dependentData;
+            if(sizeof($data['questionData']['selectedDependecy']) > 0){
+                foreach($data['questionData']['selectedDependecy'] as $n){
+                    $getSelectDependentAnswer[] = $dependencyModel->getSingleRecord(['id'=>$n]);
+                    // $getSelectDependentAnswer[] = $depSelectData;
+                }
+            //     for($f_=0; $f_ < count($getSelectDependentAnswer); $f_++){
+            //         for($h_=0; $h_<count($depSelectData); $h_++){
+            //             $dataD = [
+            //                 'option_id'             =>      $getSelectDependentAnswer[$f_][$h_]['id'],
+            //                 'question_id'           =>      $getSelectDependentAnswer[$f_][$h_]['questions_id'],
+            //                 'question_type_id'      =>      $questionair_and_type->ques_type_id,
+            //                 'dependency'            =>      $data['questionData']['dependencyCheck'],
+            //                 'answer_name'           =>      $getSelectDependentAnswer[$f_][$h_]['option'],
+            //                 'dependecy_logic'       =>      isset($data['questionData']['dependencyLogic']) ? $data['questionData']['dependencyLogic'] : '',
+            //                 'status'                =>      1,
+            //             ];
+            //             $dependentDataId_ = $dependencyModel->insertRecord($dataD);
+            //             $dependentData_[]  = $dependentDataId_->id;
+            //         }
+            //     }
+            //     foreach($dependentData_ as $co){
+            //         $getQuesWithLang_[] = $questionModel->getSingleRecord(['id'=>$co]);
+            //     }
+            //     $c_ = 0;
+            //     for($p = 0; $p <count($getQuesWithLang_); $p++ ){
+            //         $dependencyModel->where('question_id', $getQuesWithLang_[$c_]['id'])->update([
+            //             'language_id'   =>    $getQuesWithLang_[$c_]['language_id']  
+            //         ]);
+            //         $c_++;
+            //     }
+                // $k__= 0;
+                // for($j_=0; $j_ < count($insertedId); $j_){
+                //     // for($f_=0; $f_ < count($getSelectDependentAnswer); $f_++){
+                //     $questionID = $questionModel->getSingleRecord(['language_id'=>$getSelectDependentAnswer[$k__]['language_id'], 'id'=>$insertedId[$j_]]);
+                //     $questionIDLatest[] = $questionID;
+                //     $k__++;
+                // }
+            }
+
+            return $questionIDLatest;
+            foreach($insertedId as $g){
+                $getQuesWithLang[] = $questionModel->getSingleRecord(['id'=>$g]);
+            }
+            $c = 0;
+            for($p = 0; $p <count($getQuesWithLang); $p++ ){
+                $dependencyModel->where('question_id', $getQuesWithLang[$c]['id'])->update([
+                    'language_id'   =>    $getQuesWithLang[$c]['language_id']  
+                ]);
+                $c++;
+            }
+
+            
         }
         return response()->json(['success'=>true, 'message'=>'Question Added Successfully','data'=>$insertedId]);
     }

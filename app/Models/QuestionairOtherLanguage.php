@@ -30,6 +30,13 @@ class QuestionairOtherLanguage extends Model
             ->get();
     }
 
+    public function getCountWithCondition($condition){
+        return QuestionairOtherLanguage::where('deleted_at',NULL)
+            ->where('status','<>',2)
+            ->where($condition)
+            ->count();
+    }
+
     public function getSingleRecord($condition){
         return QuestionairOtherLanguage::where('deleted_at',NULL)->where($condition)->first();
         

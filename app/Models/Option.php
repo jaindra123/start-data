@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Option extends Model
 {
 	use HasFactory;
-	protected $fillable=['questions_id','option','display_text','std_opt','axis','status'];
+	protected $fillable=['questions_id','option','display_text','std_opt','is_dependent','axis','status'];
 
 	public function question(){
 		return $this->belongsTo(Question::class);
@@ -17,4 +17,8 @@ class Option extends Model
     public function insertRecord($data){
         return Option::create($data);
     }
+
+	public function getRecordWithCondition($condition){
+		return Option::where($condition)->get();
+	}
 }
