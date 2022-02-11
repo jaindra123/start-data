@@ -117,4 +117,11 @@ function encrypt_decrypt($string, $action = 'encrypt')
 
 }
 
+function getDependencyAnswer($questionType){
+    $data_ = DB::table('question_dependecy')->where('deleted_at',NULL)->where('question_type_id',$questionType)->get();
+    if(sizeof($data_)>0){
+        return $data_;
+    }return false;
+}
+
 ?>

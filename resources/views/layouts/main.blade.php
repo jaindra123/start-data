@@ -450,9 +450,9 @@ $user = checkUser();
                 $("#addSingleChoice").click(function () {
                     $('tbody#single_choice').append(html1);
                 });*/
-                $(document).on('click', '.remove', function () {
-                    $(this).parents('tr').remove();
-                });
+                // $(document).on('click', '.remove', function () {
+                //     $(this).parents('tr').remove();
+                // });
             });
             $(document).ready(function(){
                 $("#date_range_slider").dateRangeSlider();        
