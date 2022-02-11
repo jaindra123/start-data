@@ -15,6 +15,7 @@ class QuestionDependency extends Model
         'option_id',
         'language_id',
         'question_id',
+        'question_dependent_id',
         'question_type_id',
         'dependency',
         'answer_name',

@@ -48,7 +48,7 @@
                                 @include('question_modal.scaleQuestion')
                             @endif
                             @if($type->ques_type_id == 7)
-                                @include('question_modal.numberQuestion')
+                                {{-- @include('question_modal.numberQuestion') --}}
                             @endif
                             @if($type->ques_type_id == 8)
                                 <div class="question-box">

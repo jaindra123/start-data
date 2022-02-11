@@ -481,14 +481,16 @@
                                         <ul id="items{{$data['questionair'][0]->language_id}}" class="items dependent_list{{$data['questionair'][0]->language_id}}">
                                             @php
                                                 $depenedentAnswer = getDependencyAnswer($row->id);
-                                                foreach($depenedentAnswer as $c){
-                                                    if($c->language_id == $data['questionair'][0]->language_id){
+                                                if($depenedentAnswer != false){
+                                                    foreach($depenedentAnswer as $c){
+                                                        if($c->language_id == $data['questionair'][0]->language_id){
                                                 
                                             @endphp
                                                 <li><input type="checkbox" value="{{$c->id}}" name="ddCheck" class="dd dependent{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" />Q{{$c->question_id}}  {{$c->answer_name}}</li>
                                                 
 
                                             @php
+                                                        }
                                                     }
                                                 }
 
@@ -503,12 +505,14 @@
                                         <ul id="items{{$i->language_id}}" class="items dependent_list{{$i->language_id}}">
                                             @php
                                                 $depenedentAnswer = getDependencyAnswer($row->id);
-                                                foreach($depenedentAnswer as $d){
-                                                    if($d->language_id == $i->language_id){
+                                                if($depenedentAnswer != false){
+                                                    foreach($depenedentAnswer as $d){
+                                                        if($d->language_id == $i->language_id){
                                                 
                                             @endphp
                                             <li><input type="checkbox"  value="{{$d->id}}" name="ddCheck"  class="dd dependent{{$row->id}}{{$row->id}}{{$i->language_id}}" />Q{{$d->question_id}}  {{$d->answer_name}} </li>
                                             @php
+                                                        }
                                                     }
                                                 }
 
