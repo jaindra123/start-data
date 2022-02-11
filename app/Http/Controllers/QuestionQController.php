@@ -432,6 +432,7 @@ class QuestionQController extends Controller{
                 foreach($data['questionData']['selectedDependecy'] as $n){
                     $getSelectDependentAnswer[] = $dependencyModel->getSingleRecord(['id'=>$n]);
                     // $getSelectDependentAnswer[] = $depSelectData;
+                    
                 }
             //     for($f_=0; $f_ < count($getSelectDependentAnswer); $f_++){
             //         for($h_=0; $h_<count($depSelectData); $h_++){
