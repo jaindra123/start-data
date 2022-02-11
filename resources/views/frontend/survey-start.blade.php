@@ -70,6 +70,32 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
+        var questionair = {{$questionair->id}};
+        var language = {{$lang_id}};
+        var password = prompt("Please enter the password");
+        if(password){
+            var url = "{{route('password-match')}}";
+            $.ajax({
+                method:"get",
+                url:url,
+                data:{password:password, questionair:questionair, language:language},
+                dataType: 'json',
+                success: function(result){
+                    if(result.success == 1){
+
+                    }else{
+                        var url = "{{url('survey-start/'.$questionair->id.'/'.$lang_id)}}";
+                        window.location = url;
+                        return false;            
+                    }
+                }
+            })
+        }
+        else{
+            var url = "{{url('survey-start/'.$questionair->id.'/'.$lang_id)}}";
+            window.location = url;
+            return false;
+        }
         $("#lang").on('change',function(){
             var lang = this.value;
             var url = "{{url('survey-start/'.$questionair->id)}}/"+lang;
