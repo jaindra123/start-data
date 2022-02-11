@@ -103,7 +103,7 @@
 <script type="text/javascript">
     var idleTime = 0;
     $(document).ready(function () {
-        let idleInterval = setInterval(timerIncrement, {{$questionair->idle_timer*20000000000000000}});//20
+        let idleInterval = setInterval(timerIncrement, {{$questionair->idle_timer*20}});//20000000000000000
         $(this).mousemove(resetTimer);
         $(this).mousedown(resetTimer);
         $(this).click(resetTimer);
