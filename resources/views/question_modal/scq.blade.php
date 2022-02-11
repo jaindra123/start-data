@@ -3,6 +3,7 @@
     <div class="row">
         <div class="col-md-6">
             <input type="hidden" id="mandatory_{{$ques->id}}" value="{{$ques->mandatory}}">
+            <input type="hidden" id="radio_{{$ques->id}}" name="{{$ques->id}}[]" value="skiped">
             @foreach($ques->option as $opt)
             <div class="radio">
                 <input type="radio" class="ans_{{$ques->id}}" id="ans_{{$opt->id}}" name="{{$ques->id}}[]" value="{{$opt->option}}">
@@ -11,7 +12,7 @@
             @endforeach
         </div>
     </div>
-    @if($ques->open_ans == 1)
+    @if($ques->open_text_field_ans == 1)
     <div class="row">
         <div class="col-md-5">
             <input type="text" class="p-3 form-control has-search mb-2 d-inline-block" name="input_{{$ques->id}}" placeholder="" id="Poster">
@@ -31,6 +32,9 @@
         });
 
         $("#submit").on('click',function(){
+            if($('input[type="radio"]').is(":checked")){
+                $("#radio_{{$ques->id}}").remove();
+            }
             if(mandatory > checkedcount){
                 alert('This Question is Mandatory :- "{{$ques->question}}"')
                 return false;

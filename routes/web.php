@@ -27,41 +27,39 @@ Route::get('/', function () {
      return view('welcome');
 });
 
-//Customer 
-Route::get('customer-list', [CustomerController::class, 'index']);
-Route::post('add-update-customer', [CustomerController::class, 'store']);
-Route::post('edit-customer', [CustomerController::class, 'edit']);
-Route::post('delete-customer', [CustomerController::class, 'destroy']);
+Route::group(['middleware' => ['auth']], function(){     
 
-//Industry 
-Route::get('industry-list', [IndustryController::class, 'index']);
-Route::post('add-update-industry', [IndustryController::class, 'store']);
-Route::post('edit-industry', [IndustryController::class, 'edit']);
-Route::post('delete-industry', [IndustryController::class, 'destroy']);
- 
-//Question-Type 
-Route::get('question-type-list', [QuestionTypeController::class, 'index']);
-Route::post('add-update-question-type', [QuestionTypeController::class, 'store']);
-Route::post('edit-question-type', [QuestionTypeController::class, 'edit']);
-Route::post('delete-question-type', [QuestionTypeController::class, 'destroy']);
+     //Customer 
+     Route::get('customer-list', [CustomerController::class, 'index']);
+     Route::post('add-update-customer', [CustomerController::class, 'store']);
+     Route::post('edit-customer', [CustomerController::class, 'edit']);
+     Route::post('delete-customer', [CustomerController::class, 'destroy']);
 
-//Multiple-Choice Question
-//Route::get('question-type', [QuestionController::class, 'index']);
-Route::get('create-question', [QuestionController::class, 'create']);
-// Route::get('question-lists', [QuestionController::class, 'AllQuestionList']);
-Route::post('save-question',[QuestionController::class,'store'])->name('question.save');      
-Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
-//Route::get('survey/{id}', [QuestionController::class, 'survey']);
-//Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');
-Route::get('question-list',[QuestionairController::class,'AllQuestionairs']);
-Route::post('save-questionairs',[QuestionairController::class,'QuestionairSave'])->name('questionairs.save');
-Route::post('autocomplete',[QuestionairController::class,'AutoCompleteSearch'])->name('questionairs.search');
-Route::get('questionairs/{id}', [QuestionairController::class, 'delete'])->name('questionairs.delete');
+     //Industry 
+     Route::get('industry-list', [IndustryController::class, 'index']);
+     Route::post('add-update-industry', [IndustryController::class, 'store']);
+     Route::post('edit-industry', [IndustryController::class, 'edit']);
+     Route::post('delete-industry', [IndustryController::class, 'destroy']);
+     
+     //Question-Type 
+     Route::get('question-type-list', [QuestionTypeController::class, 'index']);
+     Route::post('add-update-question-type', [QuestionTypeController::class, 'store']);
+     Route::post('edit-question-type', [QuestionTypeController::class, 'edit']);
+     Route::post('delete-question-type', [QuestionTypeController::class, 'destroy']);
 
-
-
-
-
+     //Multiple-Choice Question
+     //Route::get('question-type', [QuestionController::class, 'index']);
+     Route::get('create-question', [QuestionController::class, 'create']);
+     // Route::get('question-lists', [QuestionController::class, 'AllQuestionList']);
+     Route::post('save-question',[QuestionController::class,'store'])->name('question.save');      
+     Route::post('add-more-answer', [QuestionController::class, 'AddMoreAns']);
+     //Route::get('survey/{id}', [QuestionController::class, 'survey']);
+     //Route::post('survey-submit', [QuestionController::class, 'surveyPost'])->name('survey.save');
+     Route::get('question-list',[QuestionairController::class,'AllQuestionairs']);
+     Route::post('save-questionairs',[QuestionairController::class,'QuestionairSave'])->name('questionairs.save');
+     Route::post('autocomplete',[QuestionairController::class,'AutoCompleteSearch'])->name('questionairs.search');
+     Route::get('questionairs/{id}', [QuestionairController::class, 'delete'])->name('questionairs.delete');
+});
 
 //Access Management
 Route::get('registration', [AuthController::class, 'registration'])->name('register-user');
@@ -79,7 +77,9 @@ Route::match(['get','post'],'access/edit/{id}',[AuthController::class,'editRegis
 Route::get('/send-email/{id}', [MailController::class, 'sendEmail'])->name('email.send');
 Route::get('/forget-email', [MailController::class, 'forgetEmail'])->name('mail.forget');
 
-//Pages
+
+Route::group(['middleware' => ['auth']], function(){
+     //Pages
 Route::view('questionair','backend.questionair-tool');
 Route::view('admin-dashboard','backend.admin-dashboard');
 // Route::view('dashbord','backend.dashbord');
@@ -112,13 +112,15 @@ Route::post('store-question-details/{questionId}/{pageNo?}', [QuestionQControlle
 Route::get('get-questions',[QuestionQController::class,'get_question'])->name('get-questions');
 Route::get('save-scale-question-type/{questionId}/{pageNo?}',[QuestionQController::class,'save_scale_question_type'])->name('save-scale-question-type');
 
+     //Theme Color & Language Set
+     Route::post('set-color',[ColorController::class,'addColor'])->name('add-color');
+     Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-language');
+});
 
 
-//Theme Color & Language Set
-Route::post('set-color',[ColorController::class,'addColor'])->name('add-color');
-Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-language');
 
 //Survey
 Route::get('survey-start/{questionair}/{language}',[SurveyController::class,'surveyStart'])->name('survey-start');
-Route::match(['get','post'],'question/{questionair}/{language}/{id?}',[SurveyController::class,'survey'])->name('question');
+Route::match(['get','post'],'question/{questionair}/{language}/{id?}/{cid?}',[SurveyController::class,'survey'])->name('question');
 Route::match(['get','post'],'survey-end/{questionair}/{language}',[SurveyController::class,'surveyEnd'])->name('survey-end');
+Route::get('password-match',[SurveyController::class,'surveyPasswordCheck'])->name('password-match');

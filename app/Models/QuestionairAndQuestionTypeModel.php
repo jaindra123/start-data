@@ -17,6 +17,14 @@ class QuestionairAndQuestionTypeModel extends Model
         'status',
     ];
 
+    public function question(){
+		return $this->belongsTo(Question::class);
+	}
+
+    // public function questiontype(){
+    //     return $this->belongsTo(QuestionType::class, 'ques_type_id');
+    // }
+
     public function insertRecord($data){
         return QuestionairAndQuestionTypeModel::create($data);
     }

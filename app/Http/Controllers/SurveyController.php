@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\Models\Questionair;
 use App\Models\QuestionairOtherLanguage;
 use App\Models\Question;
@@ -22,9 +23,13 @@ class SurveyController extends Controller
         return view('frontend.survey-start', $data);
     }
 
-    public function survey(Request $request, $qid, $lid, $pid = 1){
+    public function survey(Request $request, $qid, $lid, $pid = 1, $cid = 0){
         
         if($request->all()){
+            // echo '<pre>';
+            $customer = $cid;
+            // print_r($request->all());
+            // die;
             $questionair_id = $qid;
             $lang_id = $lid;
             $page_id = $pid-1;
@@ -33,16 +38,45 @@ class SurveyController extends Controller
             $other = $other_answer = $checked = $otherAnswer = '';
             foreach($request->all() as $key => $datas){
                 if(is_array($datas)){
+                    // echo $key;
+                    if(strpos($key, '_matrix_') !== false){
+                        $ex = explode("_matrix_",$key);
+                        // print_r($ex);
+                    }
                     $k = $key;
                     $implode_datas = implode(',',$datas);
-                    $arr[$key] = $implode_datas;
-                    $submitentry = SurveyAnswer::Create([
+                    if(!empty($ex)){
+                        $key = $ex[1];
+                        $arr[$ex[1]][] = $implode_datas;
+                        if(is_array($arr)){
+                            $implode_datas = implode(',',$arr[$ex[1]]);
+                        }
+                        // print_r($arr);
+                    }else{
+                        $arr[$key] = $implode_datas;
+                    }
+                    // echo '<br>';
+                    
+                    $submitentry = SurveyAnswer::updateOrCreate([
+                        'customer_id'       => $customer,
+                        'questionair_id'    => $questionair_id,
+                        'language_id'       => $lang_id,
+                        'page_id'           => $page_id,
+                        'question_id'       => $key,
+                    ],[
                         'questionair_id'    => $questionair_id,
                         'language_id'       => $lang_id,
                         'page_id'           => $page_id,
                         'question_id'       => $key,
                         'answer'            => $implode_datas,
                     ]);
+                    /*$submitentry = SurveyAnswer::Create([
+                        'questionair_id'    => $questionair_id,
+                        'language_id'       => $lang_id,
+                        'page_id'           => $page_id,
+                        'question_id'       => $key,
+                        'answer'            => $implode_datas,
+                    ]);*/
                     $inserID = $submitentry->id;
                     // $other = 'other_'.$key;
                     $other_answer = 'input_'.$key;
@@ -55,15 +89,17 @@ class SurveyController extends Controller
 
                 // if($checked == 1){
                     if($other_answer == $key){
-                        if(!empty($request->all()[$key])){
+                        // if(!empty($request->all()[$key])){
                             $otherAnswer = $request->all()[$key];
                             $otherData = ['other_answer' => $otherAnswer];
                             SurveyAnswer::where(['id'=>$inserID])->update($otherData);
-                        }
+                        // }
                         // $checked = 0;
                     }
                 // }
             }
+            // print_r($arr);
+            // die;
         }
         
         if($request->Finish == "Finish"){
@@ -72,13 +108,19 @@ class SurveyController extends Controller
 
         $data['questionair'] = Questionair::where([['id',$qid],['status', '1'],['is_publish', '1']])->first();
         $data['questionairs'] = QuestionairOtherLanguage::where([['questiaonair_id',$qid],['language_id',$lid],['status', '1']])->get();
-        $data['question'] = Question::with('option')->with('questiontype')->where([['questionair_id', $qid], ['language_id', $lid], ['page_id', $pid], ['status', '1']])->get();
-        $data['min'] = Question::where([['questionair_id', $qid], ['language_id', $lid], ['status', '1']])->min('page_id');
-        $data['max'] = Question::where([['questionair_id', $qid], ['language_id', $lid], ['status', '1']])->max('page_id');
+        // $data['question'] = Question::with('option')->with('questiontype')->where([['questionair_id', $qid], ['language_id', $lid], ['page_id', $pid], ['status', '1']])->get();
+        $data['question'] = Question::with('option')->with('questionairAndQuestionTypeModel')->where([['language_id', $lid], ['page_id', $pid], ['status', '1']])->whereHas('questionairAndQuestionTypeModel', function($subQuery) use($qid){$subQuery->where("questionair_id", $qid);})->get();
+        // $data['min'] = Question::where([['questionair_id', $qid], ['language_id', $lid], ['status', '1']])->min('page_id');
+        // $data['max'] = Question::where([['questionair_id', $qid], ['language_id', $lid], ['status', '1']])->max('page_id');
+        $data['min'] = Question::with('questionairAndQuestionTypeModel')->where([['language_id', $lid], ['status', '1']])->whereHas('questionairAndQuestionTypeModel', function($subQuery) use($qid){$subQuery->where("questionair_id", $qid);})->min('page_id');
+        $data['max'] = Question::with('questionairAndQuestionTypeModel')->where([['language_id', $lid], ['status', '1']])->whereHas('questionairAndQuestionTypeModel', function($subQuery) use($qid){$subQuery->where("questionair_id", $qid);})->max('page_id');
         $data['current'] = $pid;
         $data['nxt'] = $pid+1;
+        $data['customer_id'] = Session::get('customer_id');
         // echo '<pre>';
-        // print_r($data['max']);
+        // print_r($data['question'][0]->questionairAndQuestionTypeModel);
+        // print_r($data['min']);
+        // print_r($data['customer_id']);
         // die;
         return view('frontend.web', $data);
     }
@@ -87,5 +129,21 @@ class SurveyController extends Controller
         $data['questionair'] = Questionair::where([['id',$qid],['status', '1'],['is_publish', '1']])->first();
         $data['questionairs'] = QuestionairOtherLanguage::where([['questiaonair_id',$qid],['language_id',$lid],['status', '1']])->get();
         return view('frontend.survey-end', $data);
+    }
+
+    public function surveyPasswordCheck(Request $request){
+        $activeCondition = ['id' => $request->questionair];
+        $activeRecord = Questionair::where($activeCondition)->where('deleted_at',NULL)->first();
+        if($request->password == $activeRecord->password_for_protected_link){
+            // 8QHLEdlSTd
+            // $user = SurveyAnswer::max('customer_id');
+            // $user++;
+            // $user = rand();
+            $user = random_int(1, 999999);
+            Session::put('customer_id', $user);
+            return response()->json(['success' => 1, 'customer_id' => $user]);
+        }else{
+            return response()->json(['success' => 0, 'message' => 'You have enter incorrect password']);
+        }
     }
 }
