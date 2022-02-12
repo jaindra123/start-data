@@ -26,10 +26,10 @@ class SurveyController extends Controller
     public function survey(Request $request, $qid, $lid, $pid = 1, $cid = 0){
         
         if($request->all()){
-            // echo '<pre>';
+            echo '<pre>';
             $customer = $cid;
-            // print_r($request->all());
-            // die;
+            print_r($request->all());
+            die;
             $questionair_id = $qid;
             $lang_id = $lid;
             $page_id = $pid-1;
@@ -39,22 +39,31 @@ class SurveyController extends Controller
             foreach($request->all() as $key => $datas){
                 if(is_array($datas)){
                     // echo $key;
+                    $k = $key;
+                    $implode_datas = implode(',',$datas);
                     if(strpos($key, '_matrix_') !== false){
                         $ex = explode("_matrix_",$key);
                         // print_r($ex);
-                    }
-                    $k = $key;
-                    $implode_datas = implode(',',$datas);
-                    if(!empty($ex)){
                         $key = $ex[1];
                         $arr[$ex[1]][] = $implode_datas;
                         if(is_array($arr)){
                             $implode_datas = implode(',',$arr[$ex[1]]);
                         }
-                        // print_r($arr);
                     }else{
                         $arr[$key] = $implode_datas;
                     }
+                    
+                    /*if(!empty($ex)){
+                        $key = $ex[1];
+                        $arr[$ex[1]][] = $implode_datas;
+                        if(is_array($arr)){
+                            $implode_datas = implode(',',$arr[$ex[1]]);
+                        }
+                        print_r($arr);
+                    }
+                    else{
+                        $arr[$key] = $implode_datas;
+                    }*/
                     // echo '<br>';
                     
                     $submitentry = SurveyAnswer::updateOrCreate([
@@ -77,7 +86,7 @@ class SurveyController extends Controller
                         'question_id'       => $key,
                         'answer'            => $implode_datas,
                     ]);*/
-                    $inserID = $submitentry->id;
+                    // $inserID = $submitentry->id;
                     // $other = 'other_'.$key;
                     $other_answer = 'input_'.$key;
                 }

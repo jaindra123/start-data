@@ -51,9 +51,7 @@
                                 @include('question_modal.numberQuestion')
                             @endif
                             @if($type->ques_type_id == 8)
-                                <div class="question-box">
-
-                                </div>
+                                @include('question_modal.countryQuestion')
                             @endif
                             @if($type->ques_type_id == 9)
                                 {{--@include('question_modal.rankingQuestion')--}}
@@ -120,11 +118,11 @@
         function disableBack() {
             window.history.forward()
         }
-        window.onload = disableBack();
-        window.onpageshow = function(e) {
-            if (e.persisted)
-                disableBack();
-        }
+        // window.onload = disableBack();
+        // window.onpageshow = function(e) {
+        //     if (e.persisted)
+        //         disableBack();
+        // }
     });
     function timerIncrement() {
         idleTime = idleTime + 1;
