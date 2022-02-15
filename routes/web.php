@@ -112,6 +112,9 @@ Route::post('store-question-details/{questionId}/{pageNo?}', [QuestionQControlle
 Route::get('get-questions',[QuestionQController::class,'get_question'])->name('get-questions');
 Route::get('save-scale-question-type/{questionId}/{pageNo?}',[QuestionQController::class,'save_scale_question_type'])->name('save-scale-question-type');
 
+Route::get('save-ques-position',[QuestionQController::class,'save_ques_position'])->name('save-ques-position');
+Route::get('save-ques-draft',[QuestionQController::class,'save_ques_draft'])->name('save-ques-draft');
+
      //Theme Color & Language Set
      Route::post('set-color',[ColorController::class,'addColor'])->name('add-color');
      Route::get('set-language',[ColorController::class,'addLanguage'])->name('set-language');

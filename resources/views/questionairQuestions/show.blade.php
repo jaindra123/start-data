@@ -78,7 +78,7 @@
                     <div class="col-md-12">
                         <div class="card table-new">
                             <div class="card-body">
-                                <table class="table">
+                                <table class="table current_question">
                                     <thead class="text-primary">
                                         <tr>
                                             <th>Number </th>
@@ -91,9 +91,10 @@
                                     <tbody>
                                         @php
                                             $quesTypeTitle= '';
+                                            $m=0;
                                         @endphp
                                         @foreach($data['question'] as $i)
-                                            <tr>
+                                            <tr data-ques_no="{{$i->question_no_order}}" data-pos="up" data-page_id="{{$i->page_id}}" data-ques_id="{{$i->questionId}}">
                                                 <td>{{$i->questionId}}</td>
                                                 <td>{{$i->questionName}} </td>
                                                 @foreach($data['questionType'] as $j)
@@ -107,11 +108,17 @@
                                                 @endforeach
                                                 <td>{{$quesTypeTitle}} </td>
                                                 <td class="text-center">
-                                                    <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
-                                                    <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
+                                                   {{-- @if($m !=0) --}}
+                                                    <i class="fa fa-angle-up d-block up ques_order" data-pos="up" data-page_id="{{$i->page_id}}" data-ques_id="{{$i->questionId}}" data-ques_no="{{$i->question_no_order}}"  aria-hidden="true"></i>
+                                                    {{-- @endif --}}
+                                                    <i class="fa fa-angle-down d-block down ques_order" data-pos="down" data-page_id="{{$i->page_id}}" data-ques_id="{{$i->questionId}}" data-ques_no="{{$i->question_no_order}}" aria-hidden="true"></i>
                                                 </td>
-                                                <td class="text-center"> <i class="fa fa-trash" aria-hidden="true"></i></td>
+                                                <td class="text-center"> <i class="fa fa-trash" data-ques_id="{{$i->questionId}}" aria-hidden="true"></i></td>
                                             </tr>
+                                            @php
+                                                $m++;
+                                            @endphp
+                                            
                                         @endforeach
                                         <!-- <tr>
                                             <td>23</td>
@@ -224,7 +231,7 @@
         </div>
         <div class="col-md-3">
             <button class="custom-button"><i class="fa fa-pencil" aria-hidden="true"></i> Global Setting</button>
-            <button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Safe Draft</button>
+            <button class="custom-button safe_draft"><i class="fa fa-floppy-o" aria-hidden="true"></i> Safe Draft</button>
             <button class="custom-button"><i class="fa fa-trash" aria-hidden="true"></i> Delete Page</button>
         </div>
     </div>
@@ -240,12 +247,12 @@
                             <h4 class="hedngead">
                             Multiple Choice Question</h3>
                         </div>
-                        <div class="col-md-3"><button class="custom-button saveQuestion" data-value="{{$row->id}}" data-index="{{$row->id}}" id="save_question{{$row->id}}"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Question</button></div>
+                        <div class="col-md-3"><button class="custom-button saveQuestion6" data-value="{{$row->id}}" data-index="{{$row->id}}" id="save_question{{$row->id}}"><i class="fa fa-flopp-o" aria-hidden="true"></i> Save Question</button></div>
                         <div class="col-md-3">
                             <div class="w-100 mb-2">
                                 <label for="email" class=""> Add Language</label>
                                 @if(sizeof($data['questionair']) > 0 )
-                                    <select class="form-control mb-3 language lang_{{$row->id}}{{$data['questionair'][0]->language_id}} l_{{$row->id}}" data-index="{{$data['questionair'][0]->language_id}}" data-v="{{$row->id}}" data-quest="{{$row->id}}">
+                                    <select class="form-control mb-3 language lang_{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} l_{{$row->id}}" data-index="{{$data['questionair'][0]->language_id}}" data-v="{{$row->id}}" data-quest="{{$row->id}}">
                                     @foreach($data['language'] as $col)
                                         @php
                                             if($col->id == $data['questionair'][0]->language_id){
@@ -263,14 +270,14 @@
                                 @if(!empty($data['questionair'][0]['quesLanguage']) )
                                     @foreach($data['questionair'][0]['quesLanguage'] as $row_)          
                                         @foreach($data['language'] as $col)
-                                                @php
-                                                    if($col->id == $row_->language_id){
-                                                        $langdata = $col->language;
-                                                        $langdataId = $col->id;
-                                                    }
-                                                @endphp
-                                        @endforeach
-                                        <select class="form-control mb-3 language lang_{{$row->id}}{{$row_->language_id}} l_{{$row->ques_type_id}}" data-index="{{$row_->language_id}}" data-v="{{$row->id}}" data-quest="{{$row->id}}">
+                                            @php
+                                                if($col->id == $row_->language_id){
+                                                    $langdata = $col->language;
+                                                    $langdataId = $col->id;
+                                                }
+                                            @endphp
+                                    @endforeach
+                                        <select class="form-control mb-3 language lang_{{$row->id}}{{$row->id}}{{$row_->language_id}} l_{{$row->id}}" data-index="{{$row_->language_id}}" data-v="{{$row->id}}" data-quest="{{$row->id}}">
                                             <option value="{{$langdataId}}" >{{$langdata}}</option>
                                             <option value="delete">Delete</option>
                                             <option value="deactivate" >Deactivate</option>
@@ -280,37 +287,92 @@
                                 <!-- <a href="#" class="adds mb-4">+ Add</a> -->
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="">Dependencies</label>
-                                    <select  class="form-control mb-3">
-                                        <option>Only Appears if Answer Checked</option>
-                                        <option>Only Appears if Answer</option>
-                                        <option>Unchecked</option>
-                                        <option>No Dependcy</option>
+                                    <select  class="form-control  dependency{{$row->id}}{{$row->id}} mb-3 ">
+                                        <option value="1">Only Appears if Answer Checked</option>
+                                        <option value="0">Only Appears if Answer Unchecked</option>
+                                        <option value="2">No Dependcy</option>
                                     </select>
                                 </div>
                                 <div class="w-100 mt-4 mb-2">
-                                    <label for="email" class="">Select Dependend Answer</label>
-                                    <select  class="form-control mb-3">
-                                        <option>Q22 Female</option>
-                                        <option>Q02 First Time Visitor</option>
-                                        <option>Q15 From the sourronding</option>
-                                    </select>
+                                    <label for="email" class="dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}">Select Dependend Answer</label>
+                                    <div id="list{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" tabindex="100">
+                                        <span class="anchor">Select Dependend Answer</span>
+                                        <ul id="items{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" class="items dependent_list{{$data['questionair'][0]->language_id}}">
+                                            @php
+                                                $depenedentAnswer = getDependencyAnswer($row->id);
+                                                if($depenedentAnswer != false){
+                                                    foreach($depenedentAnswer as $c){
+                                                        if($c->language_id == $data['questionair'][0]->language_id){
+                                                
+                                            @endphp
+                                                <li><input type="checkbox" value="{{$c->id}}" name="ddCheck{{$row->id}}" class="dd dependent{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" />Q{{$c->question_dependent_id}}  {{$c->answer_name}}</li>
+                                                
+
+                                            @php
+                                                        }
+                                                    }
+                                                }
+
+                                            @endphp
+                                        </ul>
+                                    </div>
+                                    @if(isset($data['questionair'][0]['quesLanguage']))
+                                        @foreach($data['questionair'][0]['quesLanguage'] as $key => $i)
+                                        
+                                        <div id="list{{$row->id}}{{$row->id}}{{$i->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$i->language_id}}" tabindex="100" style="display: none;">
+                                        <span class="anchor">Select Dependend Answer</span>
+                                        <ul id="items{{$row->id}}{{$row->id}}{{$i->language_id}}" class="items dependent_list{{$i->language_id}}">
+                                            @php
+                                                $depenedentAnswer = getDependencyAnswer($row->id);
+                                                if($depenedentAnswer != false){
+                                                    foreach($depenedentAnswer as $d){
+                                                        if($d->language_id == $i->language_id){
+                                                
+                                            @endphp
+                                            <li><input type="checkbox"  value="{{$d->id}}" name="ddCheck{{$row->id}}"  class="dd dependent{{$row->id}}{{$row->id}}{{$i->language_id}}" />Q{{$d->question_id}}  {{$d->answer_name}} </li>
+                                            @php
+                                                        }
+                                                    }
+                                                }
+
+                                            @endphp
+                                            </ul>
+                                        </div>
+                                        @endforeach
+                                       
+                                        
+                                    @endif
                                 </div>
+                                <div class="w-100 mt-4 mb-2">
+                                    <label for="email" class="dependency_logic">Dependencies Logic</label>
+                                    <div class="radiodd">
+                                        <input id="che-1" name="radio_dep_logic" type="radio" value='1' class="individual">
+                                        <label for="che-1" class="radio-label">Logic AND</label>
+                                    </div>
+                                    <div class="radiodd">
+                                        <input id="che-2" name="radio_dep_logic" type="radio" value='2' class="individual">
+                                        <label for="che-2" class="radio-label">Logic OR</label>
+                                    </div>
+                                </div>
+                                
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="">Maximum Answers</label>
-                                    <input type="text" class="form-control mb-2 mr-sm-2" placeholder="4" id="email">
+                                    <input type="text" class="form-control mb-2 mr-sm-2 answerSize{{$row->id}}{{$row->id}}" placeholder="4" id="email">
                                 </div>
+
+
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="">Mandatory Question</label>
                                     <div class="wrappers">
-                                        <input id="checkbox4" type="checkbox" class="checkbox hidden" />
-                                        <label class="switchbox" for="checkbox4"></label>
+                                        <input id="checkbox30" type="checkbox" class="checkbox mandatory{{$row->id}}{{$row->id}} hidden" />
+                                        <label class="switchbox" for="checkbox30"></label>
                                     </div>
                                 </div>
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="">Open Text Field Answer</label>
                                     <div class="wrappers">
-                                        <input id="checkbox5" type="checkbox" class="checkbox hidden" />
-                                        <label class="switchbox" for="checkbox5"></label>
+                                        <input id="checkbox230" type="checkbox" class="checkbox no_answer{{$row->id}}{{$row->id}} hidden" />
+                                        <label class="switchbox" for="checkbox230"></label>
                                     </div>
                                 </div>
                             </div>
@@ -318,11 +380,15 @@
                         <div class="col-md-9 mt-3 pt-1 editPannel" id="question_{{$row->id}}{{$data['questionair'][0]->language_id}}">
                             <div class="w-100 mb-4">
                                 <label for="email" class="w-100"> Question Name</label>
-                                <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder="" id="email"> <i class="fa fa-star color-dd" aria-hidden="true"></i>
+                                <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" id="email"> 
+
+                                <i class="fa fa-star questionStd startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
+
+                                <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="1">
                             </div>
                             <div class="w-100 mb-4">
                                 <label for="email" class=""> Display Text</label>
-                                <input class="form-control mb-2" placeholder="">
+                                <input class="form-control mb-2 displayText{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} dt_{{$row->id}}{{$row->id}}" name="text" placeholder="" >
                             </div>
                             <div class="form-group has-search">
                                 <span class="fa fa-search form-control-feedback"></span>
@@ -341,75 +407,96 @@
                                     </tr>
                                 </thead>
                                 <tbody id="addee">
-                                    <tr>
+                                    <tr class="options_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} o_y1{{$row->id}}{{$row->id}}" data-i="1"> 
                                         <td>
                                             1
                                         </td>
-                                        <td><input type="text" class="form-control" placeholder=""></td>
-                                        <td><input type="text" class="form-control" placeholder=""></td>
+                                        <td><input type="text" class="form-control answerName_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" placeholder=""></td>
+
+                                        <td><input type="text" class="form-control ansdisplayText_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" placeholder=""></td>
+
                                         <td class="text-center">
                                             <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
                                             <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
                                         </td>
                                         <td class="text-center">
-                                            <p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p>
+                                            <p class=" op_remove" data-i="1" data-index="{{$row->id}}{{$row->id}}" data-language="{{$data['questionair'][0]->language_id}}"><i class="fa fa-trash " aria-hidden="true"></i></p>
                                         </td>
-                                        <td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td>
-                                        <td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td>
+
+                                        <td class="text-center"> <i class="fa fa-link dependecy dependencyCheck1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} " data-language="{{$data['questionair'][0]->language_id}}" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" data-i="1"  aria-hidden="true"></i></td>
+
+                                        <input type="hidden" class="dependencyCheckValue1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="linkData" value="0">
+
+                                        <td class="text-center"> <i class="fa fa-star starOption_y starcheckOption_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} " data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" data-i="1" aria-hidden="true"></i></td>
+
+                                        <input type="hidden" class="startCheckOptionValue_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="0">
                                     </tr>
                                 </tbody>
                             </table>
-                            <button class="btndfd" id="addProduct">+ Add</button>    
+                            <button class="btndfd add{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" data-questypeid="{{$row->id}}" id="addProduct{{$row->id}}{{$row->id}}" data-language="{{$data['questionair'][0]->language_id}}" data-index="{{$row->id}}{{$row->id}}" data-i="1" data-totaladd="1">+ Add</button>   
+                            <input type="hidden" name="" id="total_option_count{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" value="1">    
                         </div>
                         @if(isset($data['questionair'][0]['quesLanguage']))
 
                             @foreach($data['questionair'][0]['quesLanguage'] as $i)
-                            <div class="col-md-9 mt-3 pt-1 editPannel" id="question_{{$row->id}}{{$i->language_id}}" style="display: none;">
-                            <div class="w-100 mb-4">
-                                <label for="email" class="w-100"> Question Name</label>
-                                <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder="" id="email"> <i class="fa fa-star color-dd" aria-hidden="true"></i>
-                            </div>
-                            <div class="w-100 mb-4">
-                                <label for="email" class=""> Display Text</label>
-                                <input class="form-control mb-2" placeholder="">
-                            </div>
-                            <div class="form-group has-search">
-                                <span class="fa fa-search form-control-feedback"></span>
-                                <input type="text" class="form-control" placeholder="Search Question">
-                            </div>
-                            <table class="table table-borderless table-scroll mt-3 mb-0" id="productTable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">&nbsp;</th>
-                                        <th scope="col">Answers Name</th>
-                                        <th scope="col">Display Text</th>
-                                        <th scope="col">Order</th>
-                                        <th scope="col">Delete</th>
-                                        <th scope="col">Dependency</th>
-                                        <th scope="col">Standard</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="addee">
-                                    <tr>
-                                        <td>
-                                            1
-                                        </td>
-                                        <td><input type="text" class="form-control" placeholder=""></td>
-                                        <td><input type="text" class="form-control" placeholder=""></td>
-                                        <td class="text-center">
-                                            <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
-                                            <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
-                                        </td>
-                                        <td class="text-center">
-                                            <p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p>
-                                        </td>
-                                        <td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td>
-                                        <td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <button class="btndfd" id="addProduct">+ Add</button>    
-                        </div>
+                                <div class="col-md-9 mt-3 pt-1 editPannel "id="question_{{$row->id}}{{$i->language_id}}" style="display:none;">
+                                    <div class="w-100 mb-4">
+                                        <label for="email" class="w-100"> Question Name</label>
+                                        <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$i->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" id="email"> 
+
+                                        <i class="fa fa-star startCheck{{$row->id}}{{$row->id}}{{$i->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$i->language_id}}" aria-hidden="true"></i>
+
+                                        <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$i->language_id}}" name="starData" value="1">
+                                    </div>
+                                    <div class="w-100 mb-4">
+                                        <label for="email" class=""> Display Text</label>
+                                        <input class="form-control mb-2 displayText{{$row->id}}{{$row->id}}{{$i->language_id}} dt_{{$row->id}}{{$row->id}}" name="text" placeholder="" >
+                                    </div>
+                                    <div class="form-group has-search">
+                                        <span class="fa fa-search form-control-feedback"></span>
+                                        <input type="text" class="form-control" placeholder="Search Question">
+                                    </div>
+                                    <table class="table table-borderless table-scroll mt-3 mb-0" id="productTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">&nbsp;</th>
+                                                <th scope="col">Answers Name</th>
+                                                <th scope="col">Display Text</th>
+                                                <th scope="col">Order</th>
+                                                <th scope="col">Delete</th>
+                                                <th scope="col">Dependency</th>
+                                                <th scope="col">Standard</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="addee">
+                                            <tr class="options_y1{{$row->id}}{{$row->id}}{{$i->language_id}} o_y1{{$row->id}}{{$row->id}}" data-i="1"> 
+                                                <td>
+                                                    1
+                                                </td>
+                                                <td><input type="text" class="form-control answerName_y1{{$row->id}}{{$row->id}}{{$i->language_id}}" placeholder=""></td>
+
+                                                <td><input type="text" class="form-control ansdisplayText_y1{{$row->id}}{{$row->id}}{{$i->language_id}}" placeholder=""></td>
+
+                                                <td class="text-center">
+                                                    <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
+                                                    <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class=" op_remove" data-i="1" data-index="{{$row->id}}{{$row->id}}" data-language="{{$i->language_id}}"><i class="fa fa-trash " aria-hidden="true"></i></p>
+                                                </td>
+
+                                                <td class="text-center"> <i class="fa fa-link dependecy dependencyCheck1{{$row->id}}{{$row->id}}{{$i->language_id}} " data-language="{{$i->language_id}}" data-value="{{$row->id}}{{$row->id}}{{$i->language_id}}" data-i="1"  aria-hidden="true"></i></td>
+
+                                                <input type="hidden" class="dependencyCheckValue1{{$row->id}}{{$row->id}}{{$i->language_id}}" name="linkData" value="0">
+
+                                                <td class="text-center"> <i class="fa fa-star starOption_y starcheckOption_y1{{$row->id}}{{$row->id}}{{$i->language_id}} " data-value="{{$row->id}}{{$row->id}}{{$i->language_id}}" data-i="1" aria-hidden="true"></i></td>
+                                                <input type="hidden" class="startCheckOptionValue_y1{{$row->id}}{{$row->id}}{{$i->language_id}}" name="starData" value="0">
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button class="btndfd add{{$row->id}}{{$row->id}}{{$i->language_id}}" data-questypeid="{{$row->id}}" id="addProduct{{$row->id}}{{$row->id}}" data-language="{{$i->language_id}}" data-index="{{$row->id}}{{$row->id}}" data-i="1" data-totaladd="1">+ Add</button>   
+                                    <input type="hidden" name="" id="total_option_count{{$row->id}}{{$row->id}}{{$i->language_id}}" value="1">       
+                                </div>
                             @endforeach
                         @endif
 
@@ -476,9 +563,9 @@
                                 </div>
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}">Select Dependend Answer</label>
-                                    <div id="list{{$data['questionair'][0]->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" tabindex="100">
+                                    <div id="list{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" tabindex="100">
                                         <span class="anchor">Select Dependend Answer</span>
-                                        <ul id="items{{$data['questionair'][0]->language_id}}" class="items dependent_list{{$data['questionair'][0]->language_id}}">
+                                        <ul id="items{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" class="items dependent_list{{$data['questionair'][0]->language_id}}">
                                             @php
                                                 $depenedentAnswer = getDependencyAnswer($row->id);
                                                 if($depenedentAnswer != false){
@@ -486,7 +573,7 @@
                                                         if($c->language_id == $data['questionair'][0]->language_id){
                                                 
                                             @endphp
-                                                <li><input type="checkbox" value="{{$c->id}}" name="ddCheck" class="dd dependent{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" />Q{{$c->question_id}}  {{$c->answer_name}}</li>
+                                                <li><input type="checkbox" value="{{$c->id}}" name="ddCheck{{$row->id}}" class="dd dependent{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" />Q{{$c->question_dependent_id}}  {{$c->answer_name}}</li>
                                                 
 
                                             @php
@@ -500,9 +587,9 @@
                                     @if(isset($data['questionair'][0]['quesLanguage']))
                                         @foreach($data['questionair'][0]['quesLanguage'] as $key => $i)
                                         
-                                        <div id="list{{$i->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$i->language_id}}" tabindex="100" style="display: none;">
+                                        <div id="list{{$row->id}}{{$row->id}}{{$i->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$i->language_id}}" tabindex="100" style="display: none;">
                                         <span class="anchor">Select Dependend Answer</span>
-                                        <ul id="items{{$i->language_id}}" class="items dependent_list{{$i->language_id}}">
+                                        <ul id="items{{$row->id}}{{$row->id}}{{$i->language_id}}" class="items dependent_list{{$i->language_id}}">
                                             @php
                                                 $depenedentAnswer = getDependencyAnswer($row->id);
                                                 if($depenedentAnswer != false){
@@ -510,7 +597,7 @@
                                                         if($d->language_id == $i->language_id){
                                                 
                                             @endphp
-                                            <li><input type="checkbox"  value="{{$d->id}}" name="ddCheck"  class="dd dependent{{$row->id}}{{$row->id}}{{$i->language_id}}" />Q{{$d->question_id}}  {{$d->answer_name}} </li>
+                                            <li><input type="checkbox"  value="{{$d->id}}" name="ddCheck{{$row->id}}"  class="dd dependent{{$row->id}}{{$row->id}}{{$i->language_id}}" />Q{{$d->question_id}}  {{$d->answer_name}} </li>
                                             @php
                                                         }
                                                     }
@@ -1150,7 +1237,7 @@
                             <div class="w-100 mb-2">
                                 <label for="email" class=""> Add Language</label>
                                 @if(sizeof($data['questionair']) > 0 )
-                                    <select class="form-control mb-3">
+                                    <select class="form-control mb-3 language lang_{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} l_{{$row->id}}" data-index="{{$data['questionair'][0]->language_id}}" data-v="{{$row->id}}" data-quest="{{$row->id}}">
                                     @foreach($data['language'] as $col)
                                         @php
                                             if($col->id == $data['questionair'][0]->language_id){
@@ -1166,61 +1253,121 @@
                                 @endif
 
                                 @if(!empty($data['questionair'][0]['quesLanguage']) )
-                                    @foreach($data['questionair'][0]['quesLanguage'] as $row)          
+                                    @foreach($data['questionair'][0]['quesLanguage'] as $row_)          
                                         @foreach($data['language'] as $col)
-                                                @php
-                                                    if($col->id == $row->language_id){
-                                                        $langdata = $col->language;
-                                                        $langdataId = $col->id;
-                                                    }
-                                                @endphp
-                                        @endforeach
-                                        <select class="form-control mb-3">
+                                            @php
+                                                if($col->id == $row_->language_id){
+                                                    $langdata = $col->language;
+                                                    $langdataId = $col->id;
+                                                }
+                                            @endphp
+                                    @endforeach
+                                        <select class="form-control mb-3 language lang_{{$row->id}}{{$row->id}}{{$row_->language_id}} l_{{$row->id}}" data-index="{{$row_->language_id}}" data-v="{{$row->id}}" data-quest="{{$row->id}}">
                                             <option value="{{$langdataId}}" >{{$langdata}}</option>
                                             <option value="delete">Delete</option>
-                                            <option value="deactivate">Deactivate</option>
+                                            <option value="deactivate" >Deactivate</option>
                                         </select>
                                     @endforeach
                                 @endif
-                                <a href="#" class="adds mb-4">+ Add</a>
+                                       
+                                <!-- <a href="#" class="adds mb-4">+ Add</a> -->
+
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="">Dependencies</label>
-                                    <select  class="form-control mb-3">
-                                        <option>Only Appears if Answer Checked</option>
-                                        <option>Only Appears if Answer</option>
-                                        <option>Unchecked</option>
-                                        <option>No Dependcy</option>
+                                    <select  class="form-control  dependency{{$row->id}}{{$row->id}} mb-3 ">
+                                        <option value="1">Only Appears if Answer Checked</option>
+                                        <option value="0">Only Appears if Answer Unchecked</option>
+                                        <option value="2">No Dependcy</option>
                                     </select>
                                 </div>
                                 <div class="w-100 mt-4 mb-2">
-                                    <label for="email" class="">Select Dependend Answer</label>
-                                    <select  class="form-control mb-3">
-                                        <option>Q22 Female</option>
-                                        <option>Q02 First Time Visitor</option>
-                                        <option>Q15 From the sourronding</option>
-                                    </select>
+                                    <label for="email" class="dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}">Select Dependend Answer</label>
+                                    <div id="list{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" tabindex="100">
+                                        <span class="anchor">Select Dependend Answer</span>
+                                        <ul id="items{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" class="items dependent_list{{$data['questionair'][0]->language_id}}">
+                                            @php
+                                                $depenedentAnswer = getDependencyAnswer($row->id);
+                                                if($depenedentAnswer != false){
+                                                    foreach($depenedentAnswer as $c){
+                                                        if($c->language_id == $data['questionair'][0]->language_id){
+                                                
+                                            @endphp
+                                                <li><input type="checkbox" value="{{$c->id}}" name="ddCheck{{$row->id}}" class="dd dependent{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" />Q{{$c->question_dependent_id}}  {{$c->answer_name}}</li>
+                                                
+
+                                            @php
+                                                        }
+                                                    }
+                                                }
+
+                                            @endphp
+                                        </ul>
+                                    </div>
+                                    @if(isset($data['questionair'][0]['quesLanguage']))
+                                        @foreach($data['questionair'][0]['quesLanguage'] as $key => $i)
+                                        
+                                        <div id="list{{$row->id}}{{$row->id}}{{$i->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$i->language_id}}" tabindex="100" style="display: none;">
+                                        <span class="anchor">Select Dependend Answer</span>
+                                        <ul id="items{{$row->id}}{{$row->id}}{{$i->language_id}}" class="items dependent_list{{$i->language_id}}">
+                                            @php
+                                                $depenedentAnswer = getDependencyAnswer($row->id);
+                                                if($depenedentAnswer != false){
+                                                    foreach($depenedentAnswer as $d){
+                                                        if($d->language_id == $i->language_id){
+                                                
+                                            @endphp
+                                            <li><input type="checkbox"  value="{{$d->id}}" name="ddCheck{{$row->id}}"  class="dd dependent{{$row->id}}{{$row->id}}{{$i->language_id}}" />Q{{$d->question_id}}  {{$d->answer_name}} </li>
+                                            @php
+                                                        }
+                                                    }
+                                                }
+
+                                            @endphp
+                                            </ul>
+                                        </div>
+                                        @endforeach
+                                       
+                                        
+                                    @endif
                                 </div>
+                                <div class="w-100 mt-4 mb-2">
+                                    <label for="email" class="dependency_logic">Dependencies Logic</label>
+                                    <div class="radiodd">
+                                        <input id="che-1" name="radio_dep_logic" type="radio" value='1' class="individual">
+                                        <label for="che-1" class="radio-label">Logic AND</label>
+                                    </div>
+                                    <div class="radiodd">
+                                        <input id="che-2" name="radio_dep_logic" type="radio" value='2' class="individual">
+                                        <label for="che-2" class="radio-label">Logic OR</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="w-100 mt-4 mb-2">
+                                    <label for="email" class="">Maximum Answers</label>
+                                    <input type="text" class="form-control mb-2 mr-sm-2 answerSize{{$row->id}}{{$row->id}}" placeholder="4" id="email">
+                                </div>
+
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="">Mandatory Question</label>
                                     <div class="wrappers">
-                                        <input id="checkbox1110" type="checkbox" class="checkbox hidden" />
-                                        <label class="switchbox" for="checkbox1110"></label>
+                                        <input id="checkbox30" type="checkbox" class="checkbox mandatory{{$row->id}}{{$row->id}} hidden" />
+                                        <label class="switchbox" for="checkbox30"></label>
                                     </div>
-                                </div>
-                                <div class="w-100 mt-4 mb-2">
-                                    <label for="email" class="">Maximum Answers</label>
-                                    <input type="text" class="form-control mb-2 mr-sm-2" placeholder="4" id="email">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-9 mt-3 pt-1">
                             <div class="w-100 mb-4">
                                 <label for="email" class="w-100"> Question Name</label>
-                                <input type="email" class="form-control mb-2 d-inline-block" placeholder="" id="email">
+                                <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" id="email"> 
+
+                                <i class="fa fa-star questionStd startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
+
+                                <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="1">
                             </div>
                             <div class="w-100 mb-4">
                                 <label for="email" class=""> Display Text</label>
-                                <input class="form-control mb-2" placeholder="">
+                                <input class="form-control mb-2 displayText{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} dt_{{$row->id}}{{$row->id}}" name="text" placeholder="" >
                             </div>
                             <table class="table table-borderless table-scroll mt-3 mb-0" id="productTable">
                                 <thead>
@@ -1637,12 +1784,12 @@
                             <h4 class="hedngead">
                             Country Question</h3>
                         </div>
-                        <div class="col-md-3"><button class="custom-button"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save Question</button></div>
+                        <div class="col-md-3"><button class="custom-button saveQuestion6" data-value="{{$row->id}}" data-index="{{$row->id}}" id="save_question{{$row->id}}"><i class="fa fa-flopp-o" aria-hidden="true"></i> Save Question</button></div>
                         <div class="col-md-3">
                             <div class="w-100 mb-2">
                                 <label for="email" class=""> Add Language</label>
                                 @if(sizeof($data['questionair']) > 0 )
-                                    <select class="form-control mb-3">
+                                    <select class="form-control mb-3 language lang_{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} l_{{$row->id}}" data-index="{{$data['questionair'][0]->language_id}}" data-v="{{$row->id}}" data-quest="{{$row->id}}">
                                     @foreach($data['language'] as $col)
                                         @php
                                             if($col->id == $data['questionair'][0]->language_id){
@@ -1658,61 +1805,117 @@
                                 @endif
 
                                 @if(!empty($data['questionair'][0]['quesLanguage']) )
-                                    @foreach($data['questionair'][0]['quesLanguage'] as $row)          
+                                    @foreach($data['questionair'][0]['quesLanguage'] as $row_)          
                                         @foreach($data['language'] as $col)
-                                                @php
-                                                    if($col->id == $row->language_id){
-                                                        $langdata = $col->language;
-                                                        $langdataId = $col->id;
-                                                    }
-                                                @endphp
-                                        @endforeach
-                                        <select class="form-control mb-3">
+                                            @php
+                                                if($col->id == $row_->language_id){
+                                                    $langdata = $col->language;
+                                                    $langdataId = $col->id;
+                                                }
+                                            @endphp
+                                    @endforeach
+                                        <select class="form-control mb-3 language lang_{{$row->id}}{{$row->id}}{{$row_->language_id}} l_{{$row->id}}" data-index="{{$row_->language_id}}" data-v="{{$row->id}}" data-quest="{{$row->id}}">
                                             <option value="{{$langdataId}}" >{{$langdata}}</option>
                                             <option value="delete">Delete</option>
-                                            <option value="deactivate">Deactivate</option>
+                                            <option value="deactivate" >Deactivate</option>
                                         </select>
                                     @endforeach
                                 @endif
-                                <a href="#" class="adds mb-4">+ Add</a>
+                                <!-- <a href="#" class="adds mb-4">+ Add</a> -->
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="">Dependencies</label>
-                                    <select  class="form-control mb-3">
-                                        <option>Only Appears if Answer Checked</option>
-                                        <option>Only Appears if Answer</option>
-                                        <option>Unchecked</option>
-                                        <option>No Dependcy</option>
+                                    <select  class="form-control  dependency{{$row->id}}{{$row->id}} mb-3 ">
+                                        <option value="1">Only Appears if Answer Checked</option>
+                                        <option value="0">Only Appears if Answer Unchecked</option>
+                                        <option value="2">No Dependcy</option>
                                     </select>
                                 </div>
                                 <div class="w-100 mt-4 mb-2">
-                                    <label for="email" class="">Select Dependend Answer</label>
-                                    <select  class="form-control mb-3">
-                                        <option>Q22 Female</option>
-                                        <option>Q02 First Time Visitor</option>
-                                        <option>Q15 From the sourronding</option>
-                                    </select>
+                                    <label for="email" class="dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}">Select Dependend Answer</label>
+                                    <div id="list{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" tabindex="100">
+                                        <span class="anchor">Select Dependend Answer</span>
+                                        <ul id="items{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" class="items dependent_list{{$data['questionair'][0]->language_id}}">
+                                            @php
+                                                $depenedentAnswer = getDependencyAnswer($row->id);
+                                                if($depenedentAnswer != false){
+                                                    foreach($depenedentAnswer as $c){
+                                                        if($c->language_id == $data['questionair'][0]->language_id){
+                                                
+                                            @endphp
+                                                <li><input type="checkbox" value="{{$c->id}}" name="ddCheck{{$row->id}}" class="dd dependent{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" />Q{{$c->question_dependent_id}}  {{$c->answer_name}}</li>
+                                                
+
+                                            @php
+                                                        }
+                                                    }
+                                                }
+
+                                            @endphp
+                                        </ul>
+                                    </div>
+                                    @if(isset($data['questionair'][0]['quesLanguage']))
+                                        @foreach($data['questionair'][0]['quesLanguage'] as $key => $i)
+                                        
+                                        <div id="list{{$i->language_id}}" class="dropdown-check-list dep dependent_answer{{$row->id}}{{$row->id}}{{$i->language_id}}" tabindex="100" style="display: none;">
+                                        <span class="anchor">Select Dependend Answer</span>
+                                        <ul id="items{{$i->language_id}}" class="items dependent_list{{$i->language_id}}">
+                                            @php
+                                                $depenedentAnswer = getDependencyAnswer($row->id);
+                                                if($depenedentAnswer != false){
+                                                    foreach($depenedentAnswer as $d){
+                                                        if($d->language_id == $i->language_id){
+                                                
+                                            @endphp
+                                            <li><input type="checkbox"  value="{{$d->id}}" name="ddCheck{{$row->id}}"  class="dd dependent{{$row->id}}{{$row->id}}{{$i->language_id}}" />Q{{$d->question_id}}  {{$d->answer_name}} </li>
+                                            @php
+                                                        }
+                                                    }
+                                                }
+
+                                            @endphp
+                                            </ul>
+                                        </div>
+                                        @endforeach
+                                       
+                                        
+                                    @endif
+                                </div>
+                                <div class="w-100 mt-4 mb-2">
+                                    <label for="email" class="dependency_logic">Dependencies Logic</label>
+                                    <div class="radiodd">
+                                        <input id="che-11" name="radio_dep_logic" type="radio" value='1' class="individual">
+                                        <label for="che-11" class="radio-label">Logic AND</label>
+                                    </div>
+                                    <div class="radiodd">
+                                        <input id="che-21" name="radio_dep_logic" type="radio" value='2' class="individual">
+                                        <label for="che-21" class="radio-label">Logic OR</label>
+                                    </div>
                                 </div>
                                 <div class="w-100 mt-4 mb-2">
                                     <label for="email" class="">Mandatory Question</label>
                                     <div class="wrappers">
-                                        <input id="checkbox8888" type="checkbox" class="checkbox hidden" />
-                                        <label class="switchbox" for="checkbox8888"></label>
+                                        <input id="checkbox3007" type="checkbox" class="checkbox mandatory{{$row->id}}{{$row->id}} hidden" />
+                                        <label class="switchbox" for="checkbox3007"></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-9 mt-3 pt-1">
+                        <div class="col-md-9 mt-3 pt-1 editPannel" id="question_{{$row->id}}{{$data['questionair'][0]->language_id}}">
                             <div class="w-100 mb-4">
                                 <label for="email" class="w-100"> Question Name</label>
-                                <input type="email" class="form-control has-search mb-2 d-inline-block" placeholder="Country of Residence" id="email"> <i class="fa fa-star color-dd" aria-hidden="true"></i>
+                                <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" id="email"> 
+
+                                <i class="fa fa-star questionStd startCheck{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" aria-hidden="true"></i>
+
+                                <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="1">
                             </div>
                             <div class="w-100 mb-4">
                                 <label for="email" class=""> Display Text</label>
-                                <input class="form-control mb-2" placeholder="Which Country do you currently live?">
+                                <input class="form-control mb-2 displayText{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} dt_{{$row->id}}{{$row->id}}" name="text" placeholder="" >
                             </div>
                             <div class="form-group has-search">
                                 <span class="fa fa-search form-control-feedback"></span>
-                                <input type="text" class="form-control" placeholder="Search Answer">
+                                <input type="text" class="form-control" placeholder="Search Question">
                             </div>
                             <table class="table table-borderless table-scroll mt-3 mb-0" id="productTable">
                                 <thead>
@@ -1727,26 +1930,98 @@
                                     </tr>
                                 </thead>
                                 <tbody id="addee">
-                                    <tr>
+                                    <tr class="options_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} o_y1{{$row->id}}{{$row->id}}" data-i="1"> 
                                         <td>
                                             1
                                         </td>
-                                        <td><input type="text" class="form-control" placeholder=""></td>
-                                        <td><input type="text" class="form-control" placeholder=""></td>
+                                        <td><input type="text" class="form-control answerName_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" placeholder=""></td>
+
+                                        <td><input type="text" class="form-control ansdisplayText_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" placeholder=""></td>
+
                                         <td class="text-center">
                                             <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
                                             <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
                                         </td>
                                         <td class="text-center">
-                                            <p class="remove"><i class="fa fa-trash" aria-hidden="true"></i></p>
+                                            <p class=" op_remove" data-i="1" data-index="{{$row->id}}{{$row->id}}" data-language="{{$data['questionair'][0]->language_id}}"><i class="fa fa-trash " aria-hidden="true"></i></p>
                                         </td>
-                                        <td class="text-center"> <i class="fa fa-link" aria-hidden="true"></i></td>
-                                        <td class="text-center"> <i class="fa fa-star" aria-hidden="true"></i></td>
+
+                                        <td class="text-center"> <i class="fa fa-link dependecy dependencyCheck1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} " data-language="{{$data['questionair'][0]->language_id}}" data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" data-i="1"  aria-hidden="true"></i></td>
+
+                                        <input type="hidden" class="dependencyCheckValue1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="linkData" value="0">
+
+                                        <td class="text-center"> <i class="fa fa-star starOption_y starcheckOption_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}} " data-value="{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" data-i="1" aria-hidden="true"></i></td>
+
+                                        <input type="hidden" class="startCheckOptionValue_y1{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" name="starData" value="0">
                                     </tr>
                                 </tbody>
                             </table>
-                            <button class="btndfd" id="addProduct">+ Add</button>    
+                            <button class="btndfd add{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" data-questypeid="{{$row->id}}" id="addProduct{{$row->id}}{{$row->id}}" data-language="{{$data['questionair'][0]->language_id}}" data-index="{{$row->id}}{{$row->id}}" data-i="1" data-totaladd="1">+ Add</button>   
+                            <input type="hidden" name="" id="total_option_count{{$row->id}}{{$row->id}}{{$data['questionair'][0]->language_id}}" value="1">    
                         </div>
+                        @if(isset($data['questionair'][0]['quesLanguage']))
+
+                            @foreach($data['questionair'][0]['quesLanguage'] as $i)
+                                <div class="col-md-9 mt-3 pt-1 editPannel "id="question_{{$row->id}}{{$i->language_id}}" style="display:none;">
+                                    <div class="w-100 mb-4">
+                                        <label for="email" class="w-100"> Question Name</label>
+                                        <input type="text" class="form-control has-search mb-2 d-inline-block quesName{{$row->id}}{{$row->id}}{{$i->language_id}} q_{{$row->id}}{{$row->id}}" placeholder="" id="email"> 
+
+                                        <i class="fa fa-star startCheck{{$row->id}}{{$row->id}}{{$i->language_id}} color-dd" data-value="{{$row->id}}{{$row->id}}{{$i->language_id}}" aria-hidden="true"></i>
+
+                                        <input type="hidden" class="startCheckValue{{$row->id}}{{$row->id}}{{$i->language_id}}" name="starData" value="1">
+                                    </div>
+                                    <div class="w-100 mb-4">
+                                        <label for="email" class=""> Display Text</label>
+                                        <input class="form-control mb-2 displayText{{$row->id}}{{$row->id}}{{$i->language_id}} dt_{{$row->id}}{{$row->id}}" name="text" placeholder="" >
+                                    </div>
+                                    <div class="form-group has-search">
+                                        <span class="fa fa-search form-control-feedback"></span>
+                                        <input type="text" class="form-control" placeholder="Search Question">
+                                    </div>
+                                    <table class="table table-borderless table-scroll mt-3 mb-0" id="productTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">&nbsp;</th>
+                                                <th scope="col">Answers Name</th>
+                                                <th scope="col">Display Text</th>
+                                                <th scope="col">Order</th>
+                                                <th scope="col">Delete</th>
+                                                <th scope="col">Dependency</th>
+                                                <th scope="col">Standard</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="addee">
+                                            <tr class="options_y1{{$row->id}}{{$row->id}}{{$i->language_id}} o_y1{{$row->id}}{{$row->id}}" data-i="1"> 
+                                                <td>
+                                                    1
+                                                </td>
+                                                <td><input type="text" class="form-control answerName_y1{{$row->id}}{{$row->id}}{{$i->language_id}}" placeholder=""></td>
+
+                                                <td><input type="text" class="form-control ansdisplayText_y1{{$row->id}}{{$row->id}}{{$i->language_id}}" placeholder=""></td>
+
+                                                <td class="text-center">
+                                                    <i class="fa fa-angle-up d-block" aria-hidden="true"></i>
+                                                    <i class="fa fa-angle-down d-block" aria-hidden="true"></i>
+                                                </td>
+                                                <td class="text-center">
+                                                    <p class=" op_remove" data-i="1" data-index="{{$row->id}}{{$row->id}}" data-language="{{$i->language_id}}"><i class="fa fa-trash " aria-hidden="true"></i></p>
+                                                </td>
+
+                                                <td class="text-center"> <i class="fa fa-link dependecy dependencyCheck1{{$row->id}}{{$row->id}}{{$i->language_id}} " data-language="{{$i->language_id}}" data-value="{{$row->id}}{{$row->id}}{{$i->language_id}}" data-i="1"  aria-hidden="true"></i></td>
+
+                                                <input type="hidden" class="dependencyCheckValue1{{$row->id}}{{$row->id}}{{$i->language_id}}" name="linkData" value="0">
+
+                                                <td class="text-center"> <i class="fa fa-star starOption_y starcheckOption_y1{{$row->id}}{{$row->id}}{{$i->language_id}} " data-value="{{$row->id}}{{$row->id}}{{$i->language_id}}" data-i="1" aria-hidden="true"></i></td>
+                                                <input type="hidden" class="startCheckOptionValue_y1{{$row->id}}{{$row->id}}{{$i->language_id}}" name="starData" value="0">
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button class="btndfd add{{$row->id}}{{$row->id}}{{$i->language_id}}" data-questypeid="{{$row->id}}" id="addProduct{{$row->id}}{{$row->id}}" data-language="{{$i->language_id}}" data-index="{{$row->id}}{{$row->id}}" data-i="1" data-totaladd="1">+ Add</button>   
+                                    <input type="hidden" name="" id="total_option_count{{$row->id}}{{$row->id}}{{$i->language_id}}" value="1">       
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                     <!--End Country Question--> 
                  @endif   

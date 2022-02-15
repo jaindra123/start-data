@@ -18,6 +18,8 @@ class QuestionQController extends Controller{
 
 
     public function index(Request $request, $id, $pageNo=1 ){
+
+        $request->session()->forget('ques_position');
         $questionTypeModel  =new  QuestionType();
         $questionairModel = new Questionair();
         $questionairOtherLanguageModel = new QuestionairOtherLanguage();
@@ -43,6 +45,10 @@ class QuestionQController extends Controller{
                 'questionair_and_questype.ques_type_id as quesTypeId',
                 'questions.id as questionId',
                 'questions.question as questionName',
+                'questions.page_id as page_id',
+                'questions.question_no_order as question_no_order',
+                // 'questions.',
+                // 'questions',
             ],
             [
                 ['questions.status','<>',2],
@@ -184,10 +190,19 @@ class QuestionQController extends Controller{
         $langCount = 0;
         for($i=0; $i < count($data__); $i++){
             
-            if($data['questionData']['selectedStatusOfLang'][$i] == 'deactivate'){
+            // if($data['questionData']['selectedStatusOfLang'][$i] == 'deactivate'){
                 $langCount++;
-            }
+            // }
         }
+        $last_question_no = $questionModel->join('questionair_and_questype','questionair_and_questype.id','=','questions.questionair_type_id')
+            ->where('questions.status','<>',2)
+            ->where('questions.deleted_at', NULL)
+            ->take(1)->orderBy('questions.question_no_order','DESC')
+            ->where('questions.page_id',$pageNo)
+            ->where('questionair_type_id',$questionairTypeId)
+            ->get();
+        // return $last_question_no[0]['question_no_order'];
+
         for($i=0; $i < count($data__); $i++){
            
             $data_ = [
@@ -211,6 +226,18 @@ class QuestionQController extends Controller{
                 'status'                            =>                  $data['questionData']['selectedStatusOfLang'][$i] == 'deactivate' ? 0 : 1,
             ];
             $insertedRecord = $questionModel->insertRecord($data_);
+            if(sizeof($last_question_no) > 0){
+                $questionModel->where(['id'=>$insertedRecord->id, 'page_id'=>$insertedRecord->page_id])->where('status','<>',2)->update([
+                    'question_no_order'     =>      $last_question_no[0]['question_no_order']+1,
+                ]);
+    
+            }else{
+                $questionModel->where(['id'=>$insertedRecord->id, 'page_id'=>$insertedRecord->page_id])->where('status','<>',2)->update([
+                    'question_no_order'     =>      1,
+                ]);
+    
+            }
+            
             if($insertedRecord && $i==0){
                 $data1 = $questionModel->getSingleRecord(['id'=>$insertedRecord->id]);
                 $data1->first_data_or_not=1;
@@ -235,10 +262,12 @@ class QuestionQController extends Controller{
         $questioanairWithTypeModel = new QuestionairAndQuestionTypeModel();
         $optionModel = new Option();
 
+        // $option = [];
+        $questionWithOption = [];
         $questions = $questionModel->getSingleRecord(['id'=>$request->quesId]);
         // return $questions;
 
-        $quesWithOtherLang = $questionModel->getRecordAfterId(
+        $quesWithOtherLang = $questionModel->getRecordAfterId1(
             [
                 'questionair_and_questype.id as questionairTypeId',
                 'questionair_and_questype.ques_type_id as quesTypeId',
@@ -247,12 +276,29 @@ class QuestionQController extends Controller{
                 'questions.display_texts as displayText',
                 'questions.std_qns as stdAns',
                 'questions.language_id as languageId',
-                'questions.scale_discription as scale_description'
+                'questions.scale_discription as scale_description',
+                // 'options.option as option_name',
+                // 'options.display_text as display_text',
+                // 'options.std_opt as std_ans',
+                // 'options.is_dependent as option_dep',
+                // 'options.axis'
+
             ],
             [
                [ 'questions.id','>=',$request->quesId]
             ], $questions->language_count);
-        return ['questionTitle'=>$quesWithOtherLang];   
+
+            foreach($quesWithOtherLang as $row){
+                $option = $optionModel->getRecordWithCondition(['questions_id'=>$row->questionId]);
+                if(sizeof($option) > 0){
+                    $row->options = $option;
+                }else{
+                    $row->options = [];
+                }
+
+                $questionWithOption[][]= $row;
+            }
+        return ['questionTitle'=>$questionWithOption,'option'=> $questionWithOption];   
     }
 
     public function save_scale_question_type(Request $request, $questionairTypeId, $pageNo = 1){
@@ -301,7 +347,7 @@ class QuestionQController extends Controller{
         // return $data;
         // $total_options = $data['questionData']['total_option'];
         $insertedId =[];
-
+        
         $data__=  ($data['questionData']['question']);
         $langCount = 0;
         for($i=0; $i < count($data__); $i++){
@@ -310,6 +356,13 @@ class QuestionQController extends Controller{
                 $langCount++;
             }
         }
+        $last_question_no = $questionModel->join('questionair_and_questype','questionair_and_questype.id','=','questions.questionair_type_id')
+            ->where('questions.status','<>',2)
+            ->where('questions.deleted_at', NULL)
+            ->take(1)->orderBy('questions.question_no_order','DESC')
+            ->where('questions.page_id',$pageNo)
+            ->where('questionair_type_id',$questionairTypeId)
+            ->get();
         for($i=0; $i < count($data__); $i++){
            
             $data_ = [
@@ -330,10 +383,21 @@ class QuestionQController extends Controller{
                 // 'dependent_answer'                  =>                  $data['questionData'],
                 'display_texts'                     =>                  $data['questionData']['display_texts'][$i],
                 // 'options'                           =>                  $data['questionData'],
-                'scale_discription'                 =>                   $questionair_and_type->ques_type_id == 9||$questionair_and_type->ques_type_id == 2 ? NULL : $data['questionData']['scale_des'][$i],
+                'scale_discription'                 =>                   $questionair_and_type->ques_type_id == 9||$questionair_and_type->ques_type_id == 2 || $questionair_and_type->ques_type_id == 1 || $questionair_and_type->ques_type_id == 8 ? NULL : $data['questionData']['scale_des'][$i],
                 'status'                            =>                  $data['questionData']['selectedStatusOfLang'][$i] == 'deactivate' ? 0 : 1,
             ];
             $insertedRecord = $questionModel->insertRecord($data_);
+            if(sizeof($last_question_no) > 0){
+                $questionModel->where(['id'=>$insertedRecord->id, 'page_id'=>$insertedRecord->page_id])->where('status','<>',2)->update([
+                    'question_no_order'     =>      $last_question_no[0]['question_no_order']+1,
+                ]);
+    
+            }else{
+                $questionModel->where(['id'=>$insertedRecord->id, 'page_id'=>$insertedRecord->page_id])->where('status','<>',2)->update([
+                    'question_no_order'     =>      1,
+                ]);
+    
+            }
             if($insertedRecord && $i==0){
                 $data1 = $questionModel->getSingleRecord(['id'=>$insertedRecord->id]);
                 $data1->first_data_or_not=1;
@@ -385,7 +449,7 @@ class QuestionQController extends Controller{
                 }
             }       
         }
-        if($questionair_and_type->ques_type_id == 2 ){
+        if($questionair_and_type->ques_type_id == 2 || $questionair_and_type->ques_type_id == 1|| $questionair_and_type->ques_type_id == 8){
             $l=0;
             $optionId =[];
             $getDependentAnswer = [];
@@ -450,31 +514,31 @@ class QuestionQController extends Controller{
                         // $getSelectDependentAnswer[] = $depSelectData;
 
                     }
-                    //     for($f_=0; $f_ < count($getSelectDependentAnswer); $f_++){
-                    //         for($h_=0; $h_<count($depSelectData); $h_++){
-                    //             $dataD = [
-                    //                 'option_id'             =>      $getSelectDependentAnswer[$f_][$h_]['id'],
-                    //                 'question_id'           =>      $getSelectDependentAnswer[$f_][$h_]['questions_id'],
-                    //                 'question_type_id'      =>      $questionair_and_type->ques_type_id,
-                    //                 'dependency'            =>      $data['questionData']['dependencyCheck'],
-                    //                 'answer_name'           =>      $getSelectDependentAnswer[$f_][$h_]['option'],
-                    //                 'dependecy_logic'       =>      isset($data['questionData']['dependencyLogic']) ? $data['questionData']['dependencyLogic'] : '',
-                    //                 'status'                =>      1,
-                    //             ];
-                    //             $dependentDataId_ = $dependencyModel->insertRecord($dataD);
-                    //             $dependentData_[]  = $dependentDataId_->id;
-                    //         }
-                    //     }
-                    //     foreach($dependentData_ as $co){
-                    //         $getQuesWithLang_[] = $questionModel->getSingleRecord(['id'=>$co]);
-                    //     }
-                    //     $c_ = 0;
-                    //     for($p = 0; $p <count($getQuesWithLang_); $p++ ){
-                    //         $dependencyModel->where('question_id', $getQuesWithLang_[$c_]['id'])->update([
-                    //             'language_id'   =>    $getQuesWithLang_[$c_]['language_id']  
-                    //         ]);
-                    //         $c_++;
-                    //     }
+                        //     for($f_=0; $f_ < count($getSelectDependentAnswer); $f_++){
+                        //         for($h_=0; $h_<count($depSelectData); $h_++){
+                        //             $dataD = [
+                        //                 'option_id'             =>      $getSelectDependentAnswer[$f_][$h_]['id'],
+                        //                 'question_id'           =>      $getSelectDependentAnswer[$f_][$h_]['questions_id'],
+                        //                 'question_type_id'      =>      $questionair_and_type->ques_type_id,
+                        //                 'dependency'            =>      $data['questionData']['dependencyCheck'],
+                        //                 'answer_name'           =>      $getSelectDependentAnswer[$f_][$h_]['option'],
+                        //                 'dependecy_logic'       =>      isset($data['questionData']['dependencyLogic']) ? $data['questionData']['dependencyLogic'] : '',
+                        //                 'status'                =>      1,
+                        //             ];
+                        //             $dependentDataId_ = $dependencyModel->insertRecord($dataD);
+                        //             $dependentData_[]  = $dependentDataId_->id;
+                        //         }
+                        //     }
+                        //     foreach($dependentData_ as $co){
+                        //         $getQuesWithLang_[] = $questionModel->getSingleRecord(['id'=>$co]);
+                        //     }
+                        //     $c_ = 0;
+                        //     for($p = 0; $p <count($getQuesWithLang_); $p++ ){
+                        //         $dependencyModel->where('question_id', $getQuesWithLang_[$c_]['id'])->update([
+                        //             'language_id'   =>    $getQuesWithLang_[$c_]['language_id']  
+                        //         ]);
+                        //         $c_++;
+                        //     }
                         // $k__= 0;
                         // for($j_=0; $j_ < count($insertedId); $j_){
                         //     // for($f_=0; $f_ < count($getSelectDependentAnswer); $f_++){
@@ -507,10 +571,82 @@ class QuestionQController extends Controller{
                 }
             }
             // return $questionIDLatest;
-            
-
-            
         }
         return response()->json(['success'=>true, 'message'=>'Question Added Successfully','data'=>$insertedId]);
     }
+
+    public function save_ques_position (Request $request){
+        // $request->session()->forget('ques_position');
+        $posSession =[];
+         $data = $request->all();
+        //  return $data['questionPositionData']['current_ques_no'];
+        if($request->session()->has('ques_position')){
+            $posSession = $request->session()->get('ques_position');
+            foreach($posSession as $row){
+                foreach($row  as $col){
+                    if($col['current_ques_no'] == $data['questionPositionData']['current_ques_no']){
+                        $data['questionPositionData']['current_ques_no'] = $col['swap_ques_no'];
+                        $data['questionPositionData']['current_ques_id'] = $col['swap_ques_id'];
+                    }elseif($col['swap_ques_no'] == $data['questionPositionData']['swap_ques_no']){
+                        $data['questionPositionData']['swap_ques_no']=$col['current_ques_no'];
+                        $data['questionPositionData']['swap_ques_id'] = $col['current_ques_id'];
+                    }
+                    
+                }
+            }
+            $posSession[]=$data;
+            // return $posSession;
+            $request->session()->put('ques_position',$posSession);
+        }else{
+            $posSession[] = $request->all();
+            $request->session()->put('ques_position', $posSession);
+        }
+        $sessionData = $request->session()->get('ques_position');
+
+        return response()->json(['success'=>true, 'data'=>$sessionData]);   
+    }
+
+    public function save_ques_draft(Request $request){
+        $questionsModel = new Question();
+        $otherLang =[];
+        $swapQues = [];
+
+        if($request->session()->has('ques_position')){
+            $sessionData_ = $request->session()->get('ques_position');
+            foreach($sessionData_ as $row){
+                $languageCountC = $questionsModel->getSingleRecord(['id'=>$row['questionPositionData']['current_ques_id']]);
+                $languageCountS = $questionsModel->getSingleRecord(['id'=>$row['questionPositionData']['swap_ques_id']]);
+
+                $currentQues = $questionsModel->where([
+                    'id'=>$row['questionPositionData']['current_ques_id'],
+                    'deleted_at' =>  NULL
+                ])->update([
+                    'question_no_order' =>  $row['questionPositionData']['swap_ques_no']
+                ]);
+
+                $questionsModel->where([
+                    ['id', '>=',      $row['questionPositionData']['current_ques_id']],
+                        'deleted_at' =>  NULL
+                    ])
+                    ->take($languageCountC->language_count)->update(['question_no_order' =>  $row['questionPositionData']['swap_ques_no']]); 
+                
+
+                $swapQues = $questionsModel->where([
+                    'id'=>$row['questionPositionData']['swap_ques_id'],
+                    'deleted_at' =>  NULL
+                ])->update([
+                    'question_no_order' =>  $row['questionPositionData']['current_ques_no']
+                ]);
+
+                $questionsModel->where([
+                    ['id', '>=',      $row['questionPositionData']['swap_ques_id']],
+                        'deleted_at' =>  NULL
+                    ])
+                    ->take($languageCountS->language_count)->update(['question_no_order' =>  $row['questionPositionData']['current_ques_no']]); 
+                
+            }
+            return response()->json(['success'=>true, 'data'=>[$currentQues, $swapQues]]);
+        }
+    }
+    
 }

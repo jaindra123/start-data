@@ -124,6 +124,23 @@ $(function(){
                     $('.questionTypeEditPannel'+questypeId).css({'display':''})
                     $('.load_question').css({'display':''});
                     $('.search-display').css({'display':''});
+                      /** drop down with Checkbox for dependency */
+
+                    var checkList = document.getElementById('list'+questypeId+questypeId+languageId_);
+                    var items = document.getElementById('items'+questypeId+questypeId+languageId_);
+
+                    checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+                    if (items.classList.contains('visible')) {
+                        items.classList.remove('visible');
+                        items.style.display = "none";
+                    } else {
+                        items.classList.add('visible');
+                        items.style.display = "block";
+                    }
+                    }
+                    items.onblur = function(evt) {
+                    items.classList.remove('visible');
+                    }
                 }
                 if(response.success == true){
                     // alert(  )
@@ -133,6 +150,21 @@ $(function(){
                     $('.load_question').css({'display':''});
                     $('.search-display').css({'display':''});
                     $('#save_question'+questypeId).data('value',response.questionairTypeId )
+                    var checkList = document.getElementById('list'+questypeId+questypeId+languageId_);
+                    var items = document.getElementById('items'+questypeId+questypeId+languageId_);
+
+                    checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+                    if (items.classList.contains('visible')) {
+                        items.classList.remove('visible');
+                        items.style.display = "none";
+                    } else {
+                        items.classList.add('visible');
+                        items.style.display = "block";
+                    }
+                    }
+                    items.onblur = function(evt) {
+                    items.classList.remove('visible');
+                    }
                     console.log($('#save_question'+questypeId).data('value'));
                     var html = '';
                     $.each(response.data, function(index, value){
@@ -310,6 +342,7 @@ $(function(){
         var quesType = $(this).data('index');
         var quesTitle = $(this).data('title');
         var quesId = $(this).data('quesid');
+        var i=1,j=1;
         $.ajax({
             type:"GET",
             url: window.location.origin+foldername+"get-questions",
@@ -318,22 +351,56 @@ $(function(){
                 quesId : quesId
             },
             success:function(response){
-                console.log('response related to choose ques= ',response.questionTitle);
+                console.log('response related to choose ques= ',response);
                 $.each(response.questionTitle, function(index, value) {
-                    $('.quesName'+value.quesTypeId+value.quesTypeId+value.languageId).val(value.questionName);
-                    console.log('.quesName'+value.quesTypeId+value.quesTypeId+value.languageId)
-                    $('.startCheck'+value.quesTypeId+value.quesTypeId+value.languageId).val(value.stdAns);
-                    if(value.stdAns == 0){
-                        $('.startCheck'+value.quesTypeId+value.quesTypeId+value.languageId).removeClass('color-dd');
-                        $('.startCheck'+value.quesTypeId+value.quesTypeId+value.languageId).css({'text-align':'right','width':'16%','font-size':'20px'});
-                    }
-                    $('.displayText'+value.quesTypeId+value.quesTypeId+value.languageId).val(value.displayText)
-                    $('.scaleDiscription'+value.quesTypeId+value.quesTypeId+value.languageId).val(value.scale_description)
+                    i=0;
+                    j=0;
+                    $.each(value, function(index, value_) {
+                    console.log('option length',value_.options.length );
+                        $('.quesName'+value_.quesTypeId+value_.quesTypeId+value_.languageId).val(value_.questionName);
+                        console.log('.quesName'+value_.quesTypeId+value_.quesTypeId+value_.languageId)
+                        $('.startCheck'+value_.quesTypeId+value_.quesTypeId+value_.languageId).val(value_.stdAns);
+                        if(value_.stdAns == 0){
+                            $('.startCheck'+value_.quesTypeId+value_.quesTypeId+value_.languageId).removeClass('color-dd');
+                            $('.startCheck'+value_.quesTypeId+value_.quesTypeId+value_.languageId).css({'text-align':'right','width':'16%','font-size':'20px'});
+                        }
+                        $('.displayText'+value_.quesTypeId+value_.quesTypeId+value_.languageId).val(value_.displayText)
+                        $('.scaleDiscription'+value_.quesTypeId+value_.quesTypeId+value_.languageId).val(value_.scale_description)
+                        if(value_.options.length > 0){
+                            console.log('questiontype =',value_.quesTypeId)
+                            if(value_.quesTypeId == 2 || value_.quesTypeId == 1 || value_.quesTypeId == 8 ){
+                                $.each(value_.options, function(index1, value2) {
+                                    $('.answerName_y'+(j+1)+value_.quesTypeId+value_.quesTypeId+value_.languageId).val(value2.option) 
+                                    $('.ansdisplayText_y'+(j+1)+value_.quesTypeId+value_.quesTypeId+value_.languageId).val(value2.display_text) 
+                                    var indexVal= value_.quesTypeId.toString()+value_.quesTypeId.toString()
+                                    console.log('indexval',indexVal);
+                                    add_field(indexVal,value_.languageId,value_.quesTypeId,j,value2.option,value2.display_text)
+                                    j++;
+                                });
+                            }else{
+                                $.each(value_.options, function(index1, value2) {
+                    
+                                    if(value2.axis== 'x'){
+                                        console.log('gfghfhgf',value_.quesTypeId)
+                                        $('.answerName'+(i+1)+value_.quesTypeId+value_.quesTypeId+value_.languageId).val(value2.option)
+                                        $('.ansdisplayText'+(i+1)+value_.quesTypeId+value_.quesTypeId+value_.languageId).val(value2.display_text) 
+                                        i++;
+                                    }else{
+                                        $('.answerName_y'+(j+1)+value_.quesTypeId+value_.quesTypeId+value_.languageId).val(value2.option) 
+                                        $('.ansdisplayText_y'+(j+1)+value_.quesTypeId+value_.quesTypeId+value_.languageId).val(value2.display_text) 
+                                        var indexVal= value_.quesTypeId.toString()+value_.quesTypeId.toString()
+                                        console.log('indexval',indexVal);
+                                        add_field(indexVal,value_.languageId,quesType,j,value2.option,value2.display_text)
+                                        j++;
+                                    }
+                                });
+                            }
+                            
+                        }
+                    });
                 });
             },
-
-        });
-       
+         });
     });
 
     /** Star check in scale option */
@@ -371,19 +438,16 @@ $(function(){
         }
     });
 
-    $('.btndfd').on('click', function(){
-        var indexV = $(this).data('index');
-        var language = $(this).data('language');
-        var quesTypeId = $(this).data('questypeid');
-        var i = $(this).data('i');
+    function add_field(indexV,language,quesTypeId,i,opVal='',disVal=''){
+       
         var iInc = parseInt(i)+1;
-        console.log('ques type id',$(this).data('questypeid'));
+        console.log('ques type id',quesTypeId);
         console.log('i',i);
         // alert(indexV);
         var html ="<tr class='options_y"+iInc+indexV+language+"' data-i='"+iInc+"'>"+
                " <td>"+iInc+" </td>"+
-                "<td><input type='text' class='form-control answerName_y"+iInc+indexV+language+"' placeholder=''></td>"+
-                "<td><input type='text' class='form-control ansdisplayText_y"+iInc+indexV+language+"' placeholder=''></td>"+
+                "<td><input type='text' class='form-control answerName_y"+iInc+indexV+language+"' value='"+opVal+"' placeholder=''></td>"+
+                "<td><input type='text' class='form-control ansdisplayText_y"+iInc+indexV+language+"' value='"+disVal+"' placeholder=''></td>"+
                " <td class='text-center'>"+
                     "<i class='fa fa-angle-up d-block' aria-hidden='true'></i>"+
                    " <i class='fa fa-angle-down d-block' aria-hidden='true'></i>"+
@@ -392,7 +456,7 @@ $(function(){
             
                     "<p class='remove op_remove' data-i='"+iInc+"' data-index='"+indexV+"' data-language='"+language+"'><i class='fa fa-trash' aria-hidden='true'></i></p>"+
                " </td>";
-        if(quesTypeId == '2'){
+        if(quesTypeId == '2' || quesTypeId== '1' ){
 
             html += "<td class='text-center'> <i class='fa fa-link dependecy dependencyCheck"+iInc+indexV+language+"' data-language='"+language+"' data-value='"+indexV+language+"' data-i='"+iInc+"'  aria-hidden='true'></i></td>"+
                 "<input type='hidden' class='dependencyCheckValue"+iInc+indexV+language+"' name='linkData' value='0'>";
@@ -401,11 +465,52 @@ $(function(){
                " </td>"+
                " <input type='hidden' class='startCheckOptionValue_y"+iInc+indexV+language+"' name='starData' value='0'>"+
             "</tr>";
-        // console.log(html)
+        console.log(html)
         $(this).data('i',iInc)
+        console.log('update i =',$(this).data('i'))
         $(this).data('totaladd', iInc)
         $('#total_option_count'+indexV+language).val(iInc)
         $('.options_y'+i+indexV+language).after(html);
+    }
+
+    $('.btndfd').on('click', function(){
+        var indexV = $(this).data('index');
+        var language = $(this).data('language');
+        var quesTypeId = $(this).data('questypeid');
+        var i = $(this).data('i');
+
+        var iInc = parseInt(i)+1;
+        console.log('ques type id',quesTypeId);
+        console.log('i',i);
+        // alert(indexV);
+        var html ="<tr class='options_y"+iInc+indexV+language+"' data-i='"+iInc+"'>"+
+               " <td>"+iInc+" </td>"+
+                "<td><input type='text' class='form-control answerName_y"+iInc+indexV+language+"'  placeholder=''></td>"+
+                "<td><input type='text' class='form-control ansdisplayText_y"+iInc+indexV+language+"'  placeholder=''></td>"+
+               " <td class='text-center'>"+
+                    "<i class='fa fa-angle-up d-block' aria-hidden='true'></i>"+
+                   " <i class='fa fa-angle-down d-block' aria-hidden='true'></i>"+
+                "</td>"+
+               " <td class='text-center'>"+
+            
+                    "<p class='remove op_remove' data-i='"+iInc+"' data-index='"+indexV+"' data-language='"+language+"'><i class='fa fa-trash' aria-hidden='true'></i></p>"+
+               " </td>";
+        if(quesTypeId == '2' || quesTypeId== '1' || quesTypeId == 8 ){
+
+            html += "<td class='text-center'> <i class='fa fa-link dependecy dependencyCheck"+iInc+indexV+language+"' data-language='"+language+"' data-value='"+indexV+language+"' data-i='"+iInc+"'  aria-hidden='true'></i></td>"+
+                "<input type='hidden' class='dependencyCheckValue"+iInc+indexV+language+"' name='linkData' value='0'>";
+        }
+            html +=  "<td class='text-center'> <i class='fa fa-star starOption_y starcheckOption_y"+iInc+indexV+language+"' data-value='"+indexV+language+"' data-i='"+iInc+"' aria-hidden='true'></i>"+
+               " </td>"+
+               " <input type='hidden' class='startCheckOptionValue_y"+iInc+indexV+language+"' name='starData' value='0'>"+
+            "</tr>";
+        console.log(html)
+        $(this).data('i',iInc)
+        console.log('update i =',$(this).data('i'))
+        $(this).data('totaladd', iInc)
+        $('#total_option_count'+indexV+language).val(iInc)
+        $('.options_y'+i+indexV+language).after(html);
+        // add_field(indexV,language,quesTypeId,i)
     });
 
     $('body').on('click','.op_remove', function(){
@@ -438,7 +543,7 @@ $(function(){
 
         var mandatory = 0, personalQuestion_ = 0, no_answer = 0, dependencyCheck=0, dependencyLogic=0;
 
-        if(questionTypeId == 2){
+        if(questionTypeId == 2 || questionTypeId== 1|| questionTypeId== 8){
             dependencyCheck =$('.dependency'+questionTypeId+questionTypeId).val();
             dependencyLogic = $('input[name="radio_dep_logic"]:checked').val()
             console.log('depency logic=',dependencyLogic)
@@ -495,11 +600,13 @@ $(function(){
 
             
         });
-        $.each($("input[name='ddCheck']:checked"), function(){
+        $.each($("input[name='ddCheck"+questionTypeId+"']:checked"), function(){
             dependency.push($(this).val());
         });
 
+
         console.log('depenedecy select', dependency);
+        // return;
 
         var questionsData = {
             'questionair_type_id'   :       questionairTypeId,
@@ -587,25 +694,96 @@ $(function(){
 
 
 
-    /** drop down with Checkbox for dependency */
+  
 
-    var checkList = document.getElementById('list'+languageId_);
-    console.log(checkList);
-    var items = document.getElementById('items'+languageId_);
-    console.log(items);
+   /** Sorting Questions */
+    $('.ques_order').on('click', function(){
+        var question_no = $(this).data('ques_no'),
+            ques_id     = $(this).data('ques_id'),
+            page_id     = $(this).data('page_id'); 
 
-    checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
-      if (items.classList.contains('visible')) {
-        items.classList.remove('visible');
-        items.style.display = "none";
-      } else {
-        items.classList.add('visible');
-        items.style.display = "block";
-      }
+            var row = $(this).parents("tr:first");
+            if ($(this).is(".up")) {
+                console.log('prev row ques id = ',row.prev().attr('data-ques_no'))
+                savePosition(question_no, ques_id,page_id, row.prev().attr('data-ques_no'),row.prev().attr('data-ques_id'))
+                row.insertBefore(row.prev());
+            } else {
+                console.log('next row ques id = ',row.next().attr('data-ques_no'))
+                savePosition(question_no, ques_id,page_id, row.next().attr('data-ques_no'),row.next().attr('data-ques_id'))
+                row.insertAfter(row.next());
+
+            }
+
+            // alert(ques_id,question_no, page_id);
+            console.log('current ques no=', question_no);
+            console.log('page_id= ',page_id);
+            console.log('ques_id= ',ques_id);
+            
+
+    });
+
+    // $('.current_question tbody').sortable({
+    //     update:function(event, ui){
+    //         $(this).children().each(function(index){
+    //             if($(this).attr('data-pos') != (index+1)){
+    //                 $(this).attr('data-pos', index+1).addClass('updated')
+    //             } 
+    //         });
+
+    //         savePosition();
+    //     }
+    // });
+
+
+    function  savePosition(c_ques_no,c_ques_id,page_id, s_ques_no, s_ques_id){
+        var data = {
+            'current_ques_no'   :       c_ques_no,
+            'current_ques_id'   :       c_ques_id,
+            'page_no'           :       page_id,
+            'swap_ques_no'      :       s_ques_no,
+            'swap_ques_id'      :       s_ques_id
+        };
+        $.ajaxSetup({   
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+       
+        $.ajax({
+            type:"GET",
+            url: window.location.origin+foldername+"save-ques-position",
+            dataType: 'json',
+            data: {
+                questionPositionData : data
+            },
+          
+            success: function(response){
+                console.log("question position response",response);
+               
+            }
+        });
+
     }
-    items.onblur = function(evt) {
-      items.classList.remove('visible');
-    }
 
-   
+    $('.safe_draft').on('click', function(){
+        $.ajaxSetup({   
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+       
+        $.ajax({
+            type:"GET",
+            url: window.location.origin+foldername+"save-ques-draft",
+            dataType: 'json',
+          
+            success: function(response){
+                if(response.success == true){
+                    alert('Question Saved Successfully');
+                    location.reload()
+                }
+                
+            }
+        });
+    });
 });
