@@ -18,7 +18,6 @@ function randAlphaNumericStringGenerator($n) {
     return $randomString;
 }
 
-
 function getAllLanguage(){
     $data = DB::table('languages')->where('deleted_at',NULL)->get();
     return $data;
@@ -58,6 +57,7 @@ function changeNewsDateFormat($datetime)
 
     return date('jS F Y', $str);
 }
+
 function checkUser(){
     $user = Auth::User();
     Session::put('user', $user);
@@ -79,25 +79,9 @@ function systemLanguage(){
     }
 }
 
-
-// function getLanguage($value){
-//     $data = DB::table('languages')->where('deleted_at',NULL)->where('id',$value)->get();
-//     return $data;
-// }
-
-function questionair($id){
-    // echo $id;
-    // return $data = Questionair::where([['id',$id],['status', '1'],['is_publish', '1']])->first();
-    /*
-    if(Auth::check()){
-        $id = Auth::user()->id;
-        $customer_id = Auth::user()->customer_id;
-        // $customer_id = 1;
-        $data = Questionair::where([['select_customer',$customer_id],['status', '1'],['is_publish', '1']])->first();
-        if(!empty($data)){
-            return $data;
-        }
-    }*/
+function getAllCountry(){
+    $data = DB::table('countries')->where('deleted_at',NULL)->get();
+    return $data;
 }
 
 function encrypt_decrypt($string, $action = 'encrypt')

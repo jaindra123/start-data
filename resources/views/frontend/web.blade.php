@@ -37,9 +37,7 @@
                                 @include('question_modal.openQuestion')
                             @endif
                             @if($type->ques_type_id == 4)
-                                <div class="question-box">
-
-                                </div>
+                                @include('question_modal.pictureQuestion')
                             @endif
                             @if($type->ques_type_id == 5)
                                 @include('question_modal.matrixQuestion')
@@ -51,12 +49,10 @@
                                 @include('question_modal.numberQuestion')
                             @endif
                             @if($type->ques_type_id == 8)
-                                <div class="question-box">
-
-                                </div>
+                                @include('question_modal.countryQuestion')
                             @endif
                             @if($type->ques_type_id == 9)
-                                {{--@include('question_modal.rankingQuestion')--}}
+                                @include('question_modal.rankingQuestion')
                             @endif
                             @if($type->ques_type_id == 10)
                                 @include('question_modal.agreementQuestion')

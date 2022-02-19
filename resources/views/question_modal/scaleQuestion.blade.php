@@ -41,6 +41,7 @@
         $(".check_{{$ques->id}}").on('click',function(){
             if($(this).is(":checked")){
                 checkedcount = 1;
+                $("#radio_{{$ques->id}}").remove();
             }else{
                 checkedcount = 0;
             }

@@ -8,7 +8,7 @@
                 <div class="checkbox1"></div>
             </div>
             @if($ques->mandatory == 0)
-                <input type="hidden" id="checkbox1" name="{{$ques->id}}[]" value="skiped">
+                <input type="hidden" id="checkbox2" name="{{$ques->id}}[]" value="skiped">
             @endif
         </div>
     </div>
@@ -22,6 +22,7 @@
             if($("#checkbox1").is(":checked")){
                 checkedcount1 = 1;
                 $("#pc1").remove();
+                $("#checkbox2").remove();
             }else{
                 checkedcount1 = 0;
             }
