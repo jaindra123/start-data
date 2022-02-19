@@ -3,7 +3,7 @@
     <div class="row code-post">
         <input type="hidden" id="mandatory_{{$ques->id}}" value="{{$ques->mandatory}}">
         <div class="col-md-2"></div>
-        <div class="col-md-4">
+        <div class="col-md-4 numdiv">
             <div class="tcdeew" style="width:250px;">
                 <input class="number-question" type="button" name="one" value="1">
                 <input class="number-question" type="button" name="two" value="2">
@@ -38,6 +38,7 @@
         var text_length = {{$ques->max_ans_size}};
         var nq_array = [];
         $(".number-question").on("click",function(){
+            $("#checkbox_{{$ques->id}}").remove();
             var number = $(this).val();
             value++;
             if(text_length > nq_array.length){
@@ -50,12 +51,25 @@
                 // console.log(nq_array);
             }
         });
+
         $("#clear").on("click",function(){
             $("#answer").val('');
+            $(".numdiv").append('<input type="hidden" id="checkbox_{{$ques->id}}" name="{{$ques->id}}[]" value="skiped">');
             nq_array = [];
             value = 0;
         });
+        
         $("#submit").on('click',function(){
+            var val = $("#answer").val();
+            if(val == ''){
+                $(".numdiv").append('<input type="hidden" id="checkbox_{{$ques->id}}" name="{{$ques->id}}[]" value="skiped">');
+            }
+
+            if(val.length > text_length){
+                alert('You can only enter :- '+text_length+' digits in "{{$ques->question}}" ')
+                return false;
+            }
+
             if(mandatory > value){
                 alert('This Question is Mandatory :- "{{$ques->question}}"')
                 return false;

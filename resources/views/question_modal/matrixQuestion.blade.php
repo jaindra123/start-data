@@ -73,6 +73,7 @@
         $(".matrix_check_{{$ques->id}}").on('click',function(){
             if($(this).is(":checked")){
                 checkedcount = 1;
+                $("#radio_{{$ques->id}}").remove();
             }else{
                 checkedcount = 0;
             }
@@ -107,9 +108,22 @@
                 check = false;
             }
 
-            if(count < {{$count}}){
-                alert('This Mandatory to select all option');
-                check = false;
+            if(mandatory > 0){
+                if(count < {{$count}}){
+                    alert('This Mandatory to select all option');
+                    check = false;
+                }
+            }
+            
+            if($("#checkbox_{{$ques->id}}").is(":checked")){
+                checkedcount = 0;
+            }
+
+            if(checkedcount == 1){
+                if(count < {{$count}}){
+                    alert('This Mandatory to select all option');
+                    check = false;
+                }
             }
 
             if(check == false){

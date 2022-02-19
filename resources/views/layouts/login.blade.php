@@ -61,7 +61,9 @@ Coded by www.creative-tim.com
     <script src="{{asset('assets/js/paper-dashboard.min.js?v=2.0.1')}}" type="text/javascript"></script>
     <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
     <script src="{{asset('assets/demo/demo.js')}}"></script>
-    <script src="{{asset('assets/js/core/jquery-3.4.1.min.js')}}"></script>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <!-- <script src="{{asset('assets/js/core/jquery-3.4.1.min.js')}}"></script> --> <!-- comment for running rank Question -->
     <script type="text/javascript">
         $(document).ready(function () {
             $("#forget").on("click", function () {

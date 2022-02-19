@@ -37,9 +37,7 @@
                                 @include('question_modal.openQuestion')
                             @endif
                             @if($type->ques_type_id == 4)
-                                <div class="question-box">
-
-                                </div>
+                                @include('question_modal.pictureQuestion')
                             @endif
                             @if($type->ques_type_id == 5)
                                 @include('question_modal.matrixQuestion')
@@ -54,7 +52,7 @@
                                 @include('question_modal.countryQuestion')
                             @endif
                             @if($type->ques_type_id == 9)
-                                {{--@include('question_modal.rankingQuestion')--}}
+                                @include('question_modal.rankingQuestion')
                             @endif
                             @if($type->ques_type_id == 10)
                                 @include('question_modal.agreementQuestion')
@@ -118,11 +116,11 @@
         function disableBack() {
             window.history.forward()
         }
-        // window.onload = disableBack();
-        // window.onpageshow = function(e) {
-        //     if (e.persisted)
-        //         disableBack();
-        // }
+        window.onload = disableBack();
+        window.onpageshow = function(e) {
+            if (e.persisted)
+                disableBack();
+        }
     });
     function timerIncrement() {
         idleTime = idleTime + 1;
